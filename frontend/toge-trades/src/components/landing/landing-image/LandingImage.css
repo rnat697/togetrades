@@ -1,0 +1,60 @@
+.landing-image {
+    margin-left: 10px;
+    margin-top: 60px;
+}
+
+.image-circle {
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #F2F6FC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.image-circle .image {
+    width: 90%;
+    height: auto;
+}
+/* Tablet Size */
+@media screen and (max-width: 990px) {
+    .landing-image {
+        margin-top: 60px;
+    }
+    
+    .image-circle {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #F2F6FC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+/* Phone size */
+@media screen and (max-width: 650px) {
+    .landing-image {
+        margin-left: 10px;
+        margin-top: 60px;
+        /* z-index: 1100; */
+    }
+    
+    .image-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #F2F6FC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}

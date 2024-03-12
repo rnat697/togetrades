@@ -1,0 +1,28 @@
+.header {
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    top: 0;
+    left: 0;
+    background-color: #C9DCF4;
+        z-index: 110;
+}
+
+.landing-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+}
+
+.logo {
+    max-width: 65px;
+    height: auto;
+}
+
+.brand-name {
+    font-size: 32px;
+    font-weight: 600;
+    color: #213547;
+}

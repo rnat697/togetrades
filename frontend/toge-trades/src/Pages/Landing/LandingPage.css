@@ -1,0 +1,91 @@
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  max-width: 90%;
+  margin-top: 50px;
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  text-align: left;
+  justify-content: left;
+}
+
+.headline{
+  font-weight: 700;
+  font-size: 64px;
+}
+.subtitle{
+  font-weight: 400;
+  font-size: 24px;
+}
+.button-horizontal{
+  display: flex;
+  justify-content:space-evenly;
+  width: 100%;
+
+}
+.login-btn{
+  width: 40%;
+}
+.signup-btn{
+  width: 40%;
+  background-color: #ffffffff;
+  color: #212A4A;
+  border-color: #78A7E2;
+  border-width: 2px;
+}
+.signup-btn:hover{
+  background-color: #F2F6FC;
+}
+
+@media screen and (max-width: 750px) {
+  .content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    margin-top: 50px;
+  }
+  
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    text-align: left;
+    justify-content: space-between;
+  }
+  
+  
+  .headline{
+    font-weight: 700;
+    font-size: 36px;
+  }
+  .subtitle{
+    font-weight: 400;
+    font-size: 18px;
+  }
+  .button-horizontal{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    height: 150px;
+  
+  }
+  .login-btn{
+    width: 100%;
+  }
+  .signup-btn{
+    width: 100%;
+    background-color: #ffffffff;
+    color: #212A4A;
+    border-color: #78A7E2;
+    border-width: 2px;
+  }
+}
