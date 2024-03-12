@@ -4,7 +4,8 @@
     height: 80px;
     top: 0;
     left: 0;
-    z-index: 100;
+    background-color: #C9DCF4;
+        z-index: 110;
 }
 
 .landing-header {
