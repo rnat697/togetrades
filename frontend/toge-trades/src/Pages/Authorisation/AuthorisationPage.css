@@ -1,5 +1,5 @@
 .auth-container{
-    display: flex;
+    /* display: flex; */
     justify-content: center;
 }
 .auth-box{
@@ -21,11 +21,27 @@
     transform: translate(-50%, -50%);
 }
 .auth-background{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
     background-color: #C9DCF4;
     z-index: -100;
+}
+
+@media screen and (max-width: 750px) {
+    .auth-box{
+        height: auto;
+        max-width: 550px;
+        overflow: hidden;
+    }
+
+    .auth-content{
+        position: static;
+        transform: none;
+        width:unset;
+        height: unset;
+        padding: 1em;
+    }
 }
