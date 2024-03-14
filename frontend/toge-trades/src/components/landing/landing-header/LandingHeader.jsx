@@ -1,14 +1,13 @@
 import { NavLink } from "react-router-dom";
 import './LandingHeader.css';
+import Logo from "../../logo/Logo";
 
 export default function LandingHeader() {
-
-    return (
-        <div className='header'>
-            <header className="landing-header">
-                <img className='logo' src='../src/assets/logo.png' />
-                <h1 className='brand-name'>Toge Trades</h1>
-            </header>
-        </div>
-    );
+  return (
+    <div className="header">
+      <header className="landing-header">
+        <Logo />
+      </header>
+    </div>
+  );
 }
