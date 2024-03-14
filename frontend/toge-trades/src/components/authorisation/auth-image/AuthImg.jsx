@@ -6,7 +6,7 @@ export default function AuthImage({ showLogin }) {
       <div className="auth-image">
         <img className="image" src="../src/assets/toge-evos.png" />
       </div>
-      <h2 className="title">Gotta Hatch 'Em All!</h2>
+      <h2 className="img-title">Gotta Hatch 'Em All!</h2>
     </div>
   );
 }

@@ -64,3 +64,20 @@ input:focus {
 .auth-forms button{
     width: 100%;
 }
+
+@media screen and (max-width: 750px) {
+    .content-container{
+        position:unset;
+        width:100%;
+        height:auto;
+    }
+    .signup-screen{
+        /* No transtions for mobile */
+        transform: translateX(0%);
+    }
+    .input-container{
+        padding-top: 0.5em;
+        padding-bottom: 1.5em;
+        transition: opacity 0.4s ease-in-out;
+    }
+}
