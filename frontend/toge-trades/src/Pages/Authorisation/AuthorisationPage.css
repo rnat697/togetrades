@@ -1,5 +1,5 @@
 .auth-container{
-    /* display: flex; */
+    display: flex;
     justify-content: center;
 }
 .auth-box{
@@ -21,7 +21,7 @@
     transform: translate(-50%, -50%);
 }
 .auth-background{
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
