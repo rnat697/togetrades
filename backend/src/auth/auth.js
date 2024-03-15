@@ -1,5 +1,7 @@
-import jwt from 'jsonwebtoken';
-import User  from "../db/user-schema.js";
+import * as dotenv from "dotenv";
+dotenv.config();
+import jwt from "jsonwebtoken";
+import User from "../db/user-schema.js";
 
 /**
  * Middleware to verify the JWT token in the authorization header in the request
