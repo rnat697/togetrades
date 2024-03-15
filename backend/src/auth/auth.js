@@ -3,7 +3,7 @@ dotenv.config();
 import jwt from "jsonwebtoken";
 import User from "../db/user-schema.js";
 
-/**
+/** TODO: NEED TO MODIFY TO USE COOKIES INSTEAD
  * Middleware to verify the JWT token in the authorization header in the request
  *
  * @param {*} req obtains the authorization header from here

@@ -32,6 +32,22 @@ afterAll(async () => {
   await mongod.stop();
 });
 
+function extractTokenFromCookie(res) {
+  const cookies = res.headers["set-cookie"];
+  if (!cookies) {
+    throw new Error("No cookies set in response");
+  }
+
+  for (const cookie of cookies) {
+    const match = cookie.match(/authorization=([^;]*)/);
+    if (match) {
+      return match[1];
+    }
+  }
+
+  throw new Error("No authorization cookie found in response");
+}
+
 // ------- Account Registration Tests -------
 describe("Account Registration POST /api/v1/users/register", () => {
   test("Successful account registration", (done) => {
@@ -56,7 +72,10 @@ describe("Account Registration POST /api/v1/users/register", () => {
         expect(res.header.location).toBe(`/api/v1/users/${dbUser._id}`);
 
         // Check if JWT token validate and contain correct username
-        const token = jwt.verify(res.body.token, process.env.JWT_KEY);
+        const token = jwt.verify(
+          extractTokenFromCookie(res),
+          process.env.JWT_KEY
+        );
         expect(token.username).toBe("Lynette");
 
         return done();
