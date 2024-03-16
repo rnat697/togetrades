@@ -40,12 +40,13 @@ const speciesLunala = {
 };
 
 // --------- Users ---------
-// password = passwordowo
+// https://bcrypt-generator.com/
+// password = password12345
 const userLynney = {
   _id: new mongoose.Types.ObjectId("000000000000000000000001"),
   username: "Lynney",
   email: "lynney@email.com",
-  passHash: "$2a$12$JFOo59MradqgZHSeRvJG..BqLJzYQWSkWcgsGg2oOzXaVxTLwac/a",
+  passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
 };
 
 // Valid token for Lynney - for authetication checks
@@ -101,6 +102,7 @@ async function addAllMockData() {
 export {
   speciesIvysaur,
   speciesLunala,
+  userLynney,
   bearerLynney,
   pokemonLynneysIvyasaur,
   addAllMockData,

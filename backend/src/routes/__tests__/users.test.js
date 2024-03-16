@@ -4,7 +4,7 @@ import express from "express";
 import request from "supertest";
 import routes from "../users.js";
 import jwt from "jsonwebtoken";
-import { addAllMockData } from "../__mocks__/mock_data.js";
+import { addAllMockData, userLynney } from "../__mocks__/mock_data.js";
 
 let mongod, db;
 const app = express();
@@ -161,5 +161,60 @@ describe("Account Registration POST /api/v1/users/register", () => {
         password: "",
       })
       .expect(422, done);
+  });
+});
+
+// ------- Account Login Tests -------
+describe("Account Login - POST /api/v1/users/login", () => {
+  test("Succesful Login", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send({
+        username: "Lynney",
+        password: "password12345",
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        // Extract auth cookie
+        const tokenCookie = res.headers["set-cookie"].find((cookie) =>
+          cookie.startsWith("authorization=")
+        );
+        const token = tokenCookie.split("=")[1].split(";")[0];
+
+        // Verify JWT token from cookie and contains correct username
+        const decodedToken = jwt.verify(token, process.env.JWT_KEY);
+        expect(decodedToken._id).toBe(userLynney._id.toString());
+        expect(decodedToken.username).toBe("Lynney");
+        return done();
+      });
+  });
+  test("Missing username - Login fails with HTTP 422", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send({ password: "password12345" })
+      .expect(422, done);
+  });
+
+  test("Missing password - Login fails with HTTP 422", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send({ username: "Lynney" })
+      .expect(422, done);
+  });
+
+  test("Wrong username - Login fails with HTTP 401", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send({ username: "NotExist", password: "password12345" })
+      .expect(401, done);
+  });
+
+  test("Wrong password - Login fails with HTTP 401", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send({ username: "Lynney", password: "passcode" })
+      .expect(401, done);
   });
 });
