@@ -4,15 +4,15 @@ import jwt from "jsonwebtoken";
 import User from "../db/user-schema.js";
 
 /**
- * Middleware to verify the JWT token in the authorization header in the request
+ * Middleware to verify the JWT token in the authorization cookie in the request
  *
- * @param {*} req obtains the authorization header from here
+ * @param {*} req obtains the authorization cookie from here
  * @param {*} res used to send a 401 status if not authenticated
  * @param {*} next called if authenticated
  * @returns an HTTP 401 to the client if not authenticated. Otherwise, proceed to the next middleware in the chain.
  */
 export default async function verifyToken(req, res, next) {
-  let token = req.headers["authorization"]; // Check header
+  let token = req.cookie.authorization; // Check cookie
 
   // If no token provided, send a 401, don't continue.
   if (!token) return res.sendStatus(401);
