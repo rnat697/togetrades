@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
   // Generate a token for user and send it as a cookie
   const options = {
     expires: new Date(Date.now() + COOKIE_EXPIRATION),
-    httpOnly: true,
+    httpOnly: false,
   };
   const token = createToken(user._id.toString(), username, TOKEN_EXPIRATION);
   return res
@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
   // Set cookie
   const options = {
     expires: new Date(Date.now() + COOKIE_EXPIRATION),
-    httpOnly: true,
+    httpOnly: false,
   };
   return res.status(200).cookie("authorization", token, options).json({
     success: true,

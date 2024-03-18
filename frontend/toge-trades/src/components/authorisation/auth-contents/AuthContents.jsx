@@ -4,11 +4,16 @@ import "./AuthContents.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-export default function AuthContents({ isLogin, handleSwitch }) {
+export default function AuthContents({ isLogin, handleSwitch, onSubmit }) {
   // State to manage input values
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmit(email, username, password);
+  }
 
   // Function to clear input values
   const clearInputs = () => {
@@ -34,7 +39,7 @@ export default function AuthContents({ isLogin, handleSwitch }) {
           <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
         </div>
         <div className="auth-forms">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div
               className={`input-container ${
                 isLogin ? "login-form" : "signup-form"
@@ -42,18 +47,18 @@ export default function AuthContents({ isLogin, handleSwitch }) {
             >
               <input
                 type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required={!isLogin}
               />
             </div>
             <div className="input-container">
               <input
                 type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
