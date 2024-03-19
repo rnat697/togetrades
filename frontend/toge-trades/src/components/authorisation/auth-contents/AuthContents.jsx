@@ -44,9 +44,10 @@ export default function AuthContents({ isLogin, handleSwitch, onSubmit }) {
               className={`input-container ${
                 isLogin ? "login-form" : "signup-form"
               }`}
+              aria-label="email-input-container"
             >
               <input
-                type="text"
+                type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

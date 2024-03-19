@@ -5,6 +5,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 // context for storing auth info
 const AuthContext = React.createContext(null);
+export { AuthContext };
 
 // Checks wheter user is autheticated or not
 export function useAuth() {
@@ -52,7 +53,7 @@ export function RequiresNonAuth({ navigatePathWhenAuth, children }) {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) return children;
-  return <Navigate to={navigatePathWhenAuth || "/"} />;
+  return <Navigate to={navigatePathWhenAuth || "/pokebox"} />;
 }
 
 // Checks if token has expired

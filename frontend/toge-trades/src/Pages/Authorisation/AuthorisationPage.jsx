@@ -5,6 +5,8 @@ import "./AuthorisationPage.css";
 import AuthImage from "../../components/authorisation/auth-image/AuthImg";
 import AuthContents from "../../components/authorisation/auth-contents/AuthContents";
 import { signup, login } from "../../api/api.js";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AuthorisationPage({ isLogin }) {
   const navigate = useNavigate();
@@ -19,8 +21,7 @@ export default function AuthorisationPage({ isLogin }) {
           setToken(token);
           navigate("/pokebox");
         })
-        // TODO: Change to a Toast
-        .catch((e) => console.log("Error when sign up! " + e));
+        .catch((e) => toast("Error when sign up. " + e));
     } else {
       console.log("Logging in");
       login(username, password)
@@ -29,8 +30,7 @@ export default function AuthorisationPage({ isLogin }) {
           setToken(token);
           navigate("/pokebox");
         })
-        // TODO: Change to a Toast
-        .catch((e) => console.log("Error when loging in! " + e));
+        .catch((e) => toast("Error when logging in. " + e));
     }
   }
 
@@ -48,6 +48,7 @@ export default function AuthorisationPage({ isLogin }) {
             onSubmit={handleSubmit}
           />
           <AuthImage showLogin={showLogin} />
+          <ToastContainer />
         </div>
       </div>
       <div className="auth-background" />
