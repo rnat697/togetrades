@@ -14,13 +14,13 @@ router.post("/register", async (req, res) => {
   // Username, email and password must be in request
   const { username, email, password } = req.body;
   if (!username || !email || !password)
-    return res.status(422).send("All fields are compulsory");
+    return res.status(422).send("All fields are compulsory.");
 
   // No duplicate usernames or emails
   let existingUsername = await User.findOne({ username });
   let existingEmail = await User.findOne({ email });
   if (existingUsername || existingEmail)
-    return res.status(409).send("Email or username already exists");
+    return res.status(409).send("Email or username already exists.");
 
   // Encrypt password
 
@@ -52,15 +52,16 @@ router.post("/login", async (req, res) => {
   // Username and password must be in request
   const { username, password } = req.body;
   if (!username || !password)
-    return res.status(422).send("All fields are compulsory");
+    return res.status(422).send("All fields are compulsory.");
 
   // User must exist in database
   let user = await User.findOne({ username });
-  if (!user) return res.sendStatus(401);
+  if (!user) return res.status(401).send("Username does not exist.");
 
   // Check if password patches
   let passwordMatched = await bcrypt.compare(password, user.passHash);
-  if (!passwordMatched) return res.sendStatus(401);
+  if (!passwordMatched)
+    return res.status(401).send("Incorrect password. Please try again.");
 
   // Create JWT token
   const token = createToken(user._id.toString(), username, TOKEN_EXPIRATION);

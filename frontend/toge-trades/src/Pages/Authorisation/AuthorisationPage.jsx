@@ -21,7 +21,10 @@ export default function AuthorisationPage({ isLogin }) {
           setToken(token);
           navigate("/pokebox");
         })
-        .catch((e) => toast("Error when sign up. " + e));
+        .catch((e) => {
+          console.log(e);
+          toast("Error when signing up: " + e.response.data);
+        });
     } else {
       console.log("Logging in");
       login(username, password)
@@ -30,7 +33,7 @@ export default function AuthorisationPage({ isLogin }) {
           setToken(token);
           navigate("/pokebox");
         })
-        .catch((e) => toast("Error when logging in. " + e));
+        .catch((e) => toast("Error when logging in: " + e.response.data));
     }
   }
 
