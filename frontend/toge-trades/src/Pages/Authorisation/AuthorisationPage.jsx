@@ -22,7 +22,6 @@ export default function AuthorisationPage({ isLogin }) {
           navigate("/pokebox");
         })
         .catch((e) => {
-          console.log(e);
           toast("Error when signing up: " + e.response.data);
         });
     } else {
