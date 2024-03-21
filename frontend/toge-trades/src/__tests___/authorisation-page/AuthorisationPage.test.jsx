@@ -179,7 +179,9 @@ describe("Login Page Inputs", () => {
   });
 
   test("Login with non-existent username", async () => {
-    axiosMock.onPost("api/v1/users/login").reply(401);
+    axiosMock
+      .onPost("api/v1/users/login")
+      .reply(401, "Username does not exist.");
     render(
       <AuthContextProvider>
         <MemoryRouter initialEntries={["/login"]}>
@@ -207,14 +209,16 @@ describe("Login Page Inputs", () => {
 
     await waitFor(() => {
       const error = screen.getByText(
-        "Error when logging in. Error: Request failed with status code 401"
+        "Error when logging in: Username does not exist."
       );
       expect(error).toBeInTheDocument();
     });
   });
 
   test("Login with wrong password", async () => {
-    axiosMock.onPost("api/v1/users/login").reply(401);
+    axiosMock
+      .onPost("api/v1/users/login")
+      .reply(401, "Incorrect password. Please try again.");
     render(
       <AuthContextProvider>
         <MemoryRouter initialEntries={["/login"]}>
@@ -242,14 +246,132 @@ describe("Login Page Inputs", () => {
 
     await waitFor(() => {
       const error = screen.getByText(
-        "Error when logging in. Error: Request failed with status code 401"
+        "Error when logging in: Incorrect password. Please try again."
       );
       expect(error).toBeInTheDocument();
     });
   });
-  // login with no username or passsword
 });
 
-// signup page inputs
-// successful signup
-// no email, no username, no password
+describe("Sign up Page Inputs", () => {
+  test("Sign up with correct username and password", async () => {
+    axiosMock.onPost("api/v1/users/register").reply(200, { success: true });
+    render(
+      <AuthContextProvider>
+        <MemoryRouter initialEntries={["/signup"]}>
+          <Routes>
+            <Route
+              path="signup"
+              element={<AuthorisationPage isLogin={false} />}
+            />
+            <Route path="pokebox" element={<PokeBoxPage />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthContextProvider>
+    );
+
+    const emailInput = screen.getByPlaceholderText("Email");
+    const usernameInput = screen.getByPlaceholderText("Username");
+    const passwordInput = screen.getByPlaceholderText("Password");
+    const signupButton = screen.getByRole("button", { name: "Sign up" });
+
+    fireEvent.change(emailInput, { target: { value: "testemail@email.com" } });
+    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    fireEvent.change(passwordInput, { target: { value: "testpassword" } });
+
+    expect(emailInput.value).toBe("testemail@email.com");
+    expect(usernameInput.value).toBe("testuser");
+    expect(passwordInput.value).toBe("testpassword");
+
+    fireEvent.click(signupButton);
+
+    await waitFor(() => {
+      const pokebox = screen.getByText("Poke Box");
+      expect(pokebox).toBeInTheDocument();
+    });
+  });
+
+  test("Sign up with existing username", async () => {
+    axiosMock
+      .onPost("api/v1/users/register")
+      .reply(409, "Email or username already exists.");
+    render(
+      <AuthContextProvider>
+        <MemoryRouter initialEntries={["/signup"]}>
+          <Routes>
+            <Route
+              path="signup"
+              element={<AuthorisationPage isLogin={false} />}
+            />
+            <Route path="pokebox" element={<PokeBoxPage />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthContextProvider>
+    );
+
+    const emailInput = screen.getByPlaceholderText("Email");
+    const usernameInput = screen.getByPlaceholderText("Username");
+    const passwordInput = screen.getByPlaceholderText("Password");
+    const signupButton = screen.getByRole("button", { name: "Sign up" });
+
+    fireEvent.change(emailInput, { target: { value: "testemail@email.com" } });
+    fireEvent.change(usernameInput, { target: { value: "ialreadyexist" } });
+    fireEvent.change(passwordInput, { target: { value: "testpassword" } });
+
+    expect(emailInput.value).toBe("testemail@email.com");
+    expect(usernameInput.value).toBe("ialreadyexist");
+    expect(passwordInput.value).toBe("testpassword");
+
+    fireEvent.click(signupButton);
+
+    await waitFor(() => {
+      const error = screen.getByText(
+        "Error when signing up: Email or username already exists."
+      );
+      expect(error).toBeInTheDocument();
+    });
+  });
+
+  test("Sign up with existing email", async () => {
+    axiosMock
+      .onPost("api/v1/users/register")
+      .reply(409, "Email or username already exists.");
+    render(
+      <AuthContextProvider>
+        <MemoryRouter initialEntries={["/signup"]}>
+          <Routes>
+            <Route
+              path="signup"
+              element={<AuthorisationPage isLogin={false} />}
+            />
+            <Route path="pokebox" element={<PokeBoxPage />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthContextProvider>
+    );
+
+    const emailInput = screen.getByPlaceholderText("Email");
+    const usernameInput = screen.getByPlaceholderText("Username");
+    const passwordInput = screen.getByPlaceholderText("Password");
+    const signupButton = screen.getByRole("button", { name: "Sign up" });
+
+    fireEvent.change(emailInput, {
+      target: { value: "existingemail@email.com" },
+    });
+    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
+
+    expect(emailInput.value).toBe("existingemail@email.com");
+    expect(usernameInput.value).toBe("testuser");
+    expect(passwordInput.value).toBe("wrongpassword");
+
+    fireEvent.click(signupButton);
+
+    await waitFor(() => {
+      const error = screen.getByText(
+        "Error when signing up: Email or username already exists."
+      );
+      expect(error).toBeInTheDocument();
+    });
+  });
+});
