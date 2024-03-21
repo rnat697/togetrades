@@ -7,10 +7,12 @@ import { IoMenu } from "react-icons/io5";
 
 import Logo from "../logo/Logo";
 import UserDropDown from "./user-dropdown/UserDropDown";
+import NotificationDropDown from "../notifications/notification-dropdown/NotificationDropDown";
 
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setUserMenu] = useState(false);
+  const [showNotif, setNotif] = useState(false);
 
   const toggleUserMenu = () => {
     if (!showMenu) {
@@ -19,6 +21,15 @@ export default function GlobalNavigation() {
       setUserMenu(false);
     }
   };
+
+  const toggleNotifMenu = () => {
+    if (!showMenu) {
+      setNotif(!showNotif);
+    } else {
+      setNotif(false);
+    }
+  };
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -100,8 +111,8 @@ export default function GlobalNavigation() {
           </div>
         </div>
         {!showMenu && (
-          <div className="notif" id="notif_toggle">
-            <FaRegBell color="#212A4A" size={"1.5em"} />
+          <div className="notif" id="notif_toggle" onClick={toggleNotifMenu}>
+            <NotificationDropDown isOpen={showNotif} />
           </div>
         )}
         <div
