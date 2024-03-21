@@ -12,7 +12,11 @@ const port = process.env.PORT ?? 3000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+const corsOptions = {
+  origin: true, //included origin as true
+  credentials: true, //included credentials as true
+};
+app.use(cors(corsOptions));
 
 import api from './routes/index.js';
 app.use('/api/v1', api);

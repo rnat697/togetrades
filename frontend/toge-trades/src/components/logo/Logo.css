@@ -1,0 +1,19 @@
+.logo-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+    background-color: transparent;
+    
+}
+
+.logo {
+    width: 4em;
+    height: auto;
+}
+
+.brand-name {
+    font-size: 32px;
+    font-weight: 600;
+    color: #213547;
+}
