@@ -6,13 +6,20 @@ import { IoIosClose } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 
 import Logo from "../logo/Logo";
-// pokebox incubator tradehub pokedex notification-bell username
+import UserDropDown from "./user-dropdown/UserDropDown";
 
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
+  const [showUserMenu, setUserMenu] = useState(false);
 
+  const toggleUserMenu = () => {
+    if (!showMenu) {
+      setUserMenu(!showUserMenu);
+    } else {
+      setUserMenu(false);
+    }
+  };
   const toggleMenu = () => {
-    console.log(!showMenu);
     setShowMenu(!showMenu);
   };
 
@@ -33,35 +40,55 @@ export default function GlobalNavigation() {
           id="nav-menu"
         >
           <ul className="nav-list">
-            <li className="nav-item user">
-              <img
-                className="user-img"
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"
-              />
-              <h2 className="heading-username">username</h2>
+            <li className="nav-item user" onClick={() => toggleUserMenu()}>
+              <UserDropDown isOpen={showUserMenu} />
             </li>
             <li className="nav-item">
-              <NavLink to="/pokebox" className="nav-link" onClick={closeMenu}>
+              <NavLink
+                to="/pokebox"
+                className={(nav) =>
+                  nav.isActive ? "nav-link selected-nav" : "nav-link"
+                }
+                onClick={closeMenu}
+              >
                 Poke Box
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/incubator" className="nav-link" onClick={closeMenu}>
+              <NavLink
+                to="/incubator"
+                className={(nav) =>
+                  nav.isActive ? "nav-link selected-nav" : "nav-link"
+                }
+                onClick={closeMenu}
+              >
                 Incubator
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/tradehub" className="nav-link" onClick={closeMenu}>
+              <NavLink
+                to="/tradehub"
+                className={(nav) =>
+                  nav.isActive ? "nav-link selected-nav" : "nav-link"
+                }
+                onClick={closeMenu}
+              >
                 Trade Hub
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/pokedex" className="nav-link" onClick={closeMenu}>
+              <NavLink
+                to="/pokedex"
+                className={(nav) =>
+                  nav.isActive ? "nav-link selected-nav" : "nav-link"
+                }
+                onClick={closeMenu}
+              >
                 Pokedex
               </NavLink>
             </li>
             <li className="nav-item logout">
-              <button className="logout-btn"> Log out </button>
+              <button className="logout-btn">Log out</button>
             </li>
           </ul>
           <div
@@ -69,18 +96,20 @@ export default function GlobalNavigation() {
             id="nav-close"
             onClick={() => toggleMenu()}
           >
-            <IoIosClose />
+            <IoIosClose color="#212A4A" size={"2em"} />
           </div>
         </div>
-        <div className="nav-item notif">
-          <FaRegBell />
-        </div>
+        {!showMenu && (
+          <div className="notif" id="notif_toggle">
+            <FaRegBell color="#212A4A" size={"1.5em"} />
+          </div>
+        )}
         <div
           className="nav_toggle"
           id="nav-toggle"
           onClick={() => toggleMenu()}
         >
-          <IoMenu />
+          <IoMenu color="#212A4A" size={"1.5em"} />
         </div>
       </nav>
     </header>
