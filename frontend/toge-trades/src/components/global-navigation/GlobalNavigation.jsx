@@ -1,6 +1,6 @@
 import "./GlobalNavigation.css";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaRegBell } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
@@ -20,6 +20,11 @@ export default function GlobalNavigation() {
       setUserMenu(false);
     }
   };
+  useEffect(() => {
+    if (showUserMenu && showMenu) {
+      setUserMenu(false);
+    }
+  }, [showMenu, showUserMenu]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
