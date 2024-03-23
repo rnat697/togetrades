@@ -12,21 +12,12 @@ import NotificationDropDown from "../notifications/notification-dropdown/Notific
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setUserMenu] = useState(false);
-  const [showNotif, setNotif] = useState(false);
 
   const toggleUserMenu = () => {
     if (!showMenu) {
       setUserMenu(!showUserMenu);
     } else {
       setUserMenu(false);
-    }
-  };
-
-  const toggleNotifMenu = () => {
-    if (!showMenu) {
-      setNotif(!showNotif);
-    } else {
-      setNotif(false);
     }
   };
 
@@ -111,8 +102,8 @@ export default function GlobalNavigation() {
           </div>
         </div>
         {!showMenu && (
-          <div className="notif" id="notif_toggle" onClick={toggleNotifMenu}>
-            <NotificationDropDown isOpen={showNotif} />
+          <div className="notif" id="notif_toggle">
+            <NotificationDropDown isOpen={showMenu} />
           </div>
         )}
         <div

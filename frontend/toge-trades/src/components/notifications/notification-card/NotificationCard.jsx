@@ -38,7 +38,7 @@ export default function NotificationCard({ notification, onRemove }) {
           <IoIosClose color="#212A4A" size={"2em"} />
         </div>
       </div>
-      <div class="divider"></div>
+      <div class="divider-notif" />
     </div>
   );
 }

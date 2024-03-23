@@ -22,7 +22,7 @@
 .message-content p{
   font-size: 0.8em;
 }
-.divider {
+.divider-notif{
   border-top: 1px solid #BFC7E0;
   margin: 10px 0; 
 }
