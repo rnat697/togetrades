@@ -48,14 +48,6 @@
   font-weight: 500;
   font-size: 1.4em;
 }
-.logout-btn{
-  border-color: #5988D8;
-  border-width: 0.2em;
-  background-color: #ffffff;
-  color: #212A4A;
-  font-size: 1em;
-}
-
 @media screen and (max-width: 1100px) {
   .arrow-icon{
     display:none;

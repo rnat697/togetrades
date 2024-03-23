@@ -1,6 +1,7 @@
 import "./UserDropDown.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { useAuth } from "../../../api/auth";
+import LogoutButton from "../logout-button/LogoutButton";
 
 export default function UserDropDown({ isOpen }) {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ export default function UserDropDown({ isOpen }) {
         <div className="dropdown-content">
           {/* TODO: change to use auth */}
           <p className="user-email">johndoe@example.com</p>
-          <button className="logout-btn"> Logout </button>
+          <LogoutButton />
         </div>
       </div>
     </div>

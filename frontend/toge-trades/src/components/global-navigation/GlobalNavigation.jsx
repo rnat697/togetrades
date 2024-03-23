@@ -8,6 +8,7 @@ import { IoMenu } from "react-icons/io5";
 import Logo from "../logo/Logo";
 import UserDropDown from "./user-dropdown/UserDropDown";
 import NotificationDropDown from "../notifications/notification-dropdown/NotificationDropDown";
+import LogoutButton from "./logout-button/LogoutButton";
 
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
@@ -95,7 +96,7 @@ export default function GlobalNavigation() {
               </NavLink>
             </li>
             <li className="nav-item logout">
-              <button className="logout-btn">Log out</button>
+              <LogoutButton />
             </li>
           </ul>
           <div
