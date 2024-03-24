@@ -373,3 +373,36 @@ describe("GET /api/v1/users/", () => {
     request(app).get("/api/v1/users/").send().expect(401).end(done);
   });
 });
+
+// ------- FETCHING SPECIFIC USER -------
+describe("GET /api/v1/users/:id", () => {
+  test("Successful fetching of a users in database", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const user = res.body;
+        expect(user._id).toBe(userNavia._id.toString());
+        expect(user.username).toBe(userNavia.username.toString());
+        expect(user.email).toBe(userNavia.email.toString());
+        expect(user).not.toHaveProperty('passHash');
+        return done();
+      });
+  });
+
+  test("Fetching a non-existent user", (done) => {
+    request(app)
+      .get(`/api/v1/users/000000000000000000000054`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+
+  test("Unauthetnicated user fetching of a user in database", (done) => {
+    request(app).get(`/api/v1/users/${userNavia._id}`).send().expect(401).end(done);
+  });
+});

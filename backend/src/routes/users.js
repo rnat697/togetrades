@@ -116,15 +116,30 @@ router.get("/:id/pokemon", auth, async (req, res) => {
   }
 });
 
-
 // ----- FETCH ALL USERS -----
 router.get("/", auth, async (req, res) => {
-  try{
-    const users = await User.find({});
+  try {
+    // exclude password
+    const users = await User.find({}).select("-passHash");
     return res.status(200).json(users);
-  }catch(error){
-    console.error("Error retrieving Pokemon: ", error);
-    return res.status(500).send("Internal Server Error when retrieving users");
+  } catch (error) {
+    console.error("Error retrieving users: ", error);
+    return res.status(500).send("Internal Server Error when retrieving users.");
+  }
+});
+
+// ----- FETCH SPECIFIC USER -----
+router.get("/:id", auth, async (req, res) => {
+  try {
+    // Check if the id exists
+    const userExist = await User.findById(req.params.id).select("-passHash"); // exclude password
+    if (!userExist) return res.status(404).send("User can not be found.");
+    return res.status(200).json(userExist);
+  } catch (error) {
+    console.error("Error retrieving user: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving user information.");
   }
 });
 
