@@ -33,7 +33,7 @@ export default function NotificationDropDown({ isMobileMenu }) {
   ]);
 
   const [showNotif, setNotifMenu] = useState(false);
-
+  //  TODO: make this scrollable? or limit to 4 at a time
   const toggleNotifMenu = () => {
     // If mobile menu is open don't show the notifications
     if (!isMobileMenu) {

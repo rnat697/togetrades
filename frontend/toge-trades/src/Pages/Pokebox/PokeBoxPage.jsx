@@ -1,12 +1,13 @@
 import GlobalNavigation from "../../components/global-navigation/GlobalNavigation";
+import PokeBoxContents from "../../components/pokebox/pokebox-contents/PokeBoxContents";
 import "./PokeBoxPage.css";
 
 export default function PokeBoxPage() {
   return (
     <div className="pokebox-container">
       <GlobalNavigation />
-      <div className="box-content">
-        <h1>Poke Box</h1>
+      <div className="pokebox-content">
+        <PokeBoxContents />
       </div>
     </div>
   );
