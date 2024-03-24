@@ -2,19 +2,7 @@
   position: relative;
   width: 2em; 
 }
-.not-selected-fav{
-  position: absolute;
-  top: 0;
-  right:0;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
+.fav-icon{
   color:#CA6449;
-  font-size: 2em;
-
-}
-.selected-fav{
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0.9;
-  color:#CA6449;
-  font-size: 2em;
+  font-size: 1.5em;
 }

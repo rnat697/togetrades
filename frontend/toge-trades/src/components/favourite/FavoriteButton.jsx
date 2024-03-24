@@ -10,12 +10,11 @@ export default function FavoriteButton({ pokemon }) {
   };
   return (
     <div className="favorite-container" onClick={handleFavoriteClick}>
-      <FaRegHeart
-        className={`${!isFavorite ? "selected-fav" : "not-selected-fav"}`}
-      />
-      <FaHeart
-        className={`${isFavorite ? "selected-fav" : "not-selected-fav"}`}
-      />
+      {isFavorite ? (
+        <FaHeart className="fav-icon" />
+      ) : (
+        <FaRegHeart className="fav-icon" />
+      )}
     </div>
   );
 }
