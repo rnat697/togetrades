@@ -3,11 +3,13 @@ import User from "../db/user-schema.js";
 import bcrypt from "bcrypt";
 import { createToken } from "../auth/auth.js";
 import { generateStartingPokemonForUser } from "../db/pokemon-utils.js";
+import auth from "../auth/auth.js";
+import Pokemon from "../db/pokemon-schema.js";
 
 const router = express.Router();
 // logi/register - https://www.youtube.com/watch?v=-8OEfGQPJ8c
 // 4hr, 60min,60s,1000ms
-const COOKIE_EXPIRATION = 4*60*60*1000;
+const COOKIE_EXPIRATION = 4 * 60 * 60 * 1000;
 const TOKEN_EXPIRATION = COOKIE_EXPIRATION / 1000;
 // ----- Register new account -----
 router.post("/register", async (req, res) => {
@@ -30,6 +32,7 @@ router.post("/register", async (req, res) => {
     username,
     email,
     passHash: encryptPass,
+    image: "",
   });
 
   // Genereate pokemon for user
@@ -74,6 +77,12 @@ router.post("/login", async (req, res) => {
   return res.status(200).cookie("authorization", token, options).json({
     success: true,
   });
+});
+
+// Gets list of all users in database.
+router.get("/", auth, async (req, res) => {
+  const users = await User.find({});
+  return res.status(200).json(users);
 });
 
 export default router;

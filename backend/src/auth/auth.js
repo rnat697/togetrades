@@ -12,7 +12,7 @@ import User from "../db/user-schema.js";
  * @returns an HTTP 401 to the client if not authenticated. Otherwise, proceed to the next middleware in the chain.
  */
 export default async function verifyToken(req, res, next) {
-  let token = req.cookie.authorization; // Check cookie
+  let token = req.cookies.authorization; // Check cookie
 
   // If no token provided, send a 401, don't continue.
   if (!token) return res.sendStatus(401);

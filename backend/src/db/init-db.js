@@ -12,7 +12,7 @@ async function main() {
 
   await clearDatabase();
   console.log("");
-  await populateSpecies();
+  // await populateSpecies();
   // Disconnect when complete
   await mongoose.disconnect();
   console.log("Disconnected from database!");
@@ -25,6 +25,7 @@ async function clearDatabase() {
   console.log("Clearing entire database...");
   const collections = await mongoose.connection.db.collections();
   for (const c of collections) {
+    if (c.collectionName === 'species') continue;
     await c.deleteMany({});
   }
   console.log("cleared database");
