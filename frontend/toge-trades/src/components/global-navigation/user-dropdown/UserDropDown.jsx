@@ -13,7 +13,7 @@ export default function UserDropDown({ isMobileOpen }) {
   const [userInfo, setUserInfo] = useLocalStorage("userInfo");
 
   const toggleUserMenu = () => {
-    if (!isMobile) {
+    if (!isMobileOpen) {
       setUserMenu(!showUserMenu);
     } else {
       setUserMenu(false);
