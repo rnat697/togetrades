@@ -19,6 +19,27 @@ export default function PokeBoxContents() {
       </div>
       <div className="pokebox-cards">
         <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
+        <PokeBoxCards />
       </div>
     </div>
   );

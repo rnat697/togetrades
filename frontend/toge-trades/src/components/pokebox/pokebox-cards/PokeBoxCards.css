@@ -1,8 +1,8 @@
 .cards-container{
   position: relative;
   background-color: #F2F6FC;
-  width: 17rem;
-  height:15rem;
+  width: 14em;
+  height:12em;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,9 +21,9 @@
 .pokemon img{
   height: 8em;
   width:8em;
-  padding-top: 2em;
 }
 .pokemon p{
+  margin:0;
   font-size: 1.5em;
 }
 .rare-indicator {
