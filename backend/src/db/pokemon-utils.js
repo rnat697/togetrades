@@ -1,5 +1,6 @@
 import Pokemon from "./pokemon-schema.js";
 import Species from "./species-schema.js";
+import User from "./user-schema.js";
 
 const NUM_STARTER_POKEMON = 12;
 
@@ -14,9 +15,30 @@ export async function generateStartingPokemonForUser(
 ) {
   const promises = [];
   for (let i = 0; i < numPokemon; i++) {
-    promises.push(createRandomPokemon(ownerId, 0.6));
+    const pokemon = await createRandomPokemon(ownerId, 0.6);
+    promises.push(pokemon);
+    // Sets User's image with the first pokemon they have.
+    if (i == 0) {
+      await pokemon.populate("species");
+      await updateUserImage(ownerId, pokemon.species.image.normal);
+    }
   }
   await Promise.all(promises);
+}
+
+/**
+ * updates User's image
+ */
+async function updateUserImage(userID, imageURL) {
+  try {
+    const user = await User.findById(userID);
+    if (!user) throw new Error("User not found");
+    user.image = imageURL;
+    await user.save();
+  } catch (error) {
+    console.error("Error updating user image: ", error.message);
+    throw error;
+  }
 }
 
 /**

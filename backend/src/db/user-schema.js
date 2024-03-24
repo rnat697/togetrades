@@ -8,9 +8,10 @@ const Schema = mongoose.Schema;
  *  - Users can own multiple incubators
  */
 const userSchema = new Schema({
-    username: { type: String, unique: true, required: true },
-    email: {type:String, unique:true,required:true},
-    passHash: { type: String, required: true },
+  username: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
+  passHash: { type: String, required: true },
+  image: { type: String },
 });
 
 const User = mongoose.model("User", userSchema);
