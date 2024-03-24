@@ -15,6 +15,7 @@ import {
   speciesLunala,
   userLynney,
   userNavia,
+  userVenti,
 } from "../__mocks__/mock_data.js";
 
 let mongod, db;
@@ -347,5 +348,28 @@ describe("GET /api/v1/users/:id/pokemon", () => {
       .send()
       .expect(401)
       .end(done);
+  });
+});
+
+// ------- FETCHING ALL USERS -------
+describe("GET /api/v1/users/", () => {
+  test("Successful fetching of all users in database", (done) => {
+    request(app)
+      .get("/api/v1/users/")
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const users = res.body;
+        expect(users.length).toBe(3);
+        expect(users[0]._id).toBe(userLynney._id.toString());
+        expect(users[1]._id).toBe(userNavia._id.toString());
+        expect(users[2]._id).toBe(userVenti._id.toString());
+        return done();
+      });
+  });
+  test("Unauthetnicated user fetching of all users in database", (done) => {
+    request(app).get("/api/v1/users/").send().expect(401).end(done);
   });
 });

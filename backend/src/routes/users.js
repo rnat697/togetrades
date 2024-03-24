@@ -124,7 +124,7 @@ router.get("/", auth, async (req, res) => {
     return res.status(200).json(users);
   }catch(error){
     console.error("Error retrieving Pokemon: ", error);
-    return res.status(500).json({error: "Internal Server Error when retrieving users"});
+    return res.status(500).send("Internal Server Error when retrieving users");
   }
 });
 
