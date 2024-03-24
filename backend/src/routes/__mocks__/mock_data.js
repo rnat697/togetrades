@@ -42,11 +42,14 @@ const speciesLunala = {
 // --------- Users ---------
 // https://bcrypt-generator.com/
 // password = password12345
+// Lynney
 const userLynney = {
   _id: new mongoose.Types.ObjectId("000000000000000000000001"),
   username: "Lynney",
   email: "lynney@email.com",
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
+  image:
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
 };
 
 // Valid token for Lynney - for authetication checks
@@ -57,18 +60,83 @@ const tokenLynney = jwt.sign(
 );
 const bearerLynney = `Bearer ${tokenLynney}`;
 
+// Navia
+const userNavia = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000002"),
+  username: "Navia",
+  email: "navia@email.com",
+  passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
+  image:
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+};
+
+// Valid token for Navia - for authetication checks
+const tokenNavia = jwt.sign(
+  { _id: "000000000000000000000002", username: "Navia" },
+  process.env.JWT_KEY,
+  { expiresIn: "7d" }
+);
+const bearerNavia = `Bearer ${tokenNavia}`;
+
+// Navia
+const userVenti = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000003"),
+  username: "Venti",
+  email: "venti@email.com",
+  passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
+  image:
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+};
+
+// Valid token for Navia - for authetication checks
+const tokenVenti = jwt.sign(
+  { _id: "000000000000000000000003", username: "Venti" },
+  process.env.JWT_KEY,
+  { expiresIn: "7d" }
+);
+const bearerVenti = `Bearer ${tokenVenti}`;
+
 // --------- Pokemon ---------
 // Lynney's Ivysaur
 const pokemonLynneysIvyasaur = {
-  _id: new mongoose.Types.ObjectId("000000000000000000000005"),
+  _id: new mongoose.Types.ObjectId("000000000000000000000075"),
   species: new mongoose.Types.ObjectId("000000000000000000000020"),
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   isShiny: true,
   isTradeable: false,
-  isFavourite: false,
+  isFavorite: false,
 };
-
+// Navia's Lunala
+const pokemonNaviasLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000076"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: false,
+  isTradeable: false,
+  isFavorite: true,
+};
+// Navia's ivysaur
+const pokemonNaviasIvysaur = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000077"),
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: true,
+  isTradeable: true,
+  isFavorite: false,
+};
+// Venti's IvySaur
+const pokemonVentisIvyasaur = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000078"),
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  isShiny: true,
+  isTradeable: true,
+  isFavorite: false,
+};
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
@@ -76,13 +144,11 @@ async function addMockSpecies() {
 }
 async function addMockUsers() {
   const usersDB = mongoose.connection.db.collection("users");
-  await usersDB.insertOne(userLynney);
-  // await usersDB.insertMany([userLynney.]);
+  await usersDB.insertMany([userLynney, userNavia, userVenti]);
 }
 async function addMockPokemons() {
   const pokemonsDB = mongoose.connection.db.collection("pokemons");
-  await pokemonsDB.insertOne(pokemonLynneysIvyasaur);
-  // await usersDB.insertMany([pokemonLynneysIvyasaur,]);
+  await pokemonsDB.insertMany([pokemonLynneysIvyasaur, pokemonNaviasLunala,pokemonNaviasIvysaur, pokemonVentisIvyasaur]);
 }
 
 async function dropData() {
@@ -103,7 +169,14 @@ export {
   speciesIvysaur,
   speciesLunala,
   userLynney,
+  userNavia,
+  userVenti,
   bearerLynney,
+  bearerNavia,
+  bearerVenti,
   pokemonLynneysIvyasaur,
+  pokemonNaviasLunala,
+  pokemonNaviasIvysaur,
+  pokemonVentisIvyasaur,
   addAllMockData,
 };

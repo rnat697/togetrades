@@ -2,13 +2,25 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import express from "express";
 import request from "supertest";
+import cookieParser from "cookie-parser";
 import routes from "../users.js";
 import jwt from "jsonwebtoken";
-import { addAllMockData, userLynney } from "../__mocks__/mock_data.js";
+import {
+  addAllMockData,
+  bearerLynney,
+  bearerNavia,
+  pokemonNaviasIvysaur,
+  pokemonNaviasLunala,
+  speciesIvysaur,
+  speciesLunala,
+  userLynney,
+  userNavia,
+} from "../__mocks__/mock_data.js";
 
 let mongod, db;
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/v1/users", routes);
 
 // Start in-memory DB before tests run
@@ -216,5 +228,124 @@ describe("Account Login - POST /api/v1/users/login", () => {
       .post("/api/v1/users/login")
       .send({ username: "Lynney", password: "passcode" })
       .expect(401, done);
+  });
+});
+
+// ------- FETCHING USER'S POKEMON -------
+describe("GET /api/v1/users/:id/pokemon", () => {
+  test("Successful fetching of all pokemon owned by user", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/pokemon`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const pokemon = res.body;
+        expect(pokemon.length).toBe(2);
+        expect(pokemon[0]._id).toBe(pokemonNaviasLunala._id.toString());
+        expect(pokemon[1]._id).toBe(pokemonNaviasIvysaur._id.toString());
+
+        // check if species data is populated
+        expect(typeof pokemon[0].species).toBe("object");
+        expect(pokemon[0].species._id).toBe(speciesLunala._id.toString());
+        return done();
+      });
+  });
+
+  test("Successful fetching of another user's pokemon [tradeable only]", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/pokemon`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const pokemon = res.body;
+        expect(pokemon.length).toBe(1);
+        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+
+        // check if species data is populated
+        expect(typeof pokemon[0].species).toBe("object");
+        expect(pokemon[0].species._id).toBe(speciesIvysaur._id.toString());
+        return done();
+      });
+  });
+
+  test("Successful fetching of user's own favorited pokemon", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/pokemon?favoritesOnly=true`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const pokemon = res.body;
+        expect(pokemon.length).toBe(1);
+        expect(pokemon[0]._id).toBe(pokemonNaviasLunala._id.toString());
+        expect(pokemon[0].isFavorite).toBe(true);
+
+        // check if species data is populated
+        expect(typeof pokemon[0].species).toBe("object");
+        expect(pokemon[0].species._id).toBe(speciesLunala._id.toString());
+        return done();
+      });
+  });
+
+  test("Successful fetching of user's own tradeable pokemon", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/pokemon?tradeableOnly=true`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const pokemon = res.body;
+        expect(pokemon.length).toBe(1);
+        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+        expect(pokemon[0].isTradeable).toBe(true);
+
+        // check if species data is populated
+        expect(typeof pokemon[0].species).toBe("object");
+        expect(pokemon[0].species._id).toBe(speciesIvysaur._id.toString());
+        return done();
+      });
+  });
+
+  test("Successful fetching of user's own shiny pokemon", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/pokemon?shinyOnly=true`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const pokemon = res.body;
+        expect(pokemon.length).toBe(1);
+        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+        expect(pokemon[0].isShiny).toBe(true);
+
+        // check if species data is populated
+        expect(typeof pokemon[0].species).toBe("object");
+        expect(pokemon[0].species._id).toBe(speciesIvysaur._id.toString());
+        return done();
+      });
+  });
+
+  test("Fetching a non-existent user's pokemon", (done) => {
+    request(app)
+      .get(`/api/v1/users/000000000000000000000054/pokemon`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+
+  test("Unauthenticated user fetching a a list of user's pokemon", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userLynney}/pokemon`)
+      .send()
+      .expect(401)
+      .end(done);
   });
 });

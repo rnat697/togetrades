@@ -11,7 +11,8 @@ const router = express.Router();
 // 4hr, 60min,60s,1000ms
 const COOKIE_EXPIRATION = 4 * 60 * 60 * 1000;
 const TOKEN_EXPIRATION = COOKIE_EXPIRATION / 1000;
-// ----- Register new account -----
+
+// ----- REGISTER NEW ACCOUNT -----
 router.post("/register", async (req, res) => {
   // Username, email and password must be in request
   const { username, email, password } = req.body;
@@ -51,6 +52,7 @@ router.post("/register", async (req, res) => {
     .json({ success: true });
 });
 
+// ----- LOGIN -----
 router.post("/login", async (req, res) => {
   // Username and password must be in request
   const { username, password } = req.body;
@@ -79,10 +81,51 @@ router.post("/login", async (req, res) => {
   });
 });
 
-// Gets list of all users in database.
+// ----- FETCH USER'S POKEMON -----
+// Gets list of pokemon belonging to user with a given id.
+// if user requests a list of their own pokemon, they can specify whether all pokemon are return
+// or just their favourites or just their tradeable or just their shiny
+// if user request a list of other people's pokemon, it returns a list of the other person's tradeable pokemon
+router.get("/:id/pokemon", auth, async (req, res) => {
+  try {
+    // Check if the id exists
+    const userExist = await User.findById(req.params.id);
+    if (!userExist) return res.status(404).send("User can not be found.");
+
+    // Finds pokemon by specific owner
+    const isSameUser = req.user._id == req.params.id;
+    const isQueryFavorites = req.query.favoritesOnly;
+    const isQueryTradeable = req.query.tradeableOnly;
+    const isQueryShiny = req.query.shinyOnly;
+    let filter = { currentOwner: req.params.id };
+
+    if (!isSameUser) {
+      filter.isTradeable = true;
+    } else {
+      if (isQueryFavorites) filter.isFavorite = true;
+      if (isQueryTradeable) filter.isTradeable = true;
+      if (isQueryShiny) filter.isShiny = true;
+    }
+    const pokemon = await Pokemon.find(filter).populate("species");
+    return res.status(200).json(pokemon);
+  } catch (error) {
+    console.error("Error retrieving Pokemon: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving Pokemon.");
+  }
+});
+
+
+// ----- FETCH ALL USERS -----
 router.get("/", auth, async (req, res) => {
-  const users = await User.find({});
-  return res.status(200).json(users);
+  try{
+    const users = await User.find({});
+    return res.status(200).json(users);
+  }catch(error){
+    console.error("Error retrieving Pokemon: ", error);
+    return res.status(500).json({error: "Internal Server Error when retrieving users"});
+  }
 });
 
 export default router;
