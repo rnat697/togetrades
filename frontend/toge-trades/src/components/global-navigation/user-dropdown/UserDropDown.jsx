@@ -1,25 +1,52 @@
 import "./UserDropDown.css";
 import { IoIosArrowDown } from "react-icons/io";
-import { useAuth } from "../../../api/auth";
-import LogoutButton from "../logout-button/LogoutButton";
+import { useState, useEffect } from "react";
 
-export default function UserDropDown({ isOpen }) {
+import { useAuth } from "../../../api/auth";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import LogoutButton from "../logout-button/LogoutButton";
+import { userById } from "../../../api/api";
+
+export default function UserDropDown({ isMobile }) {
+  const [showUserMenu, setUserMenu] = useState(false);
   const { user } = useAuth();
+  const [userInfo, setUserInfo] = useLocalStorage("userInfo");
+
+  const toggleUserMenu = () => {
+    if (!isMobile) {
+      setUserMenu(!showUserMenu);
+    } else {
+      setUserMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch user's info from server and stores it in localstorage
+    async function fetchUserInfo() {
+      try {
+        const userData = await userById(user._id);
+
+        setUserInfo(userData.data);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    }
+
+    fetchUserInfo();
+  }, [user._id, setUserInfo]);
+
   return (
     <div className="user-container">
-      <div className="nav-user">
-        {/* TODO: change to use auth */}
-        <img
-          className="image-user"
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"
+      <div className="nav-user" onClick={() => toggleUserMenu()}>
+        <img className="image-user" src={userInfo.image} />
+        <h2 className="heading-username">{userInfo.username}</h2>
+        <IoIosArrowDown
+          className={`arrow-icon ${showUserMenu ? "rotate" : ""}`}
         />
-        <h2 className="heading-username">{user.username}</h2>
-        <IoIosArrowDown className={`arrow-icon ${isOpen ? "rotate" : ""}`} />
       </div>
-      <div className={`username-dropdown ${isOpen ? "open" : ""}`}>
+      <div className={`username-dropdown ${showUserMenu ? "open" : ""}`}>
         <div className="dropdown-content">
-          {/* TODO: change to use auth */}
-          <p className="user-email">johndoe@example.com</p>
+          <p className="user-email">{userInfo.email}</p>
           <LogoutButton />
         </div>
       </div>

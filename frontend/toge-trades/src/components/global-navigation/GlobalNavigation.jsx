@@ -12,27 +12,13 @@ import LogoutButton from "./logout-button/LogoutButton";
 
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
-  const [showUserMenu, setUserMenu] = useState(false);
-
-  const toggleUserMenu = () => {
-    if (!showMenu) {
-      setUserMenu(!showUserMenu);
-    } else {
-      setUserMenu(false);
-    }
-  };
-  useEffect(() => {
-    if (showUserMenu && showMenu) {
-      setUserMenu(false);
-    }
-  }, [showMenu, showUserMenu]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
   const closeMenu = () => {
-    if (window.innerWidth <= 1150) {
+    if (window.innerWidth <= 1100) {
       setShowMenu(false);
     }
   };
@@ -48,8 +34,8 @@ export default function GlobalNavigation() {
           id="nav-menu"
         >
           <ul className="nav-list">
-            <li className="nav-item user" onClick={() => toggleUserMenu()}>
-              <UserDropDown isOpen={showUserMenu} />
+            <li className="nav-item user">
+              <UserDropDown isOpen={showMenu} />
             </li>
             <li className="nav-item">
               <NavLink
@@ -109,7 +95,7 @@ export default function GlobalNavigation() {
         </div>
         {!showMenu && (
           <div className="notif" id="notif_toggle">
-            <NotificationDropDown isOpen={showMenu} />
+            <NotificationDropDown isMobile={showMenu} />
           </div>
         )}
         <div
