@@ -2,55 +2,24 @@ import "./PokeBoxContents.css";
 import { useState, useEffect, useRef } from "react";
 import SearchBar from "../search-bar/SearchBar";
 import PokeBoxCards from "../pokebox-cards/PokeBoxCards";
-import { pokemonByUser } from "../../../api/api";
+// import { pokemonByUser } from "../../../api/api";
 import { useAuth } from "../../../api/auth";
+import useGet from "../../../hooks/useGet";
+import { objectToQueryString } from "../../utils/utils";
+import { USER_POKEMON_URL } from "../../../api/urls";
 
 export default function PokeBoxContents() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  const [pokemonList, setPokemonList] = useState([]);
+  // const [pokemonList, setPokemonList] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const containerRef = useRef();
-
-  // Fetch Pokemon data
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await pokemonByUser(user._id, {
-        page: page,
-        limit: 12,
-      });
-      const data = response.data;
-      setPokemonList((prevList) => [...prevList, ...data]);
-      setLoading(false);
-    };
-    fetchData();
-  }, [page]);
-
-  // Fetch data when page or searchQuery changes
-  useEffect(() => {
-    setPokemonList([]);
-    setPage(1);
-  }, [searchQuery]);
-
-  // Detect scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        containerRef.current &&
-        containerRef.current.scrollTop + containerRef.current.clientHeight >=
-          containerRef.current.scrollHeight
-      ) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    };
-
-    containerRef.current.addEventListener("scroll", handleScroll);
-    return () => {
-      containerRef.current.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const isFirstRender = useRef(true);
+  const { data:pokemonList, isLoading, error, refresh } = useGet(
+    USER_POKEMON_URL(user._id),
+    [],
+    true
+  );
 
   return (
     <div className="box-content-container">
@@ -64,11 +33,11 @@ export default function PokeBoxContents() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      <div className="pokebox-cards" ref={containerRef}>
+      <div className="pokebox-cards">
         {pokemonList.map((pokemon, index) => (
           <PokeBoxCards key={index} pokemon={pokemon} />
         ))}
-        {loading && <div>Loading...</div>}
+        {isLoading && <div>Loading...</div>}
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ import { capitalizeFirstLetter } from "../../utils/utils";
 import { BsStars } from "react-icons/bs";
 
 export default function PokeBoxCards({ pokemon }) {
-  console.log(pokemon);
   return (
     <div className="cards-container">
       <div className="rare-indicator">

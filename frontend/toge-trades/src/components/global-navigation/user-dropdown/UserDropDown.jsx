@@ -5,12 +5,18 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../api/auth";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import LogoutButton from "../logout-button/LogoutButton";
-import { userById } from "../../../api/api";
+import { USER_BY_ID_URL } from "../../../api/urls";
+import useGet from "../../../hooks/useGet";
 
 export default function UserDropDown({ isMobileOpen }) {
   const [showUserMenu, setUserMenu] = useState(false);
   const { user } = useAuth();
-  const [userInfo, setUserInfo] = useLocalStorage("userInfo");
+  // const [userInfo, setUserInfo] = useLocalStorage("userInfo");
+  const { data: userInfo, refresh } = useGet(
+    USER_BY_ID_URL(user._id),
+    [],
+    true
+  );
 
   const toggleUserMenu = () => {
     if (!isMobileOpen) {
@@ -20,20 +26,20 @@ export default function UserDropDown({ isMobileOpen }) {
     }
   };
 
-  useEffect(() => {
-    // Fetch user's info from server and stores it in localstorage
-    async function fetchUserInfo() {
-      try {
-        const userData = await userById(user._id);
+  // useEffect(() => {
+  //   // Fetch user's info from server and stores it in localstorage
+  //   async function fetchUserInfo() {
+  //     try {
+  //       const userData = await userById(user._id);
 
-        setUserInfo(userData.data);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    }
+  //       setUserInfo(userData.data);
+  //     } catch (error) {
+  //       console.error("Error fetching user info:", error);
+  //     }
+  //   }
 
-    fetchUserInfo();
-  }, [user._id, setUserInfo]);
+  //   fetchUserInfo();
+  // }, [user._id, setUserInfo]);
 
   return (
     <div className="user-container">
