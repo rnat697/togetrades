@@ -1,5 +1,7 @@
 .box-content-container{
-  background-color: aqua;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 .pokebox-search{
   display: flex;
@@ -7,3 +9,11 @@
   justify-content: center;
   align-items: center;
 }
+.pokebox-cards{
+  margin-top: 2em;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:1.5rem;
+  overflow-y:auto;
+}
+
