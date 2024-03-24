@@ -12,8 +12,14 @@
 .pokebox-cards{
   margin-top: 2em;
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap:1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap:1rem;
   overflow-y:auto;
 }
 
+/* Mobile format */
+@media screen and (max-width: 768px) {
+  .pokebox-cards {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}

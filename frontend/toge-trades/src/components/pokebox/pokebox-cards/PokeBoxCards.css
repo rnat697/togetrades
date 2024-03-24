@@ -1,8 +1,8 @@
 .cards-container{
   position: relative;
   background-color: #F2F6FC;
-  width: 14em;
-  height:12em;
+  width:100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -19,8 +19,8 @@
   align-items: center;
 }
 .pokemon img{
-  height: 8em;
-  width:8em;
+  height: 50%;
+  width: auto;
 }
 .pokemon p{
   margin:0;
@@ -31,12 +31,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  top: 2em;
-  left: 0.8em;
-  z-index: 1;
+  top:10%;
+  left:8%
 }
 .rare-indicator img{
-  width: 100%;
+  width: 70%;
   height: auto;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
@@ -46,8 +45,8 @@
 }
 .shiny-star{
   color: #88A0E6;
-  font-size: 2em;
-  margin-top: 0.5em;
+  font-size: 1.5em;
+  margin-top: 20%;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
@@ -56,7 +55,26 @@
 }
 .pokebox-buttons {
   position: absolute;
-  top: 2em;
-  right: 0.8em;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  top:10%;
+  right:5%
+}
+
+/* MOBILE FORMAT */
+@media screen and (max-width: 550px) {
+  .pokemon{
+    height: 7em;
+    width:7em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .pokemon p{
+    margin:0;
+    font-size: 1.2em;
+  }
 }
