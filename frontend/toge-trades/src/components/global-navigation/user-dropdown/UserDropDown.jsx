@@ -7,7 +7,7 @@ import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import LogoutButton from "../logout-button/LogoutButton";
 import { userById } from "../../../api/api";
 
-export default function UserDropDown({ isMobile }) {
+export default function UserDropDown({ isMobileOpen }) {
   const [showUserMenu, setUserMenu] = useState(false);
   const { user } = useAuth();
   const [userInfo, setUserInfo] = useLocalStorage("userInfo");

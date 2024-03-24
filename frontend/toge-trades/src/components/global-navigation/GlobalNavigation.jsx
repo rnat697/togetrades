@@ -18,7 +18,7 @@ export default function GlobalNavigation() {
   };
 
   const closeMenu = () => {
-    if (window.innerWidth <= 1100) {
+    if (window.innerWidth <= 1150) {
       setShowMenu(false);
     }
   };
@@ -35,7 +35,7 @@ export default function GlobalNavigation() {
         >
           <ul className="nav-list">
             <li className="nav-item user">
-              <UserDropDown isOpen={showMenu} />
+              <UserDropDown isMobileOpen={showMenu} />
             </li>
             <li className="nav-item">
               <NavLink
@@ -95,7 +95,7 @@ export default function GlobalNavigation() {
         </div>
         {!showMenu && (
           <div className="notif" id="notif_toggle">
-            <NotificationDropDown isMobile={showMenu} />
+            <NotificationDropDown isMobileMenu={showMenu} />
           </div>
         )}
         <div
