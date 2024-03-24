@@ -11,7 +11,7 @@ import {
 export const login = (username, password) =>
   axios.post(LOGIN_URL, { username, password }, { withCredentials: true });
 
-export const signup = (email, username, password) =>
+export const signup = (username,email, password) =>
   axios.post(
     REGISTER_ACCOUNT_URL,
     { username, email, password },
@@ -20,8 +20,8 @@ export const signup = (email, username, password) =>
 
 export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
-export const userById = (userId) =>
-  axios.get(USER_BY_ID_URL(userId), { withCredentials: true });
+// export const userById = (userId) =>
+//   axios.get(USER_BY_ID_URL(userId), { withCredentials: true });
 
-export const pokemonByUser = (id, query) =>
-  axios.get(USER_POKEMON_URL(id), { withCredentials: true, params: query });
+// export const pokemonByUser = (id, query) =>
+//   axios.get(USER_POKEMON_URL(id), { withCredentials: true, params: query });
