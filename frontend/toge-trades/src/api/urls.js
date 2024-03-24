@@ -7,5 +7,5 @@ export const USERS_URL = `${API_BASE_URL}/users`;
 export const REGISTER_ACCOUNT_URL = `${USERS_URL}/register`;
 export const LOGIN_URL = `${USERS_URL}/login`;
 export const ALL_USERS = `${USERS_URL}/`;
-// export const USER_BY_ID_URL = (userId) => `${USERS_URL}/${userId}`;
+export const USER_BY_ID_URL = (userId) => `${USERS_URL}/${userId}`;
 export const USER_POKEMON_URL = (userId) => `${USERS_URL}/${userId}/pokemon`;

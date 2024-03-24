@@ -1,24 +1,32 @@
 import "./PokeBoxCards.css";
 import FavoriteButton from "../../favourite/FavoriteButton";
 import TradeableButton from "../../tradeable/TradeableButton";
+import { capitalizeFirstLetter } from "../../utils/utils";
 
 import { BsStars } from "react-icons/bs";
 
 export default function PokeBoxCards({ pokemon }) {
-  const isShiny = true;
-  const isLegendary = true;
+  console.log(pokemon);
   return (
     <div className="cards-container">
       <div className="rare-indicator">
         <img
-          className={`${isLegendary ? "show-legendary" : ""}`}
+          className={`${pokemon.species.isLegendary ? "show-legendary" : ""}`}
           src="../../../src/assets/legendary-icon.png"
         />
-        <BsStars className={`shiny-star ${isShiny ? "show-shiny" : ""}`} />
+        <BsStars
+          className={`shiny-star ${pokemon.isShiny ? "show-shiny" : ""}`}
+        />
       </div>
       <div className="pokemon">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png" />
-        <p>Ditto</p>
+        <img
+          src={
+            pokemon.isShiny
+              ? pokemon.species.image.shiny
+              : pokemon.species.image.normal
+          }
+        />
+        <p>{capitalizeFirstLetter(pokemon.species.name)}</p>
       </div>
       <div className="pokebox-buttons">
         <FavoriteButton />
