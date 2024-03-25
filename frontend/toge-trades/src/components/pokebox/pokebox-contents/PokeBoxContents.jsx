@@ -11,11 +11,18 @@ import { USER_POKEMON_URL } from "../../../api/urls";
 export default function PokeBoxContents() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  const { data:pokemonList, isLoading, error, refresh } = useGet(
-    USER_POKEMON_URL(user._id),
-    [],
-    true
-  );
+  const {
+    data: pokemonList,
+    isLoading,
+    refresh,
+  } = useGet(USER_POKEMON_URL(user._id), [], true);
+
+  const filteredPokes =
+    searchQuery.length > 0
+      ? pokemonList.filter((pokemon) =>
+          pokemon.species.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : pokemonList;
 
   return (
     <div className="box-content-container">
@@ -30,7 +37,7 @@ export default function PokeBoxContents() {
         />
       </div>
       <div className="pokebox-cards">
-        {pokemonList.map((pokemon, index) => (
+        {filteredPokes.map((pokemon, index) => (
           <PokeBoxCards key={index} pokemon={pokemon} />
         ))}
         {isLoading && <div>Loading...</div>}
