@@ -26,20 +26,6 @@ export default function UserDropDown({ isMobileOpen }) {
     }
   };
 
-  // useEffect(() => {
-  //   // Fetch user's info from server and stores it in localstorage
-  //   async function fetchUserInfo() {
-  //     try {
-  //       const userData = await userById(user._id);
-
-  //       setUserInfo(userData.data);
-  //     } catch (error) {
-  //       console.error("Error fetching user info:", error);
-  //     }
-  //   }
-
-  //   fetchUserInfo();
-  // }, [user._id, setUserInfo]);
 
   return (
     <div className="user-container">

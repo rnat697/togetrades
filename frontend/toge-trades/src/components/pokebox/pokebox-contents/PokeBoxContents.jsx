@@ -11,10 +11,6 @@ import { USER_POKEMON_URL } from "../../../api/urls";
 export default function PokeBoxContents() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  // const [pokemonList, setPokemonList] = useState([]);
-  const [page, setPage] = useState(1);
-  const containerRef = useRef();
-  const isFirstRender = useRef(true);
   const { data:pokemonList, isLoading, error, refresh } = useGet(
     USER_POKEMON_URL(user._id),
     [],

@@ -92,11 +92,6 @@ router.get("/:id/pokemon", auth, async (req, res) => {
     const userExist = await User.findById(req.params.id);
     if (!userExist) return res.status(404).send("User can not be found.");
 
-    // Pagination
-    const page = req.query.page ? parseInt(req.query.page) : 1;
-    const limit = req.query.limit ? parseInt(req.query.limit) : 12;
-    const startIndex = (page - 1) * limit;
-
     // Finds pokemon by specific owner
     const isSameUser = req.user._id == req.params.id;
     const isQueryFavorites = req.query.favoritesOnly;
@@ -111,10 +106,7 @@ router.get("/:id/pokemon", auth, async (req, res) => {
       if (isQueryTradeable) filter.isTradeable = true;
       if (isQueryShiny) filter.isShiny = true;
     }
-    const pokemon = await Pokemon.find(filter)
-      .populate("species")
-      .skip(startIndex)
-      .limit(limit);
+    const pokemon = await Pokemon.find(filter).populate("species");
     return res.status(200).json(pokemon);
   } catch (error) {
     console.error("Error retrieving Pokemon: ", error);
