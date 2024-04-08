@@ -1,3 +1,116 @@
+// ------------- POKEMON -------------
+const vullaby = {
+  _id: "66002aa17b72b1ff8cf3e9d6",
+  species: {
+    image: {
+      normal:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/629.png",
+      shiny:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/629.png",
+    },
+    _id: "65f307573a6aae800ca987c4",
+    dexNumber: 629,
+    dexEntry:
+      "Their wings are too tiny to allow them to fly. They guard their posteriors with bones that were gathered by Mandibuzz.",
+    name: "vullaby",
+    types: ["dark", "flying"],
+    height: 5,
+    weight: 90,
+    isLegendary: false,
+    __v: 0,
+  },
+  originalOwner: "000000000000000000000001",
+  currentOwner: "000000000000000000000001",
+  isShiny: false,
+  isTradeable: false,
+  isFavorite: false,
+  __v: 0,
+};
+
+const wochien = {
+  _id: "66002aa27b72b1ff8cf3e9dd",
+  species: {
+    image: {
+      normal:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1001.png",
+      shiny:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1001.png",
+    },
+    _id: "65f308163a6aae800ca98aac",
+    dexNumber: 1001,
+    dexEntry:
+      "The grudge of a person punished for writing the king’s evil deeds upon wooden tablets has clad itself in dead leaves to become a Pokémon.",
+    name: "wo-chien",
+    types: ["dark", "grass"],
+    height: 15,
+    weight: 742,
+    isLegendary: true,
+    __v: 0,
+  },
+  originalOwner: "000000000000000000000001",
+  currentOwner: "000000000000000000000001",
+  isShiny: false,
+  isTradeable: false,
+  isFavorite: false,
+  __v: 0,
+};
+
+const gabite = {
+  _id: "66002aa27b72b1ff8cf3e9e1",
+  species: {
+    image: {
+      normal:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/444.png",
+      shiny:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/444.png",
+    },
+    _id: "65f306f53a6aae800ca98652",
+    dexNumber: 444,
+    dexEntry:
+      "There is a long-held belief that medicine made from its scales will heal even incurable illnesses.",
+    name: "gabite",
+    types: ["dragon", "ground"],
+    height: 14,
+    weight: 560,
+    isLegendary: false,
+    __v: 0,
+  },
+  originalOwner: "000000000000000000000001",
+  currentOwner: "000000000000000000000001",
+  isShiny: false,
+  isTradeable: false,
+  isFavorite: false,
+  __v: 0,
+};
+
+const misdrevus = {
+  _id: "66002aa27b72b1ff8cf3e9e5",
+  species: {
+    image: {
+      normal:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/200.png",
+      shiny:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/200.png",
+    },
+    _id: "65f306763a6aae800ca9846a",
+    dexNumber: 200,
+    dexEntry:
+      "It likes playing mischievous tricks such as screaming and wailing to startle people at night.",
+    name: "misdreavus",
+    types: ["ghost"],
+    height: 7,
+    weight: 10,
+    isLegendary: false,
+    __v: 0,
+  },
+  originalOwner: "000000000000000000000001",
+  currentOwner: "000000000000000000000001",
+  isShiny: false,
+  isTradeable: false,
+  isFavorite: false,
+  __v: 0,
+};
+
 const testUser = {
   _id: "000000000000000000000002",
   username: "testuser",
@@ -35,6 +148,8 @@ const lynneyToken = Buffer.from(JSON.stringify(mockLynneyPayload)).toString(
   "base64"
 );
 
+const lynneyPokemon = [misdrevus, vullaby, wochien, gabite];
+
 export {
   testUser,
   lynneyUser,
@@ -42,4 +157,5 @@ export {
   mockLynneyPayload,
   testToken,
   lynneyToken,
+  lynneyPokemon,
 };
