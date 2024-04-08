@@ -1,0 +1,149 @@
+.nav-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: #ffffffff;
+  z-index: 110;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 3rem;
+  margin: 1rem;
+}
+.nav-logo {
+  color: #212A4A;
+  transition: color 0.4s;
+  font-size: 0.7em;
+  text-decoration: none;
+ }
+
+.nav_toggle,
+.nav_close{
+  font-size: 1.5rem;
+  cursor: pointer;
+  color:#212A4A;
+}
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  list-style-type: none;
+}
+.nav-link {
+  color: #212A4A;
+  font-weight: 450;
+  font-size: 1.4rem;
+  transition: color 0.4s;
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: #78A7E2;
+}
+.nav-item{
+  order:2;
+}
+.nav-item:selection{
+  background-color: #78A7E2;
+}
+.nav_close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+}
+.user-img{
+  width: 5rem;
+  height: 5rem;
+  padding: 0.5em;
+  background-color: #C9DCF4;
+  border-radius: 50%;
+}
+.nav-item.user{
+  width: 100%;
+  order: 1;
+
+}
+.notif{
+  padding: 1em;
+}
+.selected-nav {
+  color: #5988D8;
+  transition: color 0.4s;
+  background-color: #E1EBF8;
+  border-radius: 0.5em;
+  padding: 0.3em;
+  font-weight: 500;
+}
+
+ /* MOBILE FORMAT */
+@media screen and (max-width: 1100px) {
+  .nav_menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    background-color: #ffffff;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 70%;
+    height: auto;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    padding-right:2em;
+    border-radius: 2rem;
+    transition: right 0.4s;
+    justify-content: center;
+    align-items: center;
+  }
+  .show-menu {
+    right: 0;
+  }
+
+  .notif{
+    padding: 1em;
+    position: absolute;
+    right: 2rem;
+  }
+}
+
+
+ /* NORMAL DESKTOP AND TABLET FORMAT */
+ @media screen and (min-width: 1100px) {
+  .nav-container {
+    height: 3rem;
+  }
+  .nav_toggle,
+  .nav_close {
+    display: none;
+  }
+ 
+  .nav-list {
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+  }
+  .nav-item {
+    width: 8em;
+    order: 2;
+  }
+
+  .nav-item.user {
+    order: 3;
+    width: 30%;
+  }
+
+  .nav-item.logout{
+    display:none;
+  }
+  .nav-link {
+    font-size: 1.4rem;
+    transition: color 0.4s;
+    text-decoration: none;
+  }
+  
+ }

@@ -1,0 +1,25 @@
+.tradeable-container{
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  border-color: #88A0E6;
+  border-width: 0.1em; 
+  border-style: solid;
+  transition: background-color 0.3s ease-in-out;
+}
+.selected-container{
+  background-color: #88A0E6;
+}
+.trade-icon{
+  font-size: 1.5em;
+  transition: color 0.3s ease-in-out;
+}
+.not-selected-trade-icon{
+  color:#88A0E6;
+}
+.selected-trade-icon{
+  color:#212A4A;
+}

@@ -8,6 +8,21 @@ import MockAdapter from "axios-mock-adapter";
 import { AuthContextProvider } from "../../api/auth";
 import AuthorisationPage from "../../Pages/Authorisation/AuthorisationPage";
 import PokeBoxPage from "../../Pages/Pokebox/PokeBoxPage";
+import { testUser, testToken, mockTestPayload } from "../__mocks__/MockData";
+
+vi.mock("../../api/auth", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useAuth: vi.fn(() => ({
+      token: testToken,
+      setToken: vi.fn(),
+      user: mockTestPayload,
+      isExpired: false,
+      isAuthenticated: true,
+    })),
+  };
+});
 
 let axiosMock;
 
@@ -147,6 +162,7 @@ describe("Authorisation Page renderings", () => {
 describe("Login Page Inputs", () => {
   test("Login with correct username and password", async () => {
     axiosMock.onPost("api/v1/users/login").reply(200, { success: true });
+    axiosMock.onGet(`api/v1/users/${testUser._id}`).reply(200, testUser);
     render(
       <AuthContextProvider>
         <MemoryRouter initialEntries={["/login"]}>
@@ -165,7 +181,7 @@ describe("Login Page Inputs", () => {
     const passwordInput = screen.getByPlaceholderText("Password");
     const loginButton = screen.getByRole("button", { name: "Login" });
 
-    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    fireEvent.change(usernameInput, { target: { value: testUser.username } });
     fireEvent.change(passwordInput, { target: { value: "testpassword" } });
     expect(usernameInput.value).toBe("testuser");
     expect(passwordInput.value).toBe("testpassword");
@@ -173,8 +189,10 @@ describe("Login Page Inputs", () => {
     fireEvent.click(loginButton);
 
     await waitFor(() => {
-      const pokebox = screen.getByText("Poke Box");
-      expect(pokebox).toBeInTheDocument();
+      const pokebox = screen.getAllByText("Poke Box");
+      expect(pokebox.length).equal(2);
+      const usernameText = screen.getByText(testUser.username);
+      expect(usernameText).toBeInTheDocument();
     });
   });
 
@@ -255,6 +273,7 @@ describe("Login Page Inputs", () => {
 
 describe("Sign up Page Inputs", () => {
   test("Sign up with correct username and password", async () => {
+    axiosMock.onGet(`api/v1/users/${testUser._id}`).reply(200, testUser);
     axiosMock.onPost("api/v1/users/register").reply(200, { success: true });
     render(
       <AuthContextProvider>
@@ -275,8 +294,8 @@ describe("Sign up Page Inputs", () => {
     const passwordInput = screen.getByPlaceholderText("Password");
     const signupButton = screen.getByRole("button", { name: "Sign up" });
 
-    fireEvent.change(emailInput, { target: { value: "testemail@email.com" } });
-    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    fireEvent.change(emailInput, { target: { value: testUser.email } });
+    fireEvent.change(usernameInput, { target: { value: testUser.username } });
     fireEvent.change(passwordInput, { target: { value: "testpassword" } });
 
     expect(emailInput.value).toBe("testemail@email.com");
@@ -286,8 +305,10 @@ describe("Sign up Page Inputs", () => {
     fireEvent.click(signupButton);
 
     await waitFor(() => {
-      const pokebox = screen.getByText("Poke Box");
-      expect(pokebox).toBeInTheDocument();
+      const pokebox = screen.getAllByText("Poke Box");
+      expect(pokebox.length).equals(2);
+      const usernameText = screen.getByText(testUser.username);
+      expect(usernameText).toBeInTheDocument();
     });
   });
 

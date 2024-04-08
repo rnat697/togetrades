@@ -1,0 +1,8 @@
+.favorite-container{
+  position: relative;
+  width: 2em; 
+}
+.fav-icon{
+  color:#CA6449;
+  font-size: 1.5em;
+}

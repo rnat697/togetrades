@@ -2,7 +2,7 @@ import Pokemon from "./pokemon-schema.js";
 import Species from "./species-schema.js";
 import User from "./user-schema.js";
 
-const NUM_STARTER_POKEMON = 12;
+const NUM_STARTER_POKEMON = 20;
 
 /**
  * Generates 12 random pokemon for a given user. This is usually called in `/register`.
@@ -15,7 +15,7 @@ export async function generateStartingPokemonForUser(
 ) {
   const promises = [];
   for (let i = 0; i < numPokemon; i++) {
-    const pokemon = await createRandomPokemon(ownerId, 0.6);
+    const pokemon = await createRandomPokemon(ownerId, 0.06);
     promises.push(pokemon);
     // Sets User's image with the first pokemon they have.
     if (i == 0) {
@@ -47,7 +47,7 @@ async function updateUserImage(userID, imageURL) {
  * @param {*} shinyChance probability of getting a shiny
  * @returns a pokemon
  *  */
-export async function createRandomPokemon(ownerId, shinyChance = 0.6) {
+export async function createRandomPokemon(ownerId, shinyChance = 0.06) {
   const allSpecies = await Species.find({});
   const index = Math.floor(Math.random() * allSpecies.length);
   return await createPokemon(ownerId, allSpecies[index]._id, shinyChance);
@@ -61,7 +61,7 @@ export async function createRandomPokemon(ownerId, shinyChance = 0.6) {
  * @param {*} shinyChance the chance to be shiny
  * @returns the pokemon
  */
-export async function createPokemon(ownerId, speciesId, shinyChance = 0.6) {
+export async function createPokemon(ownerId, speciesId, shinyChance = 0.06) {
   const isShiny = Math.random() <= shinyChance;
 
   const species = await Species.findById(speciesId);
