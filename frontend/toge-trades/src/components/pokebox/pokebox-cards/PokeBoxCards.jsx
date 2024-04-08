@@ -5,9 +5,9 @@ import { capitalizeFirstLetter } from "../../utils/utils";
 
 import { BsStars } from "react-icons/bs";
 
-export default function PokeBoxCards({ pokemon }) {
+export default function PokeBoxCards({ pokemon, onClick }) {
   return (
-    <div className="cards-container">
+    <div className="cards-container" onClick={onClick}>
       <div className="rare-indicator">
         <img
           className={`${pokemon.species.isLegendary ? "show-legendary" : ""}`}

@@ -7,10 +7,12 @@ import { useAuth } from "../../../api/auth";
 import useGet from "../../../hooks/useGet";
 import { objectToQueryString } from "../../utils/utils";
 import { USER_POKEMON_URL } from "../../../api/urls";
+import PokemonDetails from "../../pokemon-details/PokemonDetails";
 
 export default function PokeBoxContents() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPokeId, setSelectedPokeId] = useState(null);
   const {
     data: pokemonList,
     isLoading,
@@ -24,6 +26,15 @@ export default function PokeBoxContents() {
         )
       : pokemonList;
 
+  const selectedPokemon = pokemonList.find(
+    (poke) => poke._id == selectedPokeId
+  );
+  const handleDetailsClose = () => {
+    setSelectedPokeId(null);
+  };
+  const handleClick = (pokemon) => {
+    setSelectedPokeId(pokemon._id);
+  };
   return (
     <div className="box-content-container">
       <div className="pokebox-title">
@@ -38,10 +49,15 @@ export default function PokeBoxContents() {
       </div>
       <div className="pokebox-cards">
         {filteredPokes.map((pokemon, index) => (
-          <PokeBoxCards key={index} pokemon={pokemon} />
+          <PokeBoxCards
+            key={index}
+            pokemon={pokemon}
+            onClick={() => handleClick(pokemon)}
+          />
         ))}
         {isLoading && <div>Loading...</div>}
       </div>
+      <PokemonDetails pokemon={selectedPokemon} onClose={handleDetailsClose} />
     </div>
   );
 }
