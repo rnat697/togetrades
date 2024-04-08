@@ -69,4 +69,43 @@ describe("Poke Box Page Renderings", () => {
       expect(screen.getByText("Vullaby")).toBeInTheDocument();
     });
   });
+  test("Search bar correctly searches for a pokemon", async () => {
+    axiosMock
+      .onGet(`api/v1/users/${mockLynneyPayload._id}`)
+      .reply(200, lynneyUser);
+    axiosMock
+      .onGet(`api/v1/users/${mockLynneyPayload._id}/pokemon`)
+      .reply(200, lynneyPokemon);
+    render(
+      <MemoryRouter initialEntries={["/pokebox"]}>
+        <AuthContextProvider>
+          <PokeBoxPage />
+        </AuthContextProvider>
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText("Poke Box").length).equal(2);
+    expect(screen.getAllByText("Incubator").length).equal(1);
+    expect(screen.getAllByText("Trade Hub").length).equal(1);
+    expect(screen.getAllByText("Pokedex").length).equal(1);
+    expect(
+      screen.getByPlaceholderText("Search for your Pokemon...")
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      const usernameTxt = screen.getByText("Lynney");
+      expect(usernameTxt).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByText("Misdreavus")).toBeInTheDocument();
+      expect(screen.getByText("Gabite")).toBeInTheDocument();
+      expect(screen.getByText("Wo-chien")).toBeInTheDocument();
+      expect(screen.getByText("Vullaby")).toBeInTheDocument();
+    });
+    const search = screen.getByPlaceholderText("Search for your Pokemon...");
+    fireEvent.change(search, { target: { value: "gabite" } });
+
+    expect(screen.queryByText("Misdreavus")).not.toBeInTheDocument();
+    expect(screen.getByText("Gabite")).toBeInTheDocument();
+    expect(screen.queryByText("Wo-chien")).not.toBeInTheDocument();
+    expect(screen.queryByText("Vullaby")).not.toBeInTheDocument();
+  });
 });
