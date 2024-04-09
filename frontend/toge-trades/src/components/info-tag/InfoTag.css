@@ -4,12 +4,17 @@
   justify-content: center;
   align-items: center;
 }
+.infotag-title {
+  margin-bottom: 0.2em; /* Adjust the margin bottom to create a gap */
+}
 .infotag-subtitle{
   background-color: #BFC7E0;
   width: 6em;
-  height: 3em;
+  height: 2em;
   border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0.1em;
+  font-weight: 450;
 }
