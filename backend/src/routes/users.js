@@ -106,7 +106,17 @@ router.get("/:id/pokemon", auth, async (req, res) => {
       if (isQueryTradeable) filter.isTradeable = true;
       if (isQueryShiny) filter.isShiny = true;
     }
-    const pokemon = await Pokemon.find(filter).populate("species");
+    const pokemon = await Pokemon.find(filter).populate([
+      { path: "species" },
+      {
+        path: "originalOwner",
+        select: "username _id",
+      },
+      {
+        path: "currentOwner",
+        select: "username _id",
+      },
+    ]);
     return res.status(200).json(pokemon);
   } catch (error) {
     console.error("Error retrieving Pokemon: ", error);
