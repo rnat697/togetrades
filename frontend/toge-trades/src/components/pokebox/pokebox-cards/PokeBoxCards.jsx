@@ -6,17 +6,19 @@ import RareIndicators from "../../rare-indicators/RareIndicators";
 
 export default function PokeBoxCards({ pokemon, onClick }) {
   return (
-    <div className="cards-container" onClick={onClick}>
-      <RareIndicators pokemon={pokemon} />
-      <div className="pokemon">
-        <img
-          src={
-            pokemon.isShiny
-              ? pokemon.species.image.shiny
-              : pokemon.species.image.normal
-          }
-        />
-        <p>{capitalizeFirstLetter(pokemon.species.name)}</p>
+    <div className="cards-container">
+      <div onClick={onClick}>
+        <RareIndicators pokemon={pokemon} />
+        <div className="pokemon">
+          <img
+            src={
+              pokemon.isShiny
+                ? pokemon.species.image.shiny
+                : pokemon.species.image.normal
+            }
+          />
+          <p>{capitalizeFirstLetter(pokemon.species.name)}</p>
+        </div>
       </div>
       <div className="pokebox-buttons">
         <FavoriteButton />
