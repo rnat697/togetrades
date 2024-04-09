@@ -18,7 +18,11 @@ export default function PokemonDetails({ pokemon, onClose }) {
 
   return (
     <div className={`pokedetails-container`}>
-      <div className="details-buttons" onClick={() => onClose()}>
+      <div
+        data-testid="details-close"
+        className="details-buttons"
+        onClick={() => onClose()}
+      >
         <IoIosClose color="#212A4A" size={"3em"} />
       </div>
       <div className="poke-btn-fav-trade">
