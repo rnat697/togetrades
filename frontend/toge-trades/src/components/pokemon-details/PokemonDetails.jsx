@@ -2,18 +2,30 @@ import "./PokemonDetails.css";
 import { IoIosClose } from "react-icons/io";
 import { useState } from "react";
 
-import { capitalizeFirstLetter } from "../utils/utils";
+import {
+  capitalizeFirstLetter,
+  convertDecimeterToMeters,
+  convertHectogramToKilogram,
+} from "../utils/utils";
 import PokemonType from "../pokemon-type/PokemonType";
 import InfoTag from "../info-tag/InfoTag";
+import FavoriteButton from "../favourite/FavoriteButton";
+import TradeableButton from "../tradeable/TradeableButton";
+import RareIndicators from "../rare-indicators/RareIndicators";
 
 export default function PokemonDetails({ pokemon, onClose }) {
   if (!pokemon) return null;
 
   return (
-    <div className="pokedetails-container">
-      <div className="details-close" onClick={() => onClose()}>
+    <div className={`pokedetails-container`}>
+      <div className="details-buttons" onClick={() => onClose()}>
         <IoIosClose color="#212A4A" size={"3em"} />
       </div>
+      <div className="poke-btn-fav-trade">
+        <FavoriteButton />
+        <TradeableButton />
+      </div>
+      <RareIndicators pokemon={pokemon} />
       <img
         className="pokeimg"
         src={
@@ -31,12 +43,22 @@ export default function PokemonDetails({ pokemon, onClose }) {
       <div className="info-tags">
         <InfoTag
           title={"Height"}
-          subtitle={pokemon.species.height.toString()}
+          subtitle={
+            convertDecimeterToMeters(pokemon.species.height).toString() + "m"
+          }
         />
         <InfoTag
           title={"Weight"}
-          subtitle={pokemon.species.weight.toString()}
+          subtitle={
+            convertHectogramToKilogram(pokemon.species.weight).toString() + "kg"
+          }
         />
+      </div>
+      <div className="poke-entry">
+        <h2> Pokedex Entry</h2>
+        <p>{pokemon.species.dexEntry}</p>
+        <h3>Original Trainer</h3>
+        <p>{pokemon.originalOwner.username}</p>
       </div>
     </div>
   );

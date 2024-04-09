@@ -26,23 +26,6 @@
   margin:0;
   font-size: 1.5em;
 }
-.rare-indicator {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  top:10%;
-  left:8%
-}
-.rare-indicator img{
-  width: 70%;
-  height: auto;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-.rare-indicator img.show-legendary{
-  opacity:1;
-}
 .shiny-star{
   color: #88A0E6;
   font-size: 1.5em;

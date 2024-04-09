@@ -29,6 +29,14 @@ export function objectToQueryString(obj) {
   return queryParams.join("&");
 }
 
+export function convertHectogramToKilogram(weight) {
+  return weight / 10;
+}
+
+export function convertDecimeterToMeters(height) {
+  return height / 10;
+}
+
 export function getTypeColorAndImage(type) {
   const data = { src: "", color: "" };
   switch (type) {
