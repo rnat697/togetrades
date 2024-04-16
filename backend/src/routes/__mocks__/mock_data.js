@@ -127,6 +127,57 @@ const pokemonNaviasIvysaur = {
   isTradeable: true,
   isFavorite: false,
 };
+// Navia's Lunala
+const pokemonNaviasLunalaDup1 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000079"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: false,
+  isTradeable: true,
+  isFavorite: true,
+};
+// Navia's ivysaur
+const pokemonNaviasIvysaurDupe1 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000080"),
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: true,
+  isTradeable: true,
+  isFavorite: false,
+};
+const pokemonNaviasLunalaDup2 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000081"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: false,
+  isTradeable: true,
+  isFavorite: true,
+};
+// Navia's ivysaur
+const pokemonNaviasIvysaurDupe2 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000082"),
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: true,
+  isTradeable: true,
+  isFavorite: false,
+};
+
+// Navia's ivysaur
+const pokemonNaviasIvysaurDupe3 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000083"),
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  isShiny: true,
+  isTradeable: true,
+  isFavorite: false,
+};
+
 // Venti's IvySaur
 const pokemonVentisIvyasaur = {
   _id: new mongoose.Types.ObjectId("000000000000000000000078"),
@@ -148,7 +199,17 @@ async function addMockUsers() {
 }
 async function addMockPokemons() {
   const pokemonsDB = mongoose.connection.db.collection("pokemons");
-  await pokemonsDB.insertMany([pokemonLynneysIvyasaur, pokemonNaviasLunala,pokemonNaviasIvysaur, pokemonVentisIvyasaur]);
+  await pokemonsDB.insertMany([
+    pokemonLynneysIvyasaur, 
+    pokemonNaviasLunala,
+    pokemonNaviasLunalaDup1,
+    pokemonNaviasLunalaDup2,
+    pokemonNaviasIvysaur, 
+    pokemonNaviasIvysaurDupe1, 
+    pokemonNaviasIvysaurDupe2,
+    pokemonNaviasIvysaurDupe3, 
+    pokemonVentisIvyasaur
+  ]);
 }
 
 async function dropData() {

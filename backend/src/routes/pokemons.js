@@ -28,13 +28,15 @@ router.patch("/:id/setTradeable", auth, async (req, res) => {
     }
 
     const numTradeable = await calculateNumTradeable(req.user._id);
-    if (numTradeable >= 6) {
+    if (numTradeable >= 6 && !pokemon.isTradeable) {
       return res
         .status(403)
         .send(
           "Maximum tradeable Pokemon limit reached. Only 6 Pokemon can be marked as tradeable."
         );
     }
+    console.log(numTradeable);
+    console.log(pokemon.isTradeable);
 
     const update = await updateTradeableUserPokemon(
       tradeableUpdates,
