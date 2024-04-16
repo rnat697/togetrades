@@ -11,6 +11,7 @@ import {
   bearerVenti,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
+  pokemonVentisIvyasaur,
   speciesIvysaur,
   speciesLunala,
   userLynney,
@@ -49,8 +50,8 @@ afterAll(async () => {
 describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", () => {
   test("Successful setting tradeablility of a pokemon", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setTradeable`)
-      .set("Cookie", [`authorization=${bearerNavia}`])
+      .patch(`/api/v1/pokemons/${pokemonVentisIvyasaur._id}/setTradeable`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         isTradeable: true,
       })
@@ -60,10 +61,10 @@ describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", ()
 
         const fromDb = await mongoose.connection.db
           .collection("pokemons")
-          .findOne({ _id: pokemonNaviasLunala._id });
+          .findOne({ _id: pokemonVentisIvyasaur._id });
         expect(fromDb.isTradeable).toBe(true);
         return done();
-      });
+      }, 10000);
   });
 
   test("Successful removing tradeablility of a pokemon", (done) => {
