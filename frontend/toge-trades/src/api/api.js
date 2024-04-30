@@ -7,6 +7,7 @@ import {
   ALL_USERS,
   USER_POKEMON_URL,
   TOGGLE_TRADEABLE_URL,
+  TOGGLE_FAVORITE_URL,
 } from "./urls";
 
 export const login = (username, password) =>
@@ -28,8 +29,9 @@ export const toggleTradeable = (pokemonID, isTradeable) =>
     { withCredentials: true }
   );
 
-// export const userById = (userId) =>
-//   axios.get(USER_BY_ID_URL(userId), { withCredentials: true });
-
-// export const pokemonByUser = (id, query) =>
-//   axios.get(USER_POKEMON_URL(id), { withCredentials: true, params: query });
+export const toggleFavorite = (pokemonId, isFavorite) =>
+  axios.patch(
+    TOGGLE_FAVORITE_URL(pokemonId),
+    { isFavorite: isFavorite },
+    { withCredentials: true }
+  );
