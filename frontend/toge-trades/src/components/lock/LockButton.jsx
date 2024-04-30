@@ -6,8 +6,8 @@ import { useState } from "react";
 import { toggleLocked } from "../../api/api";
 import { toast } from "react-toastify";
 
-export default function LockButton({ pokemonId }) {
-  const [isLocked, setLock] = useState(false);
+export default function LockButton({ pokemonId, isPokeLocked }) {
+  const [isLocked, setLock] = useState(isPokeLocked);
   const handleFavoriteClick = () => {
     toggleLocked(pokemonId, !isLocked)
       .then((res) => setLock(!isLocked))

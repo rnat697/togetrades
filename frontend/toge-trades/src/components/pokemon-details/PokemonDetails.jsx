@@ -25,10 +25,7 @@ export default function PokemonDetails({ pokemon, onClose }) {
       >
         <IoIosClose color="#212A4A" size={"3em"} />
       </div>
-      <div className="poke-btn-fav-trade">
-        <LockButton pokemonId={pokemon._id} />
-        <TradeableButton pokemonId={pokemon._id} />
-      </div>
+      <div className="poke-btn-fav-trade"></div>
       <RareIndicators pokemon={pokemon} />
       <img
         className="pokeimg"

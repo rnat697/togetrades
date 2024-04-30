@@ -21,8 +21,11 @@ export default function PokeBoxCards({ pokemon, onClick }) {
         </div>
       </div>
       <div className="pokebox-buttons">
-        <LockButton pokemonId={pokemon._id} />
-        <TradeableButton pokemonId={pokemon._id} />
+        <LockButton pokemonId={pokemon._id} isPokeLocked={pokemon.isLocked} />
+        <TradeableButton
+          pokemonId={pokemon._id}
+          isPokeTradeable={pokemon.isTradeable}
+        />
       </div>
     </div>
   );

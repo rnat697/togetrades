@@ -4,8 +4,8 @@ import { CgArrowsExchange } from "react-icons/cg";
 import { toggleTradeable } from "../../api/api";
 import { toast } from "react-toastify";
 
-export default function TradeableButton({ pokemonId }) {
-  const [isTradeable, setTradeable] = useState(false);
+export default function TradeableButton({ pokemonId, isPokeTradeable }) {
+  const [isTradeable, setTradeable] = useState(isPokeTradeable);
   const handleTradeableClick = () => {
     toggleTradeable(pokemonId, !isTradeable)
       .then((res) => {
