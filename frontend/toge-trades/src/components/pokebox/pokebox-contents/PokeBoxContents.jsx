@@ -8,6 +8,7 @@ import useGet from "../../../hooks/useGet";
 import { objectToQueryString } from "../../utils/utils";
 import { USER_POKEMON_URL } from "../../../api/urls";
 import PokemonDetails from "../../pokemon-details/PokemonDetails";
+import { ToastContainer } from "react-toastify";
 
 export default function PokeBoxContents() {
   const { user } = useAuth();
@@ -58,6 +59,7 @@ export default function PokeBoxContents() {
         {isLoading && <div>Loading...</div>}
       </div>
       <PokemonDetails pokemon={selectedPokemon} onClose={handleDetailsClose} />
+      <ToastContainer />
     </div>
   );
 }
