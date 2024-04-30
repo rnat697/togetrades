@@ -105,7 +105,7 @@ const pokemonLynneysIvyasaur = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   isShiny: true,
   isTradeable: false,
-  isFavorite: true,
+  isLocked: true,
 };
 // Navia's Lunala
 const pokemonNaviasLunala = {
@@ -115,7 +115,7 @@ const pokemonNaviasLunala = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
   isTradeable: false,
-  isFavorite: true,
+  isLocked: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaur = {
@@ -125,7 +125,7 @@ const pokemonNaviasIvysaur = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
   isTradeable: true,
-  isFavorite: false,
+  isLocked: false,
 };
 // Navia's Lunala
 const pokemonNaviasLunalaDup1 = {
@@ -135,7 +135,7 @@ const pokemonNaviasLunalaDup1 = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
   isTradeable: true,
-  isFavorite: true,
+  isLocked: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe1 = {
@@ -145,7 +145,7 @@ const pokemonNaviasIvysaurDupe1 = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
   isTradeable: true,
-  isFavorite: false,
+  isLocked: false,
 };
 const pokemonNaviasLunalaDup2 = {
   _id: new mongoose.Types.ObjectId("000000000000000000000081"),
@@ -154,7 +154,7 @@ const pokemonNaviasLunalaDup2 = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
   isTradeable: true,
-  isFavorite: true,
+  isLocked: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe2 = {
@@ -164,7 +164,7 @@ const pokemonNaviasIvysaurDupe2 = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
   isTradeable: true,
-  isFavorite: false,
+  isLocked: false,
 };
 
 // Navia's ivysaur
@@ -175,7 +175,7 @@ const pokemonNaviasIvysaurDupe3 = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
   isTradeable: true,
-  isFavorite: false,
+  isLocked: false,
 };
 
 // Venti's IvySaur
@@ -185,9 +185,20 @@ const pokemonVentisIvyasaur = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
   isShiny: true,
-  isTradeable: true,
-  isFavorite: false,
+  isTradeable: false,
+  isLocked: false,
 };
+// Venti's Lunala
+const pokemonVentisLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000084"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  isShiny: false,
+  isTradeable: true,
+  isLocked: false,
+};
+
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
@@ -209,6 +220,7 @@ async function addMockPokemons() {
     pokemonNaviasIvysaurDupe2,
     pokemonNaviasIvysaurDupe3,
     pokemonVentisIvyasaur,
+    pokemonVentisLunala,
   ]);
 }
 
@@ -239,5 +251,6 @@ export {
   pokemonNaviasLunala,
   pokemonNaviasIvysaur,
   pokemonVentisIvyasaur,
+  pokemonVentisLunala,
   addAllMockData,
 };

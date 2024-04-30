@@ -1,8 +1,8 @@
-.favorite-container{
+.lock-container{
   position: relative;
   width: 2em; 
 }
-.fav-icon{
-  color:#CA6449;
+.lock-icon{
+  color:#88A0E6;
   font-size: 1.5em;
 }

@@ -1,5 +1,5 @@
 import "./PokeBoxCards.css";
-import FavoriteButton from "../../favourite/FavoriteButton";
+import LockButton from "../../lock/LockButton";
 import TradeableButton from "../../tradeable/TradeableButton";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import RareIndicators from "../../rare-indicators/RareIndicators";
@@ -21,8 +21,11 @@ export default function PokeBoxCards({ pokemon, onClick }) {
         </div>
       </div>
       <div className="pokebox-buttons">
-        <FavoriteButton pokemonId={pokemon._id} />
-        <TradeableButton pokemonId={pokemon._id} />
+        <LockButton pokemonId={pokemon._id} isPokeLocked={pokemon.isLocked} />
+        <TradeableButton
+          pokemonId={pokemon._id}
+          isPokeTradeable={pokemon.isTradeable}
+        />
       </div>
     </div>
   );

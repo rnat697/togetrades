@@ -21,15 +21,6 @@
   top: 1rem;
   right: 1.5rem;
 }
-.poke-btn-fav-trade{
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  top:6rem;
-  right:2rem
-}
 .pokeimg{
   width: 35%;
   margin-top: 2em;

@@ -14,6 +14,7 @@ import {
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
   pokemonVentisIvyasaur,
+  pokemonVentisLunala,
   speciesIvysaur,
   speciesLunala,
   userLynney,
@@ -259,15 +260,15 @@ describe("GET /api/v1/users/:id/pokemon", () => {
 
   test("Successful fetching of another user's pokemon [tradeable only]", (done) => {
     request(app)
-      .get(`/api/v1/users/${userVenti._id}/pokemon`)
+      .get(`/api/v1/users/${userNavia._id}/pokemon`)
       .set("Cookie", [`authorization=${bearerLynney}`])
       .send()
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
         const pokemon = res.body;
-        expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonVentisIvyasaur._id.toString());
+        expect(pokemon.length).toBe(6);
+        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
 
         // check if species data is populated
         expect(typeof pokemon[0].species).toBe("object");
@@ -276,7 +277,7 @@ describe("GET /api/v1/users/:id/pokemon", () => {
       });
   });
 
-  test("Successful fetching of user's own favorited pokemon", (done) => {
+  test("Successful fetching of user's own locked pokemon", (done) => {
     request(app)
       .get(`/api/v1/users/${userLynney._id}/pokemon?favoritesOnly=true`)
       .set("Cookie", [`authorization=${bearerLynney}`])
@@ -287,7 +288,7 @@ describe("GET /api/v1/users/:id/pokemon", () => {
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
         expect(pokemon[0]._id).toBe(pokemonLynneysIvyasaur._id.toString());
-        expect(pokemon[0].isFavorite).toBe(true);
+        expect(pokemon[0].isLocked).toBe(true);
 
         // check if species data is populated
         expect(typeof pokemon[0].species).toBe("object");
@@ -306,12 +307,12 @@ describe("GET /api/v1/users/:id/pokemon", () => {
         if (err) return done(err);
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonVentisIvyasaur._id.toString());
+        expect(pokemon[0]._id).toBe(pokemonVentisLunala._id.toString());
         expect(pokemon[0].isTradeable).toBe(true);
 
         // check if species data is populated
         expect(typeof pokemon[0].species).toBe("object");
-        expect(pokemon[0].species._id).toBe(speciesIvysaur._id.toString());
+        expect(pokemon[0].species._id).toBe(speciesLunala._id.toString());
         return done();
       });
   });

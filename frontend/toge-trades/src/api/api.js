@@ -7,7 +7,7 @@ import {
   ALL_USERS,
   USER_POKEMON_URL,
   TOGGLE_TRADEABLE_URL,
-  TOGGLE_FAVORITE_URL,
+  TOGGLE_LOCKED_URL,
 } from "./urls";
 
 export const login = (username, password) =>
@@ -29,9 +29,9 @@ export const toggleTradeable = (pokemonID, isTradeable) =>
     { withCredentials: true }
   );
 
-export const toggleFavorite = (pokemonId, isFavorite) =>
+export const toggleLocked = (pokemonId, isLocked) =>
   axios.patch(
-    TOGGLE_FAVORITE_URL(pokemonId),
-    { isFavorite: isFavorite },
+    TOGGLE_LOCKED_URL(pokemonId),
+    { isLocked: isLocked },
     { withCredentials: true }
   );

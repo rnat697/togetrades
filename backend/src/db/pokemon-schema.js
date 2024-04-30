@@ -24,7 +24,7 @@ const pokemonSchema = new Schema({
   },
   isShiny: { type: Boolean, default: false },
   isTradeable: { type: Boolean, default: false },
-  isFavorite: { type: Boolean, default: false },
+  isLocked: { type: Boolean, default: false },
 });
 const Pokemon = mongoose.model("Pokemon", pokemonSchema);
 
