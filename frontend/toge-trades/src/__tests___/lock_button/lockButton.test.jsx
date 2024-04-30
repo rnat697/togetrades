@@ -4,11 +4,9 @@ import { waitFor, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
 
 import { AuthContextProvider } from "../../api/auth";
-import FavoriteButton from "../../components/favourite/FavoriteButton";
+import LockButton from "../../components/lock/LockButton";
 import {
   lynneyUser,
   lynneyToken,
@@ -38,8 +36,8 @@ beforeAll(() => {
 afterEach(() => {
   axiosMock.reset();
 });
-describe("Favorite Button Renderings", () => {
-  test("Favorite button toggles correctly", async () => {
+describe("Lock Button Renderings", () => {
+  test("Lock button toggles correctly", async () => {
     const misdrevus = lynneyPokemon[0];
     axiosMock
       .onPatch(`api/v1/pokemons/${misdrevus._id}/setTradeable`)
@@ -47,17 +45,17 @@ describe("Favorite Button Renderings", () => {
     render(
       <MemoryRouter initialEntries={["/pokebox"]}>
         <AuthContextProvider>
-          <FavoriteButton />
+          <LockButton />
         </AuthContextProvider>
       </MemoryRouter>
     );
 
-    const outlineButton = screen.getByTestId("fav-icon-outline");
+    const outlineButton = screen.getByTestId("lock-icon-outline");
     expect(outlineButton).toBeInTheDocument();
 
     fireEvent.click(outlineButton);
     waitFor(() => {
-      const fullButton = screen.getByTestId("fav-icon-full");
+      const fullButton = screen.getByTestId("lock-icon-full");
       expect(fullButton).toBeInTheDocument();
     });
   });

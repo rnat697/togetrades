@@ -1,6 +1,6 @@
 import "./PokemonDetails.css";
 import { IoIosClose } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   capitalizeFirstLetter,
@@ -9,7 +9,7 @@ import {
 } from "../utils/utils";
 import PokemonType from "../pokemon-type/PokemonType";
 import InfoTag from "../info-tag/InfoTag";
-import FavoriteButton from "../favourite/FavoriteButton";
+import LockButton from "../lock/LockButton";
 import TradeableButton from "../tradeable/TradeableButton";
 import RareIndicators from "../rare-indicators/RareIndicators";
 
@@ -26,8 +26,8 @@ export default function PokemonDetails({ pokemon, onClose }) {
         <IoIosClose color="#212A4A" size={"3em"} />
       </div>
       <div className="poke-btn-fav-trade">
-        <FavoriteButton />
-        <TradeableButton />
+        <LockButton pokemonId={pokemon._id} />
+        <TradeableButton pokemonId={pokemon._id} />
       </div>
       <RareIndicators pokemon={pokemon} />
       <img

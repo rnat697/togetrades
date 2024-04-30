@@ -23,7 +23,7 @@ const vullaby = {
   currentOwner: { _id: "000000000000000000000001", username: "Lynney" },
   isShiny: false,
   isTradeable: false,
-  isFavorite: false,
+  isLocked: false,
   __v: 0,
 };
 
@@ -51,7 +51,7 @@ const wochien = {
   currentOwner: { _id: "000000000000000000000001", username: "Lynney" },
   isShiny: false,
   isTradeable: false,
-  isFavorite: false,
+  isLocked: false,
   __v: 0,
 };
 
@@ -79,7 +79,7 @@ const gabite = {
   currentOwner: { _id: "000000000000000000000001", username: "Lynney" },
   isShiny: false,
   isTradeable: false,
-  isFavorite: false,
+  isLocked: false,
   __v: 0,
 };
 
@@ -107,7 +107,7 @@ const misdrevus = {
   currentOwner: { _id: "000000000000000000000001", username: "Lynney" },
   isShiny: false,
   isTradeable: false,
-  isFavorite: false,
+  isLocked: false,
   __v: 0,
 };
 

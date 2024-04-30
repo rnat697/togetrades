@@ -9,6 +9,7 @@ import {
   bearerLynney,
   bearerNavia,
   bearerVenti,
+  pokemonLynneysIvyasaur,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
   pokemonVentisIvyasaur,
@@ -138,13 +139,13 @@ describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", ()
 });
 
 // ------- Favorite Pokemon Toggling -------
-describe("Favorite Pokemon Toggling PATCH /api/v1/pokemons/id/setFavorite", () => {
-  test("Successful setting a pokemon as favorite", (done) => {
+describe("Lock Pokemon Toggling PATCH /api/v1/pokemons/id/setLocked", () => {
+  test("Successful setting a pokemon as locked", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonVentisIvyasaur._id}/setFavorite`)
+      .patch(`/api/v1/pokemons/${pokemonVentisIvyasaur._id}/setLocked`)
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
-        isFavorite: true,
+        isLocked: true,
       })
       .expect(204)
       .end(async (err, res) => {
@@ -153,17 +154,17 @@ describe("Favorite Pokemon Toggling PATCH /api/v1/pokemons/id/setFavorite", () =
         const fromDb = await mongoose.connection.db
           .collection("pokemons")
           .findOne({ _id: pokemonVentisIvyasaur._id });
-        expect(fromDb.isFavorite).toBe(true);
+        expect(fromDb.isLocked).toBe(true);
         return done();
       }, 10000);
   });
 
-  test("Successful removing a favorite pokemon", (done) => {
+  test("Successful unlocking a locked pokemon", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonNaviasIvysaur._id}/setFavorite`)
-      .set("Cookie", [`authorization=${bearerNavia}`])
+      .patch(`/api/v1/pokemons/${pokemonLynneysIvyasaur._id}/setLocked`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
       .send({
-        isFavorite: false,
+        isLocked: false,
       })
       .expect(204)
       .end(async (err, res) => {
@@ -171,43 +172,42 @@ describe("Favorite Pokemon Toggling PATCH /api/v1/pokemons/id/setFavorite", () =
 
         const fromDb = await mongoose.connection.db
           .collection("pokemons")
-          .findOne({ _id: pokemonNaviasIvysaur._id });
-        expect(fromDb.isFavorite).toBe(false);
+          .findOne({ _id: pokemonLynneysIvyasaur._id });
+        expect(fromDb.isLocked).toBe(false);
         return done();
       });
   });
 
-  test("No body sent (HTTP 422) - can't change favorite status", (done) => {
+  test("No body sent (HTTP 422) - can't change locked status", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setLocked`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(422)
       .end(done);
   });
-  test("Not the owner of the pokemon (HTTP 403) - can't change favorite", (done) => {
+  test("Not the owner of the pokemon (HTTP 403) - can't change locked", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setLocked`)
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({ isFavorite: false })
       .expect(403)
       .end(done);
   });
-  test("Pokemon doesn't exist (HTTP 404) - can't change favorite", (done) => {
+  test("Pokemon doesn't exist (HTTP 404) - can't change locked", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/000000000000000000500009/setFavorite`)
+      .patch(`/api/v1/pokemons/000000000000000000500009/setLocked`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send({ isFavorite: false })
       .expect(404)
       .end(done);
   });
 
-  test("User not authenticated (HTTP 401) - can't change favorite", (done) => {
+  test("User not authenticated (HTTP 401) - can't change locked", (done) => {
     request(app)
-      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
-      .send({ isFavorite: false })
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setLocked`)
+      .send({ isLocked: false })
       .expect(401)
       .end(done);
   });
-
 });
