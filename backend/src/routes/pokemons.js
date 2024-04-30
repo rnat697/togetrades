@@ -8,6 +8,7 @@ import {
   calculateNumTradeable,
 } from "../db/pokemon-utils.js";
 
+
 const router = express.Router();
 
 // Updating the tradeable status of an owner's pokemon.
@@ -42,7 +43,31 @@ router.patch("/:id/setTradeable", auth, async (req, res) => {
     );
     return res.sendStatus(204);
   } catch (error) {
-    console.error("Error updating tradeable status:", error);
+    console.error("Error updating tradeable status: ", error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+// Updating the favorite flag of an owner's pokemon.
+// Users can only update this if they are the current owner of that pokemon.
+router.patch("/:id/setFavorite", auth, async (req, res) => {
+  try {
+    const favUpdates = req.body;
+    const pokemon = await retrievePokemonById(req.params.id);
+
+    if (Object.keys(favUpdates).length == 0) {
+      return res.status(422).send("Empty request body");
+    }
+
+    if (!pokemon) return res.status(404).send("Pokemon can not be found.");
+    if (!pokemon.currentOwner.equals(req.user._id)) {
+      return res.status(403).send("Pokemon is not owned by user.");
+    }
+
+    const update = await updateTradeableUserPokemon(favUpdates, req.params.id);
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error("Error updating favorite status: ", error);
     return res.status(500).send("Internal Server Error");
   }
 });
