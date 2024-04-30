@@ -136,3 +136,78 @@ describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", ()
       .end(done);
   });
 });
+
+// ------- Favorite Pokemon Toggling -------
+describe("Favorite Pokemon Toggling PATCH /api/v1/pokemons/id/setFavorite", () => {
+  test("Successful setting a pokemon as favorite", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonVentisIvyasaur._id}/setFavorite`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send({
+        isFavorite: true,
+      })
+      .expect(204)
+      .end(async (err, res) => {
+        if (err) return done(err);
+
+        const fromDb = await mongoose.connection.db
+          .collection("pokemons")
+          .findOne({ _id: pokemonVentisIvyasaur._id });
+        expect(fromDb.isFavorite).toBe(true);
+        return done();
+      }, 10000);
+  });
+
+  test("Successful removing a favorite pokemon", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonNaviasIvysaur._id}/setFavorite`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({
+        isFavorite: false,
+      })
+      .expect(204)
+      .end(async (err, res) => {
+        if (err) return done(err);
+
+        const fromDb = await mongoose.connection.db
+          .collection("pokemons")
+          .findOne({ _id: pokemonNaviasIvysaur._id });
+        expect(fromDb.isFavorite).toBe(false);
+        return done();
+      });
+  });
+
+  test("No body sent (HTTP 422) - can't change favorite status", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(422)
+      .end(done);
+  });
+  test("Not the owner of the pokemon (HTTP 403) - can't change favorite", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send({ isFavorite: false })
+      .expect(403)
+      .end(done);
+  });
+  test("Pokemon doesn't exist (HTTP 404) - can't change favorite", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/000000000000000000500009/setFavorite`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({ isFavorite: false })
+      .expect(404)
+      .end(done);
+  });
+
+  test("User not authenticated (HTTP 401) - can't change favorite", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setFavorite`)
+      .send({ isFavorite: false })
+      .expect(401)
+      .end(done);
+  });
+
+});
