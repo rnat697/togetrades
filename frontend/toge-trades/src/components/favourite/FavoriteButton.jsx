@@ -17,9 +17,9 @@ export default function FavoriteButton({ pokemonId }) {
   return (
     <div className="favorite-container" onClick={handleFavoriteClick}>
       {isFavorite ? (
-        <FaHeart className="fav-icon" />
+        <FaHeart data-testid="fav-icon-full" className="fav-icon" />
       ) : (
-        <FaRegHeart className="fav-icon" />
+        <FaRegHeart data-testid="fav-icon-outline" className="fav-icon" />
       )}
     </div>
   );
