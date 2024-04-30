@@ -17,6 +17,7 @@ export default function TradeableButton({ pokemonId }) {
   };
   return (
     <div
+      data-testid="tradeable-button"
       className={`tradeable-container ${
         isTradeable ? "selected-container" : ""
       }`}
