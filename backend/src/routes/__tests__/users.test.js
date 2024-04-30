@@ -9,8 +9,11 @@ import {
   addAllMockData,
   bearerLynney,
   bearerNavia,
+  bearerVenti,
+  pokemonLynneysIvyasaur,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
+  pokemonVentisIvyasaur,
   speciesIvysaur,
   speciesLunala,
   userLynney,
@@ -116,7 +119,7 @@ describe("Account Registration POST /api/v1/users/register", () => {
           .countDocuments({
             currentOwner: new mongoose.Types.ObjectId(userID),
           });
-        expect(numPokemon).toBe(12);
+        expect(numPokemon).toBe(20);
         return done();
       });
   });
@@ -243,7 +246,7 @@ describe("GET /api/v1/users/:id/pokemon", () => {
       .end((err, res) => {
         if (err) return done(err);
         const pokemon = res.body;
-        expect(pokemon.length).toBe(2);
+        expect(pokemon.length).toBe(7);
         expect(pokemon[0]._id).toBe(pokemonNaviasLunala._id.toString());
         expect(pokemon[1]._id).toBe(pokemonNaviasIvysaur._id.toString());
 
@@ -256,7 +259,7 @@ describe("GET /api/v1/users/:id/pokemon", () => {
 
   test("Successful fetching of another user's pokemon [tradeable only]", (done) => {
     request(app)
-      .get(`/api/v1/users/${userNavia._id}/pokemon`)
+      .get(`/api/v1/users/${userVenti._id}/pokemon`)
       .set("Cookie", [`authorization=${bearerLynney}`])
       .send()
       .expect(200)
@@ -264,7 +267,7 @@ describe("GET /api/v1/users/:id/pokemon", () => {
         if (err) return done(err);
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+        expect(pokemon[0]._id).toBe(pokemonVentisIvyasaur._id.toString());
 
         // check if species data is populated
         expect(typeof pokemon[0].species).toBe("object");
@@ -275,35 +278,35 @@ describe("GET /api/v1/users/:id/pokemon", () => {
 
   test("Successful fetching of user's own favorited pokemon", (done) => {
     request(app)
-      .get(`/api/v1/users/${userNavia._id}/pokemon?favoritesOnly=true`)
-      .set("Cookie", [`authorization=${bearerNavia}`])
+      .get(`/api/v1/users/${userLynney._id}/pokemon?favoritesOnly=true`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
       .send()
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonNaviasLunala._id.toString());
+        expect(pokemon[0]._id).toBe(pokemonLynneysIvyasaur._id.toString());
         expect(pokemon[0].isFavorite).toBe(true);
 
         // check if species data is populated
         expect(typeof pokemon[0].species).toBe("object");
-        expect(pokemon[0].species._id).toBe(speciesLunala._id.toString());
+        expect(pokemon[0].species._id).toBe(speciesIvysaur._id.toString());
         return done();
       });
   });
 
   test("Successful fetching of user's own tradeable pokemon", (done) => {
     request(app)
-      .get(`/api/v1/users/${userNavia._id}/pokemon?tradeableOnly=true`)
-      .set("Cookie", [`authorization=${bearerNavia}`])
+      .get(`/api/v1/users/${userVenti._id}/pokemon?tradeableOnly=true`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+        expect(pokemon[0]._id).toBe(pokemonVentisIvyasaur._id.toString());
         expect(pokemon[0].isTradeable).toBe(true);
 
         // check if species data is populated
@@ -315,15 +318,15 @@ describe("GET /api/v1/users/:id/pokemon", () => {
 
   test("Successful fetching of user's own shiny pokemon", (done) => {
     request(app)
-      .get(`/api/v1/users/${userNavia._id}/pokemon?shinyOnly=true`)
-      .set("Cookie", [`authorization=${bearerNavia}`])
+      .get(`/api/v1/users/${userVenti._id}/pokemon?shinyOnly=true`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
         const pokemon = res.body;
         expect(pokemon.length).toBe(1);
-        expect(pokemon[0]._id).toBe(pokemonNaviasIvysaur._id.toString());
+        expect(pokemon[0]._id).toBe(pokemonVentisIvyasaur._id.toString());
         expect(pokemon[0].isShiny).toBe(true);
 
         // check if species data is populated

@@ -105,7 +105,7 @@ const pokemonLynneysIvyasaur = {
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   isShiny: true,
   isTradeable: false,
-  isFavorite: false,
+  isFavorite: true,
 };
 // Navia's Lunala
 const pokemonNaviasLunala = {
@@ -200,15 +200,15 @@ async function addMockUsers() {
 async function addMockPokemons() {
   const pokemonsDB = mongoose.connection.db.collection("pokemons");
   await pokemonsDB.insertMany([
-    pokemonLynneysIvyasaur, 
+    pokemonLynneysIvyasaur,
     pokemonNaviasLunala,
+    pokemonNaviasIvysaur,
     pokemonNaviasLunalaDup1,
     pokemonNaviasLunalaDup2,
-    pokemonNaviasIvysaur, 
-    pokemonNaviasIvysaurDupe1, 
+    pokemonNaviasIvysaurDupe1,
     pokemonNaviasIvysaurDupe2,
-    pokemonNaviasIvysaurDupe3, 
-    pokemonVentisIvyasaur
+    pokemonNaviasIvysaurDupe3,
+    pokemonVentisIvyasaur,
   ]);
 }
 
