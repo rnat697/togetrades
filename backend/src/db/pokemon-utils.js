@@ -85,7 +85,17 @@ export async function createPokemon(ownerId, speciesId, shinyChance = 0.06) {
  * @returns the pokemon with its "species" data populated, or null if not found
  */
 export function retrievePokemonById(id) {
-  return Pokemon.findById(id).populate("species");
+  return Pokemon.findById(id).populate([
+    { path: "species" },
+    {
+      path: "originalOwner",
+      select: "username _id",
+    },
+    {
+      path: "currentOwner",
+      select: "username _id",
+    },
+  ]);
 }
 
 /**
@@ -95,7 +105,17 @@ export function retrievePokemonById(id) {
  * @returns the list of matching pokemon (an empty array if no matches)
  */
 export function retrievePokemonForUser(ownerId) {
-  return Pokemon.find({ owner: ownerId }).populate("species");
+  return Pokemon.find({ currentOwner: ownerId }).populate([
+    { path: "species" },
+    {
+      path: "originalOwner",
+      select: "username _id",
+    },
+    {
+      path: "currentOwner",
+      select: "username _id",
+    },
+  ]);
 }
 
 /**
@@ -108,10 +128,19 @@ export async function updateFavUserPokemon(isFavouriteUpdates, pokeID) {
 }
 
 /**
- * Updates the tradeable field for a user's pokemon (can be used to favourite it or unfavourite)
+ * Updates the tradeable field for a user's pokemon (can be used to tradeable it or un-tradeable)
  * @param {*} pokeID The id of the pokemon to update
  * @returns the updated pokemon
  */
 export async function updateTradeableUserPokemon(isTradeableUpdates, pokeID) {
   return Pokemon.findByIdAndUpdate(pokeID, isTradeableUpdates, { new: true });
+}
+
+/**
+ * Finds how many tradeable pokemon the user has currently.
+ * @param {*} ownerID The id of the pokemon to update
+ * @returns the number of tradeable pokemon a user has currently
+ */
+export async function calculateNumTradeable(ownerID) {
+  return Pokemon.countDocuments({ currentOwner: ownerID, isTradeable: true });
 }
