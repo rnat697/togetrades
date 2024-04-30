@@ -21,7 +21,7 @@ export default function PokeBoxCards({ pokemon, onClick }) {
         </div>
       </div>
       <div className="pokebox-buttons">
-        <FavoriteButton />
+        <FavoriteButton pokemonId={pokemon._id} />
         <TradeableButton pokemonId={pokemon._id} />
       </div>
     </div>
