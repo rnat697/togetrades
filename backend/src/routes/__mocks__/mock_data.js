@@ -188,6 +188,17 @@ const pokemonVentisIvyasaur = {
   isTradeable: false,
   isLocked: false,
 };
+// Venti's Lunala
+const pokemonVentisLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000084"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  isShiny: false,
+  isTradeable: true,
+  isLocked: false,
+};
+
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
@@ -209,6 +220,7 @@ async function addMockPokemons() {
     pokemonNaviasIvysaurDupe2,
     pokemonNaviasIvysaurDupe3,
     pokemonVentisIvyasaur,
+    pokemonVentisLunala,
   ]);
 }
 
@@ -239,5 +251,6 @@ export {
   pokemonNaviasLunala,
   pokemonNaviasIvysaur,
   pokemonVentisIvyasaur,
+  pokemonVentisLunala,
   addAllMockData,
 };

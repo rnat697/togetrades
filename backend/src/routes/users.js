@@ -94,7 +94,7 @@ router.get("/:id/pokemon", auth, async (req, res) => {
 
     // Finds pokemon by specific owner
     const isSameUser = req.user._id == req.params.id;
-    const isQueryFavorites = req.query.favoritesOnly;
+    const isQueryLocked = req.query.lockedOnly;
     const isQueryTradeable = req.query.tradeableOnly;
     const isQueryShiny = req.query.shinyOnly;
     let filter = { currentOwner: req.params.id };
@@ -102,7 +102,7 @@ router.get("/:id/pokemon", auth, async (req, res) => {
     if (!isSameUser) {
       filter.isTradeable = true;
     } else {
-      if (isQueryFavorites) filter.isFavorite = true;
+      if (isQueryLocked) filter.isLocked = true;
       if (isQueryTradeable) filter.isTradeable = true;
       if (isQueryShiny) filter.isShiny = true;
     }
