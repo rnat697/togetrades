@@ -136,6 +136,15 @@ describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", ()
       .expect(204)
       .end(done);
   });
+
+  test("Pokemon is locked (HTTP 403) - can't be traded", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonLynneysIvyasaur._id}/setTradeable`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({ isTradeable: true })
+      .expect(403)
+      .end(done);
+  });
 });
 
 // ------- Favorite Pokemon Toggling -------
@@ -190,7 +199,7 @@ describe("Lock Pokemon Toggling PATCH /api/v1/pokemons/id/setLocked", () => {
     request(app)
       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setLocked`)
       .set("Cookie", [`authorization=${bearerVenti}`])
-      .send({ isFavorite: false })
+      .send({ isLocked: false })
       .expect(403)
       .end(done);
   });
@@ -198,8 +207,17 @@ describe("Lock Pokemon Toggling PATCH /api/v1/pokemons/id/setLocked", () => {
     request(app)
       .patch(`/api/v1/pokemons/000000000000000000500009/setLocked`)
       .set("Cookie", [`authorization=${bearerNavia}`])
-      .send({ isFavorite: false })
+      .send({ isLocked: false })
       .expect(404)
+      .end(done);
+  });
+
+  test("Pokemon is tradeable (HTTP 403) - can't be locked", (done) => {
+    request(app)
+      .patch(`/api/v1/pokemons/${pokemonNaviasIvysaur._id}/setLocked`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({ isLocked: true })
+      .expect(403)
       .end(done);
   });
 
