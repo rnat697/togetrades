@@ -1,4 +1,4 @@
-import Incubator from "./incubator-schema";
+import Incubator from "./incubator-schema.js";
 
 /**
  * Gets incubators for the given user
@@ -8,6 +8,16 @@ import Incubator from "./incubator-schema";
  */
 export function retrieveIncubatorsForUser(userID) {
   return Incubator.find({ hatcher: userID });
+}
+
+/**
+ * Gets a specific incubator for the given user
+ *
+ * @param {*} incubatorId The incubator to fetch
+ * @returns the specified incubator
+ */
+export function findIncubatorById(incubatorId) {
+  return Incubator.find({ _id: incubatorId }).populate({ path: "species" });
 }
 
 export function isLegendaryEggProbability() {
