@@ -81,6 +81,10 @@ describe("Incubator Fetch GET /api/v1/incubators/", () => {
         return done();
       });
   });
+
+  test("User not authenticated (HTTP 401) - can't fetch incubators", (done) => {
+    request(app).get(`/api/v1/incubators/`).send().expect(401).end(done);
+  });
 });
 
 // ---------------- Incubator Creation ----------------
@@ -106,6 +110,14 @@ describe("Incubator Creation POST /api/v1/incubators/:type/create", () => {
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
       .expect(403)
+      .end(done);
+  });
+
+  test("User not authenticated (HTTP 401) - can't create incubators", (done) => {
+    request(app)
+      .post("/api/v1/incubators/grass/create")
+      .send()
+      .expect(401)
       .end(done);
   });
 });
