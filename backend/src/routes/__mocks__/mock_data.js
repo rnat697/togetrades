@@ -2,6 +2,23 @@ import mongoose, { mongo } from "mongoose";
 import jwt from "jsonwebtoken";
 
 // --------- Species ---------
+const speciesShaymin = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000492"),
+  dexNumber: 492,
+  dexEntry:
+    "It lives in flower patches and avoids detection by curling up to look like a flowering plant.",
+  name: "shaymin",
+  types: ["grass"],
+  height: 2,
+  weight: 21,
+  isLegendary: true,
+  image: {
+    normal:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/492.png",
+    shiny:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/492.png",
+  },
+};
 
 const speciesIvysaur = {
   _id: new mongoose.Types.ObjectId("000000000000000000000020"),
@@ -199,10 +216,53 @@ const pokemonVentisLunala = {
   isLocked: false,
 };
 
+// --------- Incubators ---------
+// Venti's incubators can be useful for not allowing
+// adding incubators when there are already 4 active.
+const ventisIncubatorGhost = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003562"),
+  hatcher: new mongoose.Types.ObjectId("000000000000000000000003"),
+  // 1716069600 = Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
+  hatchTime: new Date(1716069600),
+  hatched: false,
+  isLegendary: true,
+  pokemonType: "ghost",
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+};
+const ventisIncubatorGrass = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003563"),
+  hatcher: new mongoose.Types.ObjectId("000000000000000000000003"),
+  hatchTime: new Date(),
+  hatched: false,
+  isLegendary: false,
+  pokemonType: "grass",
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+};
+
+const ventisIncubatorGrassDupe1 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003564"),
+  hatcher: new mongoose.Types.ObjectId("000000000000000000000003"),
+  hatchTime: new Date(),
+  hatched: false,
+  isLegendary: false,
+  pokemonType: "grass",
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+};
+
+const ventisIncubatorGrassDupe2 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003565"),
+  hatcher: new mongoose.Types.ObjectId("000000000000000000000003"),
+  hatchTime: new Date(),
+  hatched: false,
+  isLegendary: false,
+  pokemonType: "grass",
+  species: new mongoose.Types.ObjectId("000000000000000000000020"),
+};
+
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
-  await speciesDB.insertMany([speciesIvysaur, speciesLunala]);
+  await speciesDB.insertMany([speciesShaymin, speciesIvysaur, speciesLunala]);
 }
 async function addMockUsers() {
   const usersDB = mongoose.connection.db.collection("users");
@@ -224,6 +284,16 @@ async function addMockPokemons() {
   ]);
 }
 
+async function addMockIncubators() {
+  let incubatorDB = mongoose.connection.db.collection("incubators");
+  await incubatorDB.insertMany([
+    ventisIncubatorGhost,
+    ventisIncubatorGrass,
+    ventisIncubatorGrassDupe1,
+    ventisIncubatorGrassDupe2,
+  ]);
+}
+
 async function dropData() {
   const collections = await mongoose.connection.db.collections();
   for (const collection of collections) {
@@ -236,11 +306,13 @@ async function addAllMockData() {
   await addMockSpecies();
   await addMockUsers();
   await addMockPokemons();
+  await addMockIncubators();
 }
 
 export {
   speciesIvysaur,
   speciesLunala,
+  speciesShaymin,
   userLynney,
   userNavia,
   userVenti,
@@ -252,5 +324,7 @@ export {
   pokemonNaviasIvysaur,
   pokemonVentisIvyasaur,
   pokemonVentisLunala,
+  ventisIncubatorGhost,
+  ventisIncubatorGrass,
   addAllMockData,
 };
