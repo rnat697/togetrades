@@ -56,5 +56,5 @@ export function isValidPokemonType(type) {
     "steel",
     "fairy",
   ];
-  return validPokemonTypes.includes(type.toLowercase());
+  return validPokemonTypes.includes(String(type).toLowerCase());
 }

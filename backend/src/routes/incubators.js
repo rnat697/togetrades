@@ -1,13 +1,6 @@
 import express from "express";
 import auth from "../auth/auth.js";
-import {
-  retrievePokemonForUser,
-  retrievePokemonById,
-  updateFavUserPokemon,
-  updateTradeableUserPokemon,
-  calculateNumTradeable,
-  createPokemon,
-} from "../db/pokemon-utils.js";
+import { createPokemon } from "../db/pokemon-utils.js";
 import {
   getRandomSpeciesFromList,
   getSpeciesByFilter,
@@ -16,26 +9,32 @@ import {
   isLegendaryEggProbability,
   retrieveIncubatorsForUser,
   findIncubatorById,
+  isValidPokemonType,
 } from "../db/incubator-utils.js";
 import Incubator from "../db/incubator-schema.js";
-import Pokemon from "../db/pokemon-schema.js";
 
 const router = express.Router();
 // Get all incubators related to user
 router.get("/", auth, async (req, res) => {
-  const incubators = await retrieveIncubatorsForUser(userID);
-  return res.json(incubators);
+  let userID = req.user._id;
+  try {
+    const incubators = await retrieveIncubatorsForUser(userID);
+    return res.status(200).json(incubators);
+  } catch (e) {
+    console.error("Error fetching incubators: ", e);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 // create new incubators based on type choosen.
 router.post("/:type/create", auth, async (req, res) => {
   try {
-    const type = req.params;
+    const type = req.params.type;
     const userID = req.user._id;
     if (!isValidPokemonType(type))
       return res.status(422).send("Not a valid pokemon type.");
     const incubators = await retrieveIncubatorsForUser(userID);
-    if (incubators.length > 4) {
+    if (incubators.length >= 4) {
       return res
         .status(403)
         .send(
@@ -45,18 +44,16 @@ router.post("/:type/create", auth, async (req, res) => {
 
     const isLegendary = isLegendaryEggProbability();
     let generatedSpecies;
-    const speciesFilter = { types: { $in: type }, isLegendary: isLegendary };
-    const speciesList = getSpeciesByFilter(speciesFilter);
+    const speciesFilter = { types: { $in: [type] }, isLegendary: isLegendary };
+    const speciesList = await getSpeciesByFilter(speciesFilter);
 
     generatedSpecies = getRandomSpeciesFromList(speciesList);
-    console.log(species);
     const hatchTime = new Date();
     hatchTime.setHours(hatchTime.getHours() + isLegendary ? 6 : 3);
 
     const incubator = await Incubator.create({
       hatcher: userID,
       hatchTime: hatchTime,
-      hatched: false,
       isLegendary: isLegendary,
       pokemonType: type,
       species: generatedSpecies._id,

@@ -14,5 +14,5 @@ export function getSpeciesByFilter(filter) {
 
 export function getRandomSpeciesFromList(speciesList) {
   const randomIndex = Math.floor(Math.random() * speciesList.length);
-  return pokemonList[randomIndex];
+  return speciesList[randomIndex];
 }

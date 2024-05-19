@@ -15,10 +15,6 @@ const incubatorSchema = new Schema({
     type: Date,
     required: true,
   },
-  hatched: {
-    type: Boolean,
-    default: false,
-  },
   isLegendary: {
     type: Boolean,
     required: true,
@@ -33,6 +29,7 @@ const incubatorSchema = new Schema({
     required: true,
   },
 });
+//egg image? not sure if i want to host it on server or local
 
 const Incubator = mongoose.model("Incubator", incubatorSchema);
 export default Incubator;
