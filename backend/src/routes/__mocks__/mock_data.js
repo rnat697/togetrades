@@ -286,6 +286,15 @@ async function addMockPokemons() {
 
 async function addMockIncubators() {
   let incubatorDB = mongoose.connection.db.collection("incubators");
+  ventisIncubatorGrass.hatchTime.setHours(
+    ventisIncubatorGrass.hatchTime.getHours() + 3
+  );
+  ventisIncubatorGrassDupe1.hatchTime.setHours(
+    ventisIncubatorGrass.hatchTime.getHours() + 3
+  );
+  ventisIncubatorGrassDupe2.hatchTime.setHours(
+    ventisIncubatorGrass.hatchTime.getHours() + 3
+  );
   await incubatorDB.insertMany([
     ventisIncubatorGhost,
     ventisIncubatorGrass,

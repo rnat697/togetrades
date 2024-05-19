@@ -9,15 +9,7 @@ import {
   bearerLynney,
   bearerNavia,
   bearerVenti,
-  pokemonLynneysIvyasaur,
-  pokemonNaviasIvysaur,
-  pokemonNaviasLunala,
-  pokemonVentisIvyasaur,
-  speciesIvysaur,
   speciesLunala,
-  userLynney,
-  userNavia,
-  userVenti,
   ventisIncubatorGhost,
   ventisIncubatorGrass,
 } from "../__mocks__/mock_data.js";
@@ -116,6 +108,49 @@ describe("Incubator Creation POST /api/v1/incubators/:type/create", () => {
   test("User not authenticated (HTTP 401) - can't create incubators", (done) => {
     request(app)
       .post("/api/v1/incubators/grass/create")
+      .send()
+      .expect(401)
+      .end(done);
+  });
+});
+
+// ---------------- Incubator Hatching ----------------
+describe("Incubator Creation DELETE /api/v1/incubators/:id/hatch", () => {
+  test("Successful hatching of an incubator", (done) => {
+    request(app)
+      .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/hatch`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let { success, pokemon } = res.body;
+        expect(success).toBe(true);
+        expect(pokemon.species._id).toBe(speciesLunala._id.toString());
+        return done();
+      });
+  });
+  test("Unsuccessful hatching of an egg (HTTP 403) - time hasn't elapsed", (done) => {
+    request(app)
+      .delete(`/api/v1/incubators/${ventisIncubatorGrass._id}/hatch`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(403)
+      .end(done);
+  });
+
+  test("Non-existent incubator (HTTP 404)", (done) => {
+    request(app)
+      .delete("/api/v1/incubators/000000000000000000000000/hatch")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+
+  test("User not authenticated (HTTP 401) - can't hatch egg", (done) => {
+    request(app)
+      .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/hatch`)
       .send()
       .expect(401)
       .end(done);

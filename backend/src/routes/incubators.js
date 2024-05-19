@@ -73,19 +73,36 @@ router.delete("/:id/hatch", auth, async (req, res) => {
     const timeNow = new Date();
     if (!incubatorExist)
       return res.status(404).send("Incubator can not be found.");
+    let hatchTime = incubatorExist.hatchTime;
 
     // dont hatch if the current time is less than the hatch time.
-    if (timeNow.getTime() < incubatorExist.hatchTime.getTime()) {
+    if (timeNow.getTime() < hatchTime.getTime()) {
       return res.status(403).send("Egg cannot be hatched yet");
     }
     // "hatch" pokemon
-    const pokemon = createPokemon(req.user._id, incubatorExist.species._id);
+    const pokemon = await createPokemon(
+      req.user._id,
+      incubatorExist.species._id
+    );
+
+    // populate fields for display
+    const populatedPoke = await pokemon.populate([
+      { path: "species" },
+      {
+        path: "originalOwner",
+        select: "username _id",
+      },
+      {
+        path: "currentOwner",
+        select: "username _id",
+      },
+    ]);
 
     // delete incubator
     const result = await Incubator.deleteOne({ _id: req.params.id });
 
     if (result.deletedCount === 1) {
-      return res.status(200);
+      return res.status(200).json({ success: true, pokemon: populatedPoke });
     } else {
       throw "No documents matched query. Deleted 0 documents.";
     }

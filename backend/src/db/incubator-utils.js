@@ -17,7 +17,7 @@ export function retrieveIncubatorsForUser(userID) {
  * @returns the specified incubator
  */
 export function findIncubatorById(incubatorId) {
-  return Incubator.find({ _id: incubatorId }).populate({ path: "species" });
+  return Incubator.findById(incubatorId).populate({ path: "species" });
 }
 
 export function isLegendaryEggProbability() {
