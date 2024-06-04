@@ -115,7 +115,7 @@ describe("Incubator Creation POST /api/v1/incubators/:type/create", () => {
 });
 
 // ---------------- Incubator Hatching ----------------
-describe("Incubator Creation DELETE /api/v1/incubators/:id/hatch", () => {
+describe("Incubator Hatching DELETE /api/v1/incubators/:id/hatch", () => {
   test("Successful hatching of an incubator", (done) => {
     request(app)
       .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/hatch`)
@@ -151,6 +151,43 @@ describe("Incubator Creation DELETE /api/v1/incubators/:id/hatch", () => {
   test("User not authenticated (HTTP 401) - can't hatch egg", (done) => {
     request(app)
       .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/hatch`)
+      .send()
+      .expect(401)
+      .end(done);
+  });
+});
+
+// ---------------- Incubator Cancel ----------------
+describe("Incubator Cancel DELETE /api/v1/incubators/:id/cancel", () => {
+  test("Successful cancelation of an incubator", (done) => {
+    request(app)
+      .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/cancel`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end(async (err, res) => {
+        if (err) return done(err);
+        const incubatorExist = await mongoose.connection.db
+          .collection("incubators")
+          .findOne({ _id: ventisIncubatorGhost._id });
+
+        expect(incubatorExist).toBeNull();
+        return done();
+      });
+  });
+
+  test("Non-existent incubator (HTTP 404)", (done) => {
+    request(app)
+      .delete("/api/v1/incubators/000000000000000000000000/cancel")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+
+  test("User not authenticated (HTTP 401) - can't cancel incubation", (done) => {
+    request(app)
+      .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/cancel`)
       .send()
       .expect(401)
       .end(done);
