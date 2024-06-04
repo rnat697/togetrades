@@ -9,8 +9,14 @@ export const ALL_USERS = `${USERS_URL}/`;
 export const USER_BY_ID_URL = (userId) => `${USERS_URL}/${userId}`;
 export const USER_POKEMON_URL = (userId) => `${USERS_URL}/${userId}/pokemon`;
 
+// ------ POKEMON ENDPOINTS ------
 export const POKEMON_URL = `${API_BASE_URL}/pokemons`;
 export const TOGGLE_TRADEABLE_URL = (pokeId) =>
   `${POKEMON_URL}/${pokeId}/setTradeable`;
 export const TOGGLE_LOCKED_URL = (pokeId) =>
   `${POKEMON_URL}/${pokeId}/setLocked`;
+
+// ------ INCUBATOR ENDPOINTS ------
+export const INCUBATOR_URL = `${API_BASE_URL}/incubators`;
+export const USERS_INCUBATORS = `${INCUBATOR_URL}/`;
+export const CREATE_INCUBATOR_URL = (type) => `${INCUBATOR_URL}/${type}/create`;

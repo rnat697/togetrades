@@ -4,6 +4,7 @@
 }
 .incubator-heading p{
   font-size: 1.2em;
+  margin-bottom: 0;
 }
 .incubator-subheading{
   display: flex;
@@ -16,6 +17,16 @@
   font-weight: 500;
 }
 .incubators-list{
+  display:flex;
   justify-content: space-evenly;
   align-items: center;
+}
+/* Mobile format */
+@media screen and (max-width: 768px) {
+  .incubator-subheading{
+    flex-direction: column;
+  }
+  .incubators-list{
+    padding-top: 1em;
+  }
 }

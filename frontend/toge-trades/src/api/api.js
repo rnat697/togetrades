@@ -8,6 +8,7 @@ import {
   USER_POKEMON_URL,
   TOGGLE_TRADEABLE_URL,
   TOGGLE_LOCKED_URL,
+  CREATE_INCUBATOR_URL,
 } from "./urls";
 
 export const login = (username, password) =>
@@ -35,3 +36,6 @@ export const toggleLocked = (pokemonId, isLocked) =>
     { isLocked: isLocked },
     { withCredentials: true }
   );
+
+export const createIncubator = (type) =>
+  axios.post(CREATE_INCUBATOR_URL(type, { withCredentials: true }));
