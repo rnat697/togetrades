@@ -1,0 +1,21 @@
+.incubator-content{
+  justify-content: center;
+  align-items: center;
+}
+.incubator-heading p{
+  font-size: 1.2em;
+}
+.incubator-subheading{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.incubator-subheading p{
+  font-size: 1.2em;
+  font-weight: 500;
+}
+.incubators-list{
+  justify-content: space-evenly;
+  align-items: center;
+}
