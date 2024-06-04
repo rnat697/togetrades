@@ -5,10 +5,7 @@ import "./PokeBoxPage.css";
 export default function PokeBoxPage() {
   return (
     <div className="pokebox-container">
-      <GlobalNavigation />
-      <div className="pokebox-content">
-        <PokeBoxContents />
-      </div>
+      <PokeBoxContents />
     </div>
   );
 }
