@@ -3,14 +3,15 @@ import "./IncubatorContents.css";
 import "ldrs/infinity";
 import IncubatorCard from "../incubator_card/IncubatorCard";
 import { useIncubators } from "../../../controllers/IncubatorController";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function IncubatorContents() {
+  const navigate = useNavigate();
   const { incubators, isLoading, error, refresh } = useIncubators();
   // TODO: need to check if error messages work.
   if (error) toast.error(error);
-
   const handleAddIncubatorClick = () => {
-    console.log("add incubator clicked");
+    navigate("/incubator/egg-picker");
   };
 
   return (
@@ -21,7 +22,12 @@ export default function IncubatorContents() {
       </div>
       <div className="incubator-subheading">
         <p>{`${incubators.length} out of 4 Incubators in use`}</p>
-        <button onClick={handleAddIncubatorClick}>Add Incubator</button>
+        <button
+          onClick={() => handleAddIncubatorClick()}
+          disabled={incubators.length >= 4}
+        >
+          Add Incubator
+        </button>
       </div>
       <div className="incubators-list">
         {isLoading ? (

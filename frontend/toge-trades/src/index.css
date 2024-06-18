@@ -54,15 +54,21 @@ button {
   background-color: #78A7E2;
   cursor: pointer;
   transition: border-color 0.25s;
+  transition: background-color 0.25s;
 }
 button:hover {
   background-color: #5988D8;
 }
-button:focus,
+button:disabled{
+  color: #616980;
+  background-color: #BFC7E0;
+  cursor: not-allowed;
+}
+/* button:focus,
 button:focus-visible {
   border-color: #212A4A;
   border-width: 2px;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {

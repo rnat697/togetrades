@@ -6,6 +6,7 @@ import AuthorisationPage from "./Pages/Authorisation/AuthorisationPage.jsx";
 import { RequiresAuth, RequiresNonAuth } from "./api/auth.jsx";
 import PokeBoxPage from "./Pages/Pokebox/PokeBoxPage.jsx";
 import IncubatorPage from "./Pages/Incubator/IncubatorPage.jsx";
+import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
 
 function App() {
   return (
@@ -49,6 +50,14 @@ function App() {
           element={
             <RequiresAuth>
               <IncubatorPage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="incubator/egg-picker"
+          element={
+            <RequiresAuth>
+              <EggPickerPage />
             </RequiresAuth>
           }
         />
