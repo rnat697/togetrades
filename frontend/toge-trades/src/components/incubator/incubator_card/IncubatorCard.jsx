@@ -1,6 +1,10 @@
 import "./IncubatorCard.css";
 import eggIncubatorImg from "../../../assets/egg_incubator.png";
-import { capitalizeFirstLetter, getTypeColorAndImage } from "../../utils/utils";
+import {
+  calculateRemaningHatchTime,
+  capitalizeFirstLetter,
+  getTypeColorAndImage,
+} from "../../utils/utils";
 
 export default function IncubatorCard({ incubator }) {
   const typeColor = getTypeColorAndImage(incubator.pokemonType);
@@ -14,7 +18,7 @@ export default function IncubatorCard({ incubator }) {
         <img src={eggIncubatorImg} />
         <div className="incubator-card-title">
           <h2>{`${capitalizeFirstLetter(incubator.pokemonType)} Type Egg`}</h2>
-          <p>{incubator.hatchTime}</p>
+          <p>{calculateRemaningHatchTime(incubator.hatchTime)}</p>
         </div>
       </div>
       <div className="incubator-buttons">

@@ -1,16 +1,18 @@
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "./IncubatorContents.css";
-import useGet from "../../../hooks/useGet";
-import { USERS_INCUBATORS } from "../../../api/urls";
 import "ldrs/infinity";
 import IncubatorCard from "../incubator_card/IncubatorCard";
+import { useIncubators } from "../../../controllers/IncubatorController";
 
 export default function IncubatorContents() {
-  const {
-    data: incubatorList,
-    isLoading,
-    refresh,
-  } = useGet(USERS_INCUBATORS, [], true);
+  const { incubators, isLoading, error, refresh } = useIncubators();
+  // TODO: need to check if error messages work.
+  if (error) toast.error(error);
+
+  const handleAddIncubatorClick = () => {
+    console.log("add incubator clicked");
+  };
+
   return (
     <div className="incubator-contents">
       <div className="incubator-heading">
@@ -18,8 +20,8 @@ export default function IncubatorContents() {
         <p>Hatch eggs from different types and discover new Pokemon!</p>
       </div>
       <div className="incubator-subheading">
-        <p>{`${incubatorList.length} out of 4 Incubators in use`}</p>
-        <button>Add Incubator</button>
+        <p>{`${incubators.length} out of 4 Incubators in use`}</p>
+        <button onClick={handleAddIncubatorClick}>Add Incubator</button>
       </div>
       <div className="incubators-list">
         {isLoading ? (
@@ -32,7 +34,7 @@ export default function IncubatorContents() {
             color="#78A7E2"
           />
         ) : (
-          incubatorList.map((incubator) => (
+          incubators.map((incubator) => (
             <IncubatorCard incubator={incubator} key={incubator.pokemonType} />
           ))
         )}
