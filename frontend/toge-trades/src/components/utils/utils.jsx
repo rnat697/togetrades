@@ -36,20 +36,7 @@ export function convertHectogramToKilogram(weight) {
 export function convertDecimeterToMeters(height) {
   return height / 10;
 }
-// TODO: change to a timer component
-export function calculateRemaningHatchTime(hatchTime) {
-  const currentTime = new Date();
-  console.log(hatchTime);
-  if (currentTime.getTime() >= hatchTime) {
-    return "Ready to hatch";
-  } else {
-    let timeRemaining = hatchTime - currentTime.getTime();
-    let seconds = Math.floor(timeRemaining / 1000) % 60;
-    let mins = Math.floor(timeRemaining / 1000 / 60) % 60;
-    let hours = Math.floor(timeRemaining / 1000 / 60 / 60);
-    return `${hours} hours ${mins} mins ${seconds} seconds`;
-  }
-}
+
 
 export function getTypeColorAndImage(type) {
   const data = { src: "", color: "", lowOpacityColor: "" };

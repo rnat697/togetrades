@@ -1,13 +1,15 @@
 import "./IncubatorCard.css";
 import eggIncubatorImg from "../../../assets/egg_incubator.png";
-import {
-  calculateRemaningHatchTime,
-  capitalizeFirstLetter,
-  getTypeColorAndImage,
-} from "../../utils/utils";
+import { capitalizeFirstLetter, getTypeColorAndImage } from "../../utils/utils";
+import Countdown from "../../countdown/Countdown";
+import { useState } from "react";
 
 export default function IncubatorCard({ incubator }) {
   const typeColor = getTypeColorAndImage(incubator.pokemonType);
+  const [countdownComplete, setCountdownComplete] = useState(false);
+  const handleCountdownComplete = (isDone) => {
+    setCountdownComplete(isDone);
+  };
 
   return (
     <div
@@ -18,11 +20,16 @@ export default function IncubatorCard({ incubator }) {
         <img src={eggIncubatorImg} />
         <div className="incubator-card-title">
           <h2>{`${capitalizeFirstLetter(incubator.pokemonType)} Type Egg`}</h2>
-          <p>{calculateRemaningHatchTime(incubator.hatchTime)}</p>
+          <Countdown
+            deadline={incubator.hatchTime}
+            onCountdownComplete={handleCountdownComplete}
+          />
         </div>
       </div>
       <div className="incubator-buttons">
-        <button className="hatch-btn">Hatch</button>
+        <button className="hatch-btn" disabled={!countdownComplete}>
+          Hatch
+        </button>
         <button className="incubator-outline-btn">Cancel</button>
       </div>
     </div>
