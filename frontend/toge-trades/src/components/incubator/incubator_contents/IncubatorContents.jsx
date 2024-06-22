@@ -20,31 +20,36 @@ export default function IncubatorContents() {
         <h1>Incubator</h1>
         <p>Hatch eggs from different types and discover new Pokemon!</p>
       </div>
-      <div className="incubator-subheading">
-        <p>{`${incubators.length} out of 4 Incubators in use`}</p>
-        <button
-          onClick={() => handleAddIncubatorClick()}
-          disabled={incubators.length >= 4}
-        >
-          Add Incubator
-        </button>
-      </div>
-      <div className="incubators-list">
-        {isLoading ? (
-          <l-infinity
-            size="55"
-            stroke="4"
-            stroke-length="0.15"
-            bg-opacity="0.1"
-            speed="1.3"
-            color="#78A7E2"
-          />
-        ) : (
-          incubators.map((incubator) => (
-            <IncubatorCard incubator={incubator} key={incubator.pokemonType} />
-          ))
-        )}
-      </div>
+      {isLoading ? (
+        <l-infinity
+          size="55"
+          stroke="4"
+          stroke-length="0.15"
+          bg-opacity="0.1"
+          speed="1.3"
+          color="#78A7E2"
+        />
+      ) : (
+        <div>
+          <div className="incubator-subheading">
+            <p>{`${incubators.length} out of 4 Incubators in use`}</p>
+            <button
+              onClick={() => handleAddIncubatorClick()}
+              disabled={incubators.length >= 4}
+            >
+              Add Incubator
+            </button>
+          </div>
+          <div className="incubators-list">
+            {incubators.map((incubator) => (
+              <IncubatorCard
+                incubator={incubator}
+                key={incubator.pokemonType}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       <ToastContainer />
     </div>
   );
