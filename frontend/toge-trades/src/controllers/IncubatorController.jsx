@@ -34,6 +34,9 @@ export function addNewIncubator(type, navigate) {
       }
     })
     .catch((e) => {
-      toast("Error when adding incubator: " + e.response.data);
+      toast(
+        "Error when adding incubator: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
     });
 }

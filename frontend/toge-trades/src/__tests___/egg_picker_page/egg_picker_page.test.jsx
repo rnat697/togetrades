@@ -84,7 +84,7 @@ describe("Egg Picker Page Renderings", () => {
     expect(startBtn).toBeEnabled();
   });
   test("On successful click of Start Incubation Button, it should go to Incubator Page", async () => {
-    axiosMock.onPost(`api/v1/incubator/water/create`).reply(200);
+    axiosMock.onPost(`api/v1/incubators/water/create`).reply(200);
     render(
       <MemoryRouter initialEntries={["/egg-picker"]}>
         <AuthContextProvider>
@@ -105,9 +105,9 @@ describe("Egg Picker Page Renderings", () => {
     });
   });
   test("On successful click of Start Incubation Button, it should go to Incubator Page", async () => {
-    axiosMock.onPost(`api/v1/incubator/water/create`).reply(201);
+    axiosMock.onPost(`api/v1/incubators/water/create`).reply(201);
     render(
-      <MemoryRouter initialEntries={["/egg-picker"]}>
+      <MemoryRouter initialEntries={["incubator/egg-picker"]}>
         <AuthContextProvider>
           <EggPickerPage />
         </AuthContextProvider>
@@ -126,7 +126,9 @@ describe("Egg Picker Page Renderings", () => {
     });
   });
   test("On Internal server error, it should show an error msg", async () => {
-    axiosMock.onPost(`api/v1/incubator/water/create`).reply(500);
+    axiosMock
+      .onPost(`api/v1/incubators/water/create`)
+      .reply(500, { message: "Internal Server Error" });
     render(
       <MemoryRouter initialEntries={["/egg-picker"]}>
         <AuthContextProvider>
