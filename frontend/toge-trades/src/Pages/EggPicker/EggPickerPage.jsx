@@ -49,6 +49,7 @@ export default function EggPickerPage() {
           const colorImage = getTypeColorAndImage(type);
           return (
             <button
+              data-testid={`${type}-btn`}
               key={type}
               style={{
                 backgroundColor: colorImage.color,
@@ -67,6 +68,7 @@ export default function EggPickerPage() {
         })}
       </div>
       <button
+        data-testid="start-incubation-btn"
         onClick={() => handleSubmitButtonClick()}
         disabled={!selectedType}
       >

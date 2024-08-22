@@ -30,7 +30,6 @@ export function addNewIncubator(type, navigate) {
   createIncubator(type)
     .then((res) => {
       if (res.data.success) {
-        console.log(res.data.incubator);
         navigate("/incubator", { replace: true });
       }
     })
