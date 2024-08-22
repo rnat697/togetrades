@@ -1,12 +1,19 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import GlobalNavigation from "../global-navigation/GlobalNavigation";
 
 export default function PageLayout() {
-    return (
-        <React.Fragment>
-            <div style={{ margin: '0 10px' }}>
-                <Outlet />
-            </div>
-        </React.Fragment>
-    )
+  const location = useLocation();
+  const hideGlobalNav = ["/login", "/landing", "/signup"].includes(
+    location.pathname
+  );
+
+  return (
+    <React.Fragment>
+      {!hideGlobalNav && <GlobalNavigation />}
+      <div style={{ justifyContent: "center", alignItems: "center" }}>
+        <Outlet />
+      </div>
+    </React.Fragment>
+  );
 }

@@ -1,13 +1,12 @@
-import { useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom';
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import PageLayout from './components/page-layout/PageLayout.jsx';
-import LandingPage from './Pages/Landing/LandingPage.jsx';
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import PageLayout from "./components/page-layout/PageLayout.jsx";
+import LandingPage from "./Pages/Landing/LandingPage.jsx";
 import AuthorisationPage from "./Pages/Authorisation/AuthorisationPage.jsx";
 import { RequiresAuth, RequiresNonAuth } from "./api/auth.jsx";
 import PokeBoxPage from "./Pages/Pokebox/PokeBoxPage.jsx";
+import IncubatorPage from "./Pages/Incubator/IncubatorPage.jsx";
+import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
 
 function App() {
   return (
@@ -38,7 +37,6 @@ function App() {
             </RequiresNonAuth>
           }
         />
-
         <Route
           path="pokebox"
           element={
@@ -47,9 +45,25 @@ function App() {
             </RequiresAuth>
           }
         />
+        <Route
+          path="incubator"
+          element={
+            <RequiresAuth>
+              <IncubatorPage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="incubator/egg-picker"
+          element={
+            <RequiresAuth>
+              <EggPickerPage />
+            </RequiresAuth>
+          }
+        />
       </Route>
     </Routes>
   );
 }
 
-export default App
+export default App;

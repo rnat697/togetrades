@@ -49,7 +49,8 @@ router.post("/:type/create", auth, async (req, res) => {
 
     generatedSpecies = getRandomSpeciesFromList(speciesList);
     const hatchTime = new Date();
-    hatchTime.setHours(hatchTime.getHours() + isLegendary ? 6 : 3);
+    const hoursToAdd = isLegendary ? 6 : 3;
+    hatchTime.setTime(hatchTime.getTime() + hoursToAdd * 60 * 60 * 1000);
 
     const incubator = await Incubator.create({
       hatcher: userID,
