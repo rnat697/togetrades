@@ -150,6 +150,31 @@ const lynneyToken = Buffer.from(JSON.stringify(mockLynneyPayload)).toString(
 
 const lynneyPokemon = [misdrevus, vullaby, wochien, gabite];
 
+// Incubators
+const currentTime = new Date().getTime()
+const grassIncubator = {
+  hatcher: lynneyUser._id,
+  hatchTime: new Date(currentTime + 5 * 60 * 60 *1000), // 5 hours in future
+  isLegendary: true,
+  pokemonType: "grass",
+  species: wochien._id
+}
+
+const ghostIncubator = {
+  hatcher: lynneyUser._id,
+  hatchTime: new Date("July 1, 2024 11:13:00"), // Past Dates
+  isLegendary: false,
+  pokemonType: "ghost",
+  species: misdrevus._id
+}
+
+const darkIncubator = {
+  hatcher: lynneyUser._id,
+  hatchTime: new Date(currentTime + 50 * 60 * 1000 ), // 50 mins
+  isLegendary: false,
+  pokemonType: "dark",
+  species: vullaby._id
+}
 export {
   testUser,
   lynneyUser,
@@ -158,4 +183,7 @@ export {
   testToken,
   lynneyToken,
   lynneyPokemon,
+  darkIncubator,
+  ghostIncubator,
+  grassIncubator,
 };
