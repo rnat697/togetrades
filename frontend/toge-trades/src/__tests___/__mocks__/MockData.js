@@ -153,28 +153,32 @@ const lynneyPokemon = [misdrevus, vullaby, wochien, gabite];
 // Incubators
 const currentTime = new Date().getTime()
 const grassIncubator = {
+  _id: "000000000000000000000059",
   hatcher: lynneyUser._id,
-  hatchTime: new Date(currentTime + 5 * 60 * 60 *1000), // 5 hours in future
+  hatchTime: new Date(currentTime + 5 * 60 * 60 * 1000), // 5 hours in future
   isLegendary: true,
   pokemonType: "grass",
-  species: wochien._id
-}
+  species: wochien._id,
+};
 
 const ghostIncubator = {
+  _id: "000000000000000000000060",
   hatcher: lynneyUser._id,
   hatchTime: new Date("July 1, 2024 11:13:00"), // Past Dates
   isLegendary: false,
   pokemonType: "ghost",
-  species: misdrevus._id
-}
+  species: misdrevus._id,
+};
 
 const darkIncubator = {
+  _id: "000000000000000000000061",
   hatcher: lynneyUser._id,
-  hatchTime: new Date(currentTime + 50 * 60 * 1000 ), // 50 mins
+  hatchTime: new Date(currentTime + 50 * 60 * 1000), // 50 mins
   isLegendary: false,
   pokemonType: "dark",
-  species: vullaby._id
-}
+  species: vullaby._id,
+};
+const lynneyIncubators = [grassIncubator, ghostIncubator];
 export {
   testUser,
   lynneyUser,
@@ -186,4 +190,5 @@ export {
   darkIncubator,
   ghostIncubator,
   grassIncubator,
+  lynneyIncubators,
 };

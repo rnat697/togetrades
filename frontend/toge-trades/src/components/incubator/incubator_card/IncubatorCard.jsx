@@ -27,7 +27,11 @@ export default function IncubatorCard({ incubator }) {
         </div>
       </div>
       <div className="incubator-buttons">
-        <button className="hatch-btn" disabled={!countdownComplete}>
+        <button
+          data-testid={`${incubator._id}-hatch-btn`}
+          className="hatch-btn"
+          disabled={!countdownComplete}
+        >
           Hatch
         </button>
         <button className="incubator-outline-btn">Cancel</button>

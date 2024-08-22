@@ -67,7 +67,7 @@ describe("Poke Box Page Renderings", () => {
       expect(screen.getByText("Gabite")).toBeInTheDocument();
       expect(screen.getByText("Wo-chien")).toBeInTheDocument();
       expect(screen.getByText("Vullaby")).toBeInTheDocument();
-    });
+    }); //
   });
   test("Search bar correctly searches for a pokemon", async () => {
     axiosMock
