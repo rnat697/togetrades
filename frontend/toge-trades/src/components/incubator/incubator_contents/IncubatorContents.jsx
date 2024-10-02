@@ -8,7 +8,7 @@ import {
 } from "../../../controllers/IncubatorController";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import CancelModal from "../../cancel_modal/CancelModal";
+import CancelModal from "../cancel_modal/CancelModal";
 
 export default function IncubatorContents() {
   const [showCancelModal, setShowCancel] = useState(false);
@@ -50,6 +50,7 @@ export default function IncubatorContents() {
       </div>
       {showCancelModal && (
         <CancelModal
+          showModal={showCancelModal}
           onClose={handleCancelModalClose}
           onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
         />

@@ -9,6 +9,7 @@
   justify-content: center;
   background-color: rgba(0,0,0,0.5);
 }
+
 .modal{
   position:relative;
   background: white;
@@ -16,6 +17,7 @@
   padding:1.5rem;
   width: 30em;
 }
+
 .modal-close{
   position:absolute;
   top: 2rem;
