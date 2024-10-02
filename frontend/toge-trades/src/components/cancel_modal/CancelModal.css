@@ -1,0 +1,69 @@
+.cancel-modal-container{
+  position:fixed;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal{
+  position:relative;
+  background: white;
+  border-radius: 2em;
+  padding:1.5rem;
+  width: 30em;
+}
+.modal-close{
+  position:absolute;
+  top: 2rem;
+  right: 2rem;
+}
+.modal-header{
+  text-align: left;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+.modal-content{
+  /* margin-bottom: 2rem; */
+  text-align:left;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+.modal-footer{
+  display: flex;
+  justify-content: space-evenly;
+}
+.btn-cancel{
+  border-color: #5988D8;
+  border-width: 0.1em;
+  background-color: #ffffff;
+  color: #212A4A;
+  font-size: 1em;
+  width: 10em;
+}
+.btn-delete{
+  font-size: 1em;
+  background-color: red;
+}
+
+/* MOBILE FORMAT */
+@media screen and (max-width: 768px) {
+  .modal{
+    width: 80%;
+    height:auto;
+    padding:1rem;
+  }
+
+  .btn-cancel{
+    font-size: 0.9em;
+    width:40%; padding: 0.4em;
+  }
+  .btn-delete{
+    font-size: 0.9em;
+    width: 40%;
+    padding: 0.4em;
+  }
+}

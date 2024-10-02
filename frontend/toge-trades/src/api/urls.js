@@ -20,3 +20,5 @@ export const TOGGLE_LOCKED_URL = (pokeId) =>
 export const INCUBATOR_URL = `${API_BASE_URL}/incubators`;
 export const USERS_INCUBATORS = `${INCUBATOR_URL}/`;
 export const CREATE_INCUBATOR_URL = (type) => `${INCUBATOR_URL}/${type}/create`;
+export const DELETE_INCUBATOR_URL = (id) => `${INCUBATOR_URL}/${id}/cancel`;
+export const HATCH_EGG_URL = (id) => `${INCUBATOR_URL}/${id}/hatch`;

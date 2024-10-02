@@ -2,16 +2,44 @@ import { toast, ToastContainer } from "react-toastify";
 import "./IncubatorContents.css";
 import "ldrs/infinity";
 import IncubatorCard from "../incubator_card/IncubatorCard";
-import { useIncubators } from "../../../controllers/IncubatorController";
+import {
+  deleteIncubator,
+  useIncubators,
+} from "../../../controllers/IncubatorController";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import CancelModal from "../../cancel_modal/CancelModal";
 
 export default function IncubatorContents() {
+  const [showCancelModal, setShowCancel] = useState(false);
+  const [incubatorToDelete, setIncubatorToDelete] = useState(null);
   const navigate = useNavigate();
   const { incubators, isLoading, error, refresh } = useIncubators();
-  // TODO: need to check if error messages work.
+
   if (error) toast.error(error);
   const handleAddIncubatorClick = () => {
     navigate("/incubator/egg-picker");
+  };
+  const handleHatchIncubatorClick = () => {};
+
+  // ----- Delete Incubator functions -----
+  const openCancelIncubatorModal = (id) => {
+    setIncubatorToDelete(id);
+    setShowCancel(true);
+  };
+  const handleCancelModalClose = () => {
+    setShowCancel(false);
+    setIncubatorToDelete(null);
+  };
+  const handleDeleteConfirmation = (id) => {
+    deleteIncubator(id)
+      .then(() => {
+        setShowCancel(false);
+        refresh();
+      })
+      .catch((err) =>
+        console.error("Error handling delete confirmation:", err)
+      );
   };
 
   return (
@@ -20,6 +48,12 @@ export default function IncubatorContents() {
         <h1>Incubator</h1>
         <p>Hatch eggs from different types and discover new Pokemon!</p>
       </div>
+      {showCancelModal && (
+        <CancelModal
+          onClose={handleCancelModalClose}
+          onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
+        />
+      )}
       {isLoading ? (
         <l-infinity
           size="55"
@@ -45,6 +79,8 @@ export default function IncubatorContents() {
               <IncubatorCard
                 incubator={incubator}
                 key={incubator.pokemonType}
+                onHatchClick={handleHatchIncubatorClick}
+                onCancelClick={() => openCancelIncubatorModal(incubator.id)}
               />
             ))}
           </div>
