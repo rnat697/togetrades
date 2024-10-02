@@ -48,13 +48,11 @@ export default function IncubatorContents() {
         <h1>Incubator</h1>
         <p>Hatch eggs from different types and discover new Pokemon!</p>
       </div>
-      {showCancelModal && (
-        <CancelModal
-          showModal={showCancelModal}
-          onClose={handleCancelModalClose}
-          onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
-        />
-      )}
+      <CancelModal
+        showModal={showCancelModal}
+        onClose={handleCancelModalClose}
+        onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
+      />
       {isLoading ? (
         <l-infinity
           size="55"

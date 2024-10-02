@@ -1,10 +1,10 @@
 import "./CancelModal.css";
 import { IoIosClose } from "react-icons/io";
 
-export default function CancelModal({ onClose, onConfirm }) {
+export default function CancelModal({ showModal, onClose, onConfirm }) {
   return (
-    <div className="cancel-modal-container">
-      <div className="modal">
+    <div className={`cancel-modal-container ${showModal ? "show-modal" : ""}`}>
+      <div className={`modal ${showModal ? "show-modal" : ""}`}>
         <div className="modal-close">
           <IoIosClose color="#212A4A" size={"3em"} onClick={onClose} />
         </div>
