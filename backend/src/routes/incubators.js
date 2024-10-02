@@ -128,7 +128,7 @@ router.delete("/:id/cancel", auth, async (req, res) => {
     const result = await Incubator.deleteOne({ _id: req.params.id });
 
     if (result.deletedCount === 1) {
-      return res.sendStatus(200);
+      return res.sendStatus(204);
     } else {
       throw "No documents matched query. Deleted 0 documents.";
     }
