@@ -58,7 +58,11 @@ export default function PokeBoxContents() {
         ))}
         {isLoading && <div>Loading...</div>}
       </div>
-      <PokemonDetails pokemon={selectedPokemon} onClose={handleDetailsClose} />
+      <PokemonDetails
+        pokemon={selectedPokemon}
+        onClose={handleDetailsClose}
+        modalType={"pokebox"}
+      />
       <ToastContainer />
     </div>
   );

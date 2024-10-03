@@ -13,11 +13,11 @@ import LockButton from "../lock/LockButton";
 import TradeableButton from "../tradeable/TradeableButton";
 import RareIndicators from "../rare-indicators/RareIndicators";
 
-export default function PokemonDetails({ pokemon, onClose }) {
+export default function PokemonDetails({ pokemon, onClose, modalType }) {
   if (!pokemon) return null;
 
   return (
-    <div className={`pokedetails-container`}>
+    <div className={`pokedetails-container ${modalType}`}>
       <div
         data-testid="details-close"
         className="details-buttons"

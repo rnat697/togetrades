@@ -41,4 +41,4 @@ export const createIncubator = (type) =>
 export const cancelIncubatorAPI = (id) =>
   axios.delete(DELETE_INCUBATOR_URL(id), { withCredentials: true });
 export const hatchIncubatorAPI = (id) =>
-  axios.delete(HATCH_EGG_URL(id), {}, { withCredentials: true });
+  axios.delete(HATCH_EGG_URL(id), { withCredentials: true });

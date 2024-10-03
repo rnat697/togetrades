@@ -1,9 +1,6 @@
 .pokedetails-container{
   background-color: #F2F6FC;
   border-radius: 2em;
-  position: fixed;
-  top: 6em;
-  right: 0;
   width: 25rem;
   height: auto;
   z-index: 9999; 
@@ -12,6 +9,17 @@
   max-width: 100%;
   max-height: 80vh;
   overflow-y: auto;
+}
+.pokebox{
+  position: fixed;
+  top: 6em;
+  right: 0;
+}
+.incubator{
+  position: fixed;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -40%);
 }
 .pokedetails-container h1{
   font-size: 1.8em;
@@ -55,12 +63,14 @@
 /* MOBILE FORMAT */
 @media screen and (max-width: 500px) {
   .pokedetails-container{
-    left:50%;
-    transform: translateX(-50%);
-    width: 90%;
+    width: 80%;
     height: auto;
     overflow-y: auto;
     max-width: 100%;
     max-height: 80vh;
+  }
+  .pokebox{
+    left:50%;
+    transform: translateX(-50%);
   }
 }

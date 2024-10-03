@@ -4,23 +4,44 @@ import "ldrs/infinity";
 import IncubatorCard from "../incubator_card/IncubatorCard";
 import {
   deleteIncubator,
+  hatchEgg,
   useIncubators,
 } from "../../../controllers/IncubatorController";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CancelModal from "../cancel_modal/CancelModal";
+import PokemonModel from "../../../models/PokemonModel";
+import PokemonDetails from "../../pokemon-details/PokemonDetails";
 
 export default function IncubatorContents() {
   const [showCancelModal, setShowCancel] = useState(false);
   const [incubatorToDelete, setIncubatorToDelete] = useState(null);
+  const [hatchedPoke, setHatchedPoke] = useState(null);
+  const [showPoke, setShowPoke] = useState(false);
   const navigate = useNavigate();
-  const { incubators, isLoading, error, refresh } = useIncubators();
 
+  // ----- Get Incubators function -----
+  const { incubators, isLoading, error, refresh } = useIncubators();
   if (error) toast.error(error);
+
+  // ----- Create Incubator function -----
   const handleAddIncubatorClick = () => {
     navigate("/incubator/egg-picker");
   };
-  const handleHatchIncubatorClick = () => {};
+  // ----- Hatch Egg functions -----
+  const handleHatchEggClick = (id) => {
+    hatchEgg(id).then((data) => {
+      const rawPokeData = data.pokemon;
+      const pokemon = PokemonModel.fromJSON(rawPokeData);
+      setHatchedPoke(pokemon);
+      setShowPoke(true);
+      refresh();
+    });
+  };
+  const handlePokeModalClose = () => {
+    setShowPoke(false);
+    setHatchedPoke(null);
+  };
 
   // ----- Delete Incubator functions -----
   const openCancelIncubatorModal = (id) => {
@@ -53,6 +74,13 @@ export default function IncubatorContents() {
         onClose={handleCancelModalClose}
         onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
       />
+      {showPoke && (
+        <PokemonDetails
+          pokemon={hatchedPoke}
+          onClose={handlePokeModalClose}
+          modalType={"incubator"}
+        />
+      )}
       {isLoading ? (
         <l-infinity
           size="55"
@@ -77,8 +105,8 @@ export default function IncubatorContents() {
             {incubators.map((incubator) => (
               <IncubatorCard
                 incubator={incubator}
-                key={incubator.pokemonType}
-                onHatchClick={handleHatchIncubatorClick}
+                key={incubator.id}
+                onHatchClick={() => handleHatchEggClick(incubator.id)}
                 onCancelClick={() => openCancelIncubatorModal(incubator.id)}
               />
             ))}

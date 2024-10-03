@@ -2,8 +2,13 @@ import useGet from "../hooks/useGet";
 import { USERS_INCUBATORS } from "../api/urls";
 import { useEffect, useState } from "react";
 import IncubatorModel from "../models/IncubatorModel";
-import { cancelIncubatorAPI, createIncubator } from "../api/api";
+import {
+  cancelIncubatorAPI,
+  createIncubator,
+  hatchIncubatorAPI,
+} from "../api/api";
 import { toast } from "react-toastify";
+import PokemonModel from "../models/PokemonModel";
 export function useIncubators() {
   // ---- Fetches user's incubators ----
   const {
@@ -49,6 +54,24 @@ export function deleteIncubator(id) {
     .then((res) => {
       if (res.status === 204) {
         toast("Incubator deleted successfully!");
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when deleting incubator: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
+}
+
+export function hatchEgg(id) {
+  // ---- hatches Egg and deletes incubator for user ----
+  // Returns the promise so we can refresh in the view
+  return hatchIncubatorAPI(id)
+    .then((res) => {
+      if (res.status === 200) {
+        toast("Egg Hatched successfully!");
+        return res.data;
       }
     })
     .catch((e) => {
