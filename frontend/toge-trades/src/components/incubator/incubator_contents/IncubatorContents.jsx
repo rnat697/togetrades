@@ -34,13 +34,13 @@ export default function IncubatorContents() {
       const rawPokeData = data.pokemon;
       const pokemon = PokemonModel.fromJSON(rawPokeData);
       setHatchedPoke(pokemon);
-      setShowPoke(true);
       refresh();
+      setShowPoke(true);
     });
   };
   const handlePokeModalClose = () => {
     setShowPoke(false);
-    setHatchedPoke(null);
+    setTimeout(() => setHatchedPoke(null), 500);
   };
 
   // ----- Delete Incubator functions -----
@@ -74,13 +74,13 @@ export default function IncubatorContents() {
         onClose={handleCancelModalClose}
         onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}
       />
-      {showPoke && (
-        <PokemonDetails
-          pokemon={hatchedPoke}
-          onClose={handlePokeModalClose}
-          modalType={"incubator"}
-        />
-      )}
+      <PokemonDetails
+        showModal={showPoke}
+        pokemon={hatchedPoke}
+        onClose={handlePokeModalClose}
+        modalType={"incubator"}
+      />
+      {/* // )} */}
       {isLoading ? (
         <l-infinity
           size="55"
