@@ -36,14 +36,15 @@ export default function PokemonDetails({
       </div>
       <div className="poke-btn-fav-trade"></div>
       <RareIndicators pokemon={pokemon} />
-      <img
-        className="pokeimg"
-        src={
-          pokemon.isShiny
-            ? pokemon.species.image.shiny
-            : pokemon.species.image.normal
-        }
-      />
+      <div className="pokeimg">
+        <img
+          src={
+            pokemon.isShiny
+              ? pokemon.species.image.shiny
+              : pokemon.species.image.normal
+          }
+        />
+      </div>
       <h1>{capitalizeFirstLetter(pokemon.species.name)}</h1>
       <div className="poke-type">
         {pokemon.species.types.map((type, index) => (

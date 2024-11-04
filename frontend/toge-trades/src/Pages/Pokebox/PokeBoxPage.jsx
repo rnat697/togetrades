@@ -22,9 +22,7 @@ export default function PokeBoxPage() {
         )
       : pokemonList;
 
-  const selectedPokemon = pokemonList.find(
-    (poke) => poke._id == selectedPokeId
-  );
+  const selectedPokemon = pokemonList.find((poke) => poke.id == selectedPokeId);
   const handleDetailsClose = () => {
     setShowDetails(false);
     // Wait until after the transition has finished
@@ -34,7 +32,7 @@ export default function PokeBoxPage() {
   };
   const handleClick = (pokemon) => {
     setShowDetails(true);
-    setSelectedPokeId(pokemon._id);
+    setSelectedPokeId(pokemon.id);
   };
   return (
     <div className="pokebox-container">
