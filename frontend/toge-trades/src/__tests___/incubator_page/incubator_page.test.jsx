@@ -10,7 +10,12 @@ import MockAdapter from "axios-mock-adapter";
 
 import { AuthContextProvider } from "../../api/auth";
 import IncubatorPage from "../../Pages/Incubator/IncubatorPage";
-import { useIncubators } from "../../controllers/IncubatorController";
+import {
+  useIncubators,
+  hatchEgg,
+  deleteIncubator,
+} from "../../controllers/IncubatorController";
+import { cancelIncubatorAPI } from "../../api/api";
 import {
   lynneyUser,
   lynneyToken,
@@ -19,6 +24,7 @@ import {
   grassIncubator,
   ghostIncubator,
   darkIncubator,
+  misdrevus,
 } from "../__mocks__/MockData";
 
 let axiosMock;
@@ -35,10 +41,19 @@ vi.mock("../../api/auth", async (importOriginal) => {
     })),
   };
 });
-
-vi.mock("../../controllers/IncubatorController", () => ({
-  useIncubators: vi.fn(),
+vi.mock("../../api/api", () => ({
+  cancelIncubatorAPI: vi.fn(),
 }));
+
+vi.mock("../../controllers/IncubatorController", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useIncubators: vi.fn(),
+    hatchEgg: vi.fn(),
+    // deleteIncubator: vi.fn(),
+  };
+});
 
 beforeAll(() => {
   axiosMock = new MockAdapter(axios);
@@ -70,7 +85,7 @@ describe("Incubator Page renderings", () => {
     const addBtn = screen.getByText("Add Incubator");
     expect(addBtn).toBeInTheDocument();
 
-    const incubatorUsage = screen.getByText("2 out of 4 Incubators in use");
+    const incubatorUsage = screen.getByText("3 out of 4 Incubators in use");
     expect(incubatorUsage).toBeInTheDocument();
 
     const grassEgg = screen.getByText("Grass Type Egg");
@@ -179,5 +194,101 @@ describe("Incubator Page renderings", () => {
       const addButton = screen.getByText("Add Incubator");
       expect(addButton).toBeDisabled();
     });
+  });
+});
+
+describe("Incubator Page - Hatching Eggs", () => {
+  test("Hatching an egg and showing a ghost type pokemon", async () => {
+    // Mock the useIncubators hook
+    useIncubators.mockImplementation(() => ({
+      incubators: [ghostIncubator],
+      isLoading: false,
+      error: null,
+      refresh: vi.fn(),
+    }));
+    hatchEgg.mockImplementation(() =>
+      Promise.resolve({
+        success: true,
+        pokemon: misdrevus,
+      })
+    );
+    render(
+      <MemoryRouter initialEntries={["/incubator"]}>
+        <AuthContextProvider>
+          <IncubatorPage />
+        </AuthContextProvider>
+      </MemoryRouter>
+    );
+
+    const ghostEgg = screen.getByText("Ghost Type Egg");
+    expect(ghostEgg).toBeInTheDocument();
+    await waitFor(
+      () => {
+        const hatchButton = screen.getByTestId(
+          `${ghostIncubator._id}-hatch-btn`
+        );
+        expect(hatchButton).toBeEnabled();
+        fireEvent.click(hatchButton);
+      },
+      { timeout: 8000 } // need a time out to register the countdown compeletion
+    );
+    await waitFor(
+      () => {
+        expect(screen.getByText("Ghost")).toBeInTheDocument();
+      },
+      { timeout: 8000 } // need a time out to register the countdown compeletion
+    );
+  });
+});
+describe("Incubator Page - Cancelling incubators", () => {
+  test("Cancelling an incubator and shows 2 incubators left", async () => {
+    // Mock the useIncubators hook
+    const refreshMock = vi.fn();
+    useIncubators.mockImplementation(() => ({
+      incubators: lynneyIncubators,
+      isLoading: false,
+      error: null,
+      refresh: refreshMock,
+    }));
+
+    // Only mock cancelIncubatorAPI, still need actual deleteIncubator function to trigger toast
+    cancelIncubatorAPI.mockImplementation(() =>
+      Promise.resolve({ status: 204 })
+    );
+    render(
+      <MemoryRouter initialEntries={["/incubator"]}>
+        <AuthContextProvider>
+          <IncubatorPage />
+        </AuthContextProvider>
+      </MemoryRouter>
+    );
+    const ghostEgg = screen.getByText("Ghost Type Egg");
+    expect(ghostEgg).toBeInTheDocument();
+
+    const incubatorUsage = screen.getByText("3 out of 4 Incubators in use");
+    expect(incubatorUsage).toBeInTheDocument();
+    await waitFor(() => {
+      const cancelButton = screen.getByTestId(
+        `${ghostIncubator._id}-cancel-btn`
+      );
+      fireEvent.click(cancelButton);
+    });
+    await waitFor(
+      () => {
+        const confirmDelButton = screen.getByText("Delete Incubator");
+        expect(confirmDelButton).toBeInTheDocument();
+        fireEvent.click(confirmDelButton);
+      },
+      { timeout: 8000 }
+    );
+    await waitFor(
+      () => {
+        const confirmDelMsg = screen.getByText(
+          "Incubator deleted successfully!"
+        );
+        expect(confirmDelMsg).toBeInTheDocument();
+      },
+      { timeout: 8000 }
+    );
   });
 });

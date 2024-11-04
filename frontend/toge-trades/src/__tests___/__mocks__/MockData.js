@@ -178,7 +178,7 @@ const darkIncubator = {
   pokemonType: "dark",
   species: vullaby._id,
 };
-const lynneyIncubators = [grassIncubator, ghostIncubator];
+const lynneyIncubators = [grassIncubator, ghostIncubator, darkIncubator];
 export {
   testUser,
   lynneyUser,
@@ -191,4 +191,5 @@ export {
   ghostIncubator,
   grassIncubator,
   lynneyIncubators,
+  misdrevus,
 };

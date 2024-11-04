@@ -80,7 +80,6 @@ export default function IncubatorContents() {
         onClose={handlePokeModalClose}
         modalType={"incubator"}
       />
-      {/* // )} */}
       {isLoading ? (
         <l-infinity
           size="55"

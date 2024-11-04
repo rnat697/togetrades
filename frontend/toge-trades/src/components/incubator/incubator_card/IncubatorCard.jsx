@@ -39,7 +39,11 @@ export default function IncubatorCard({
         >
           Hatch
         </button>
-        <button className="incubator-outline-btn" onClick={onCancelClick}>
+        <button
+          data-testid={`${incubator._id}-cancel-btn`}
+          className="incubator-outline-btn"
+          onClick={onCancelClick}
+        >
           Cancel
         </button>
       </div>
