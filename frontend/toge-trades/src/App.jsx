@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import PageLayout from "./components/page-layout/PageLayout.jsx";
+import PageLayout from "./Pages/page-layout/PageLayout.jsx";
 import LandingPage from "./Pages/Landing/LandingPage.jsx";
 import AuthorisationPage from "./Pages/Authorisation/AuthorisationPage.jsx";
 import { RequiresAuth, RequiresNonAuth } from "./api/auth.jsx";
