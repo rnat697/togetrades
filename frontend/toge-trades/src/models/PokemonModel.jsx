@@ -8,7 +8,7 @@ class PokemonModel {
     orignOwner,
     currentOwner,
     isShiny,
-    isTradeable,
+    isTrading,
     isLocked
   ) {
     this.id = id;
@@ -16,7 +16,7 @@ class PokemonModel {
     this.originalOwner = orignOwner;
     this.currentOwner = currentOwner;
     this.isShiny = isShiny;
-    this.isTradeable = isTradeable;
+    this.isTrading = isTrading; // Changed from Tradeable to Trading (True if in active trade, false if not)
     this.isLocked = isLocked;
   }
   static fromJSON(data) {
