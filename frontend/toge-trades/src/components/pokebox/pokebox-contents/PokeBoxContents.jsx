@@ -14,6 +14,7 @@ export default function PokeBoxContents() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPokeId, setSelectedPokeId] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
   const {
     data: pokemonList,
     isLoading,
@@ -31,9 +32,14 @@ export default function PokeBoxContents() {
     (poke) => poke._id == selectedPokeId
   );
   const handleDetailsClose = () => {
-    setSelectedPokeId(null);
+    setShowDetails(false);
+    // Wait until after the transition has finished
+    setTimeout(() => {
+      setSelectedPokeId(null);
+    }, 500);
   };
   const handleClick = (pokemon) => {
+    setShowDetails(true);
     setSelectedPokeId(pokemon._id);
   };
   return (
@@ -58,7 +64,12 @@ export default function PokeBoxContents() {
         ))}
         {isLoading && <div>Loading...</div>}
       </div>
-      <PokemonDetails pokemon={selectedPokemon} onClose={handleDetailsClose} />
+      <PokemonDetails
+        showModal={showDetails}
+        pokemon={selectedPokemon}
+        onClose={handleDetailsClose}
+        modalType={"pokebox"}
+      />
       <ToastContainer />
     </div>
   );

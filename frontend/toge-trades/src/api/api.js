@@ -9,6 +9,8 @@ import {
   TOGGLE_TRADEABLE_URL,
   TOGGLE_LOCKED_URL,
   CREATE_INCUBATOR_URL,
+  DELETE_INCUBATOR_URL,
+  HATCH_EGG_URL,
 } from "./urls";
 
 export const login = (username, password) =>
@@ -35,3 +37,8 @@ export const toggleLocked = (pokemonId, isLocked) =>
 
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
+
+export const cancelIncubatorAPI = (id) =>
+  axios.delete(DELETE_INCUBATOR_URL(id), { withCredentials: true });
+export const hatchIncubatorAPI = (id) =>
+  axios.delete(HATCH_EGG_URL(id), { withCredentials: true });

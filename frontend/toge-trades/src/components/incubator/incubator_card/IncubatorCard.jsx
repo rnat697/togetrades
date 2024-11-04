@@ -4,7 +4,11 @@ import { capitalizeFirstLetter, getTypeColorAndImage } from "../../utils/utils";
 import Countdown from "../../countdown/Countdown";
 import { useState } from "react";
 
-export default function IncubatorCard({ incubator }) {
+export default function IncubatorCard({
+  incubator,
+  onHatchClick,
+  onCancelClick,
+}) {
   const typeColor = getTypeColorAndImage(incubator.pokemonType);
   const [countdownComplete, setCountdownComplete] = useState(false);
   const handleCountdownComplete = (isDone) => {
@@ -31,10 +35,17 @@ export default function IncubatorCard({ incubator }) {
           data-testid={`${incubator._id}-hatch-btn`}
           className="hatch-btn"
           disabled={!countdownComplete}
+          onClick={onHatchClick}
         >
           Hatch
         </button>
-        <button className="incubator-outline-btn">Cancel</button>
+        <button
+          data-testid={`${incubator._id}-cancel-btn`}
+          className="incubator-outline-btn"
+          onClick={onCancelClick}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );

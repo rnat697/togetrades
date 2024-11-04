@@ -17,6 +17,8 @@
 }
 .incubator-card-title{
   display: flex;
+  padding: 1em;
+  min-width: 12em;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;

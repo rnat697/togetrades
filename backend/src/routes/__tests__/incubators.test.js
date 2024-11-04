@@ -164,7 +164,7 @@ describe("Incubator Cancel DELETE /api/v1/incubators/:id/cancel", () => {
       .delete(`/api/v1/incubators/${ventisIncubatorGhost._id}/cancel`)
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
-      .expect(200)
+      .expect(204)
       .end(async (err, res) => {
         if (err) return done(err);
         const incubatorExist = await mongoose.connection.db
