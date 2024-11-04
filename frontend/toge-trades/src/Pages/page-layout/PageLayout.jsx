@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import GlobalNavigation from "../global-navigation/GlobalNavigation";
+import GlobalNavigation from "../../components/global-navigation/GlobalNavigation";
 
 export default function PageLayout() {
   const location = useLocation();

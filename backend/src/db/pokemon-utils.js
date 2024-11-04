@@ -128,18 +128,19 @@ export async function updateFavUserPokemon(isFavouriteUpdates, pokeID) {
 }
 
 /**
- * Updates the tradeable field for a user's pokemon (can be used to tradeable it or un-tradeable)
+ * Updates the locked field for a user's pokemon (can be used to lock it or unlock it)
  * @param {*} pokeID The id of the pokemon to update
  * @returns the updated pokemon
  */
-export async function updateTradeableUserPokemon(isTradeableUpdates, pokeID) {
-  return Pokemon.findByIdAndUpdate(pokeID, isTradeableUpdates, { new: true });
+export async function updateLockedPokemon(isLockedUpdates, pokeID) {
+  return Pokemon.findByIdAndUpdate(pokeID, isLockedUpdates, { new: true });
 }
 
 /**
  * Finds how many tradeable pokemon the user has currently.
  * @param {*} ownerID The id of the pokemon to update
  * @returns the number of tradeable pokemon a user has currently
+ * @deprecated
  */
 export async function calculateNumTradeable(ownerID) {
   return Pokemon.countDocuments({ currentOwner: ownerID, isTradeable: true });

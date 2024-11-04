@@ -5,3 +5,37 @@
   margin-top:5em;
 
 }
+.incubator-content{
+  justify-content: center;
+  align-items: center;
+}
+.incubator-heading p{
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+.incubator-subheading{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.incubator-subheading p{
+  font-size: 1.2em;
+  font-weight: 500;
+}
+.incubators-list{
+  display:grid;
+  grid-template-rows: 1fr;
+  gap: 1em;
+  justify-content: space-evenly;
+  align-items: center;
+}
+/* Mobile format */
+@media screen and (max-width: 768px) {
+  .incubator-subheading{
+    flex-direction: column;
+  }
+  .incubators-list{
+    padding-top: 1em;
+  }
+}

@@ -1,8 +1,9 @@
 import "./PokeBoxCards.css";
 import LockButton from "../../lock/LockButton";
-import TradeableButton from "../../tradeable/TradeableButton";
+import TradingIcon from "../../trading/TradingIcon";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import RareIndicators from "../../rare-indicators/RareIndicators";
+import { Tooltip } from "react-tooltip";
 
 export default function PokeBoxCards({ pokemon, onClick }) {
   return (
@@ -21,11 +22,23 @@ export default function PokeBoxCards({ pokemon, onClick }) {
         </div>
       </div>
       <div className="pokebox-buttons">
-        <LockButton pokemonId={pokemon._id} isPokeLocked={pokemon.isLocked} />
-        <TradeableButton
-          pokemonId={pokemon._id}
-          isPokeTradeable={pokemon.isTradeable}
-        />
+        <a
+          data-tooltip-id="locked-n-trade"
+          data-tooltip-content={`${pokemon.isLocked ? "Unlock" : "Lock"} to ${
+            pokemon.isLocked ? "enable" : "disable"
+          } trading.`}
+        >
+          <LockButton pokemonId={pokemon.id} isPokeLocked={pokemon.isLocked} />
+        </a>
+        <a
+          data-tooltip-id="locked-n-trade"
+          data-tooltip-content={`${
+            pokemon.isTrading ? "In" : "Not in"
+          } an active trade offer.`}
+        >
+          <TradingIcon isPokeTrading={pokemon.isTrading} />
+        </a>
+        <Tooltip id="locked-n-trade" />
       </div>
     </div>
   );

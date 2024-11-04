@@ -7,25 +7,25 @@ import { MdNotificationsActive } from "react-icons/md";
 export default function NotificationDropDown({ isMobileMenu }) {
   const [notifications, setNotifs] = useState([
     {
-      id: 12312,
+      id: 35646,
       username: "myname",
       message: " has accepted your request for their Scyther and your Eevee.",
       date: new Date(Date.now() - 10 * 60 * 1000),
     },
     {
-      id: 1232,
+      id: 1223423432,
       username: "Username",
       message: " has declined your request for their Pikachu and your Eevee.",
       date: new Date(Date.now() - 2 * 60000),
     },
     {
-      id: 12354,
+      id: 12356776554,
       username: "Username",
       message: " has declined your request for their Pikachu and your Eevee.",
       date: new Date(Date.now() - 2 * 60000),
     },
     {
-      id: 1238,
+      id: 12334228,
       username: "Username",
       message: " has declined your request for their Pikachu and your Eevee.",
       date: new Date(Date.now() - 2 * 60000),
@@ -67,6 +67,7 @@ export default function NotificationDropDown({ isMobileMenu }) {
         ) : (
           notifications.map((notification) => (
             <NotificationCard
+              key={notification.id}
               notification={notification}
               onRemove={handleRemoveNotif}
             />
