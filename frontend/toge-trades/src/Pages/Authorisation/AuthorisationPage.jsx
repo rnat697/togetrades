@@ -1,12 +1,11 @@
 import "./AuthorisationPage.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth, extractAuthTokenFromCookie } from "../../api/auth.jsx";
 import AuthImage from "../../components/authorisation/auth-image/AuthImg";
-import { signup, login } from "../../api/api.js";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { login, signup } from "../../controllers/AuthorisationController.jsx";
+import { useAuth, extractAuthTokenFromCookie } from "../../api/auth.jsx";
 import Logo from "../../components/logo/Logo";
 import Divider from "../../components/authorisation/divder/Divider";
 import { Link } from "react-router-dom";
@@ -45,7 +44,7 @@ export default function AuthorisationPage({ isLogin }) {
           toast("Error when signing up: " + e.response.data);
         });
     } else {
-      // --- API call ---
+      // --- Login api call ---
       login(username, password)
         .then((res) => {
           const token = extractAuthTokenFromCookie();

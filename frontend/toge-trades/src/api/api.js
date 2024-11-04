@@ -12,10 +12,10 @@ import {
   HATCH_EGG_URL,
 } from "./urls";
 
-export const login = (username, password) =>
+export const loginAPI = (username, password) =>
   axios.post(LOGIN_URL, { username, password }, { withCredentials: true });
 
-export const signup = (username, email, password) =>
+export const signupAPI = (username, email, password) =>
   axios.post(
     REGISTER_ACCOUNT_URL,
     { username, email, password },
