@@ -23,7 +23,7 @@ const pokemonSchema = new Schema({
     required: true,
   },
   isShiny: { type: Boolean, default: false },
-  isTradeable: { type: Boolean, default: false },
+  isTrading: { type: Boolean, default: false }, // Changed to isTrading - true if in active trade, false otherwise
   isLocked: { type: Boolean, default: false },
 });
 const Pokemon = mongoose.model("Pokemon", pokemonSchema);

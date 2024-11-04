@@ -26,7 +26,7 @@ class PokemonModel {
       UserModel.fromJSON(data.originalOwner),
       UserModel.fromJSON(data.currentOwner),
       data.isShiny,
-      data.isTradeable,
+      data.isTrading,
       data.isLocked
     );
   }

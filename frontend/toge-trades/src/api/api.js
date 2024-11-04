@@ -25,13 +25,6 @@ export const signup = (username, email, password) =>
 
 export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
-export const toggleTradeable = (pokemonID, isTradeable) =>
-  axios.patch(
-    TOGGLE_TRADEABLE_URL(pokemonID),
-    { isTradeable: isTradeable },
-    { withCredentials: true }
-  );
-
 export const toggleLocked = (pokemonId, isLocked) =>
   axios.patch(
     TOGGLE_LOCKED_URL(pokemonId),

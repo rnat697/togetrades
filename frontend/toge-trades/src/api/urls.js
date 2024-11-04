@@ -11,8 +11,6 @@ export const USER_POKEMON_URL = (userId) => `${USERS_URL}/${userId}/pokemon`;
 
 // ------ POKEMON ENDPOINTS ------
 export const POKEMON_URL = `${API_BASE_URL}/pokemons`;
-export const TOGGLE_TRADEABLE_URL = (pokeId) =>
-  `${POKEMON_URL}/${pokeId}/setTradeable`;
 export const TOGGLE_LOCKED_URL = (pokeId) =>
   `${POKEMON_URL}/${pokeId}/setLocked`;
 
