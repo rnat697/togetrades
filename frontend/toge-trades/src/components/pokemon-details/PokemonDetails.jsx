@@ -10,7 +10,7 @@ import {
 import PokemonType from "../pokemon-type/PokemonType";
 import InfoTag from "../info-tag/InfoTag";
 import LockButton from "../lock/LockButton";
-import TradeableButton from "../tradeable/TradeableButton";
+import TradeableButton from "../trading/TradingIcon";
 import RareIndicators from "../rare-indicators/RareIndicators";
 
 export default function PokemonDetails({
