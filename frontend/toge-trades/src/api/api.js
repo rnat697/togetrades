@@ -33,7 +33,11 @@ export const toggleTradeable = (pokemonID, isTradeable) =>
   );
 
 export const toggleLocked = (pokemonId, isLocked) =>
-  axios.patch(TOGGLE_LOCKED_URL(pokemonId), { isLocked: isLocked });
+  axios.patch(
+    TOGGLE_LOCKED_URL(pokemonId),
+    { isLocked: isLocked },
+    { withCredentials: true }
+  );
 
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });

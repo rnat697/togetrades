@@ -2,23 +2,18 @@ import "./PokeBoxPage.css";
 import { useState } from "react";
 import SearchBar from "../../components/pokebox/search-bar/SearchBar";
 import PokeBoxCards from "../../components/pokebox/pokebox-cards/PokeBoxCards";
-import { useAuth } from "../../api/auth";
-import useGet from "../../hooks/useGet";
-import { USER_POKEMON_URL } from "../../api/urls";
 import PokemonDetails from "../../components/pokemon-details/PokemonDetails";
 import { ToastContainer } from "react-toastify";
 import "ldrs/infinity";
+import { usePokeBox } from "../../controllers/PokeBoxController";
 
 export default function PokeBoxPage() {
-  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPokeId, setSelectedPokeId] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-  const {
-    data: pokemonList,
-    isLoading,
-    refresh,
-  } = useGet(USER_POKEMON_URL(user._id), [], true);
+  // ----- Get pokemons in pokebox function --
+  const { pokemonList, isLoading, error, refresh } = usePokeBox();
+  if (error) toast.error(error);
 
   const filteredPokes =
     searchQuery.length > 0
