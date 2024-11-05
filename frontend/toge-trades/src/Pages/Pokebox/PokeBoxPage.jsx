@@ -1,26 +1,41 @@
 import "./PokeBoxPage.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "../../components/pokebox/search-bar/SearchBar";
 import PokeBoxCards from "../../components/pokebox/pokebox-cards/PokeBoxCards";
 import PokemonDetails from "../../components/pokemon-details/PokemonDetails";
 import { ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import { usePokeBox } from "../../controllers/PokeBoxController";
+import ReactPaginate from "react-paginate";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PokeBoxPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPokeId, setSelectedPokeId] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
+
+  const [filteredPokes, setFilteredPokes] = useState([]);
+  const navigate = useNavigate();
+
+  const { page } = useParams();
+  const initialPage = page ? parseInt(page, 10) : 1;
+  const [currentPage, setCurrentPage] = useState(initialPage);
   // ----- Get pokemons in pokebox function --
-  const { pokemonList, isLoading, error, refresh } = usePokeBox();
+  const { pokemonList, isLoading, error, refresh, pokeMetadata } =
+    usePokeBox(currentPage);
   if (error) toast.error(error);
 
-  const filteredPokes =
+  useEffect(() => {
     searchQuery.length > 0
-      ? pokemonList.filter((pokemon) =>
-          pokemon.species.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ? setFilteredPokes(
+          pokemonList.filter((pokemon) =>
+            pokemon.species.name
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          )
         )
-      : pokemonList;
+      : setFilteredPokes(pokemonList);
+  }, [pokemonList, searchQuery]);
 
   const selectedPokemon = pokemonList.find((poke) => poke.id == selectedPokeId);
   const handleDetailsClose = () => {
@@ -33,6 +48,16 @@ export default function PokeBoxPage() {
   const handleClick = (pokemon) => {
     setShowDetails(true);
     setSelectedPokeId(pokemon.id);
+  };
+
+  // Handle page change
+  const handlePageChange = ({ selected }) => {
+    console.log(selected);
+    setFilteredPokes([]);
+    setSelectedPokeId(null);
+    setCurrentPage(selected + 1); // react-paginate uses 0-based index
+    navigate(`/pokebox/${selected + 1}`); // Update the URL
+    window.scrollTo(0, 0);
   };
   return (
     <div className="pokebox-container">
@@ -68,6 +93,21 @@ export default function PokeBoxPage() {
             />
           </div>
         )}
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          pageRangeDisplayed={5}
+          onPageChange={handlePageChange}
+          pageCount={pokeMetadata?.totalPages}
+          previousLabel="<"
+          renderOnZeroPageCount={null}
+          containerClassName="pagination"
+          activeClassName="pagination-active"
+          pageClassName="page-item"
+          previousClassName="page-item"
+          nextClassName="page-item"
+          breakClassName="page-item"
+        />
 
         <PokemonDetails
           showModal={showDetails}
