@@ -38,13 +38,14 @@ function App() {
           }
         />
         <Route
-          path="pokebox"
+          path="pokebox/:page?"
           element={
             <RequiresAuth>
               <PokeBoxPage />
             </RequiresAuth>
           }
         />
+        <Route index element={<Navigate to="/pokebox/1" replace />} />
         <Route
           path="incubator"
           element={

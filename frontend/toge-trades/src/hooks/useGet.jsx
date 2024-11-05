@@ -7,19 +7,26 @@ function axiosGet(url, token, requiresAuth) {
   return axios.get(url, { withCredentials: true });
 }
 
-export default function useGet(url, initialState = null, requiresAuth = false) {
+export default function useGet(
+  url,
+  initialState = null,
+  requiresAuth = false,
+  isPagination = false,
+  page = null
+) {
   const [data, setData] = useState(initialState);
   const [isLoading, setLoading] = useState(false);
   const [refreshToggle, setRefreshToggle] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
 
+  const apiURL = isPagination ? `${url}?page=${page}` : url;
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       setError(null);
       try {
-        const response = await axiosGet(url, token, requiresAuth);
+        const response = await axiosGet(apiURL, token, requiresAuth);
         setData(response.data);
       } catch (err) {
         setError(err);
@@ -28,7 +35,7 @@ export default function useGet(url, initialState = null, requiresAuth = false) {
       }
     }
     fetchData();
-  }, [url, refreshToggle]);
+  }, [apiURL, refreshToggle]);
 
   function refresh() {
     setRefreshToggle(!refreshToggle);
