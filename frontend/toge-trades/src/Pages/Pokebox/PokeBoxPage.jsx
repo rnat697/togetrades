@@ -52,7 +52,6 @@ export default function PokeBoxPage() {
 
   // Handle page change
   const handlePageChange = ({ selected }) => {
-    console.log(selected);
     setFilteredPokes([]);
     setSelectedPokeId(null);
     setCurrentPage(selected + 1); // react-paginate uses 0-based index
@@ -98,7 +97,7 @@ export default function PokeBoxPage() {
           nextLabel=">"
           pageRangeDisplayed={5}
           onPageChange={handlePageChange}
-          pageCount={pokeMetadata?.totalPages}
+          pageCount={pokeMetadata?.totalPages ?? 1}
           previousLabel="<"
           renderOnZeroPageCount={null}
           containerClassName="pagination"

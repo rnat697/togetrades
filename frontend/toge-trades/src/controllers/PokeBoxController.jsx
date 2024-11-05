@@ -18,10 +18,8 @@ export function usePokeBox(currentPage) {
   const [pokeMetadata, setPokeMetadata] = useState([]);
   useEffect(() => {
     if (rawData.success) {
-      console.log(rawData);
       let pokeData = rawData.data;
       setPokeMetadata(rawData.metadata);
-      console.log(rawData.metadata);
 
       const pokemon = pokeData.map((data) => PokemonModel.fromJSON(data));
       setPokemonList(pokemon);
