@@ -5,6 +5,7 @@ import { createToken } from "../auth/auth.js";
 import { generateStartingPokemonForUser } from "../db/pokemon-utils.js";
 import auth from "../auth/auth.js";
 import Pokemon from "../db/pokemon-schema.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 // logi/register - https://www.youtube.com/watch?v=-8OEfGQPJ8c
@@ -86,38 +87,63 @@ router.post("/login", async (req, res) => {
 // if user requests a list of their own pokemon, they can specify whether all pokemon are return
 // or just their favourites or just their tradeable or just their shiny
 // if user request a list of other people's pokemon, it returns a list of the other person's tradeable pokemon
+/**
+ * @params UserID
+ * @params request query: page, limit, lockedOnly, tradingOnly,
+ */
 router.get("/:id/pokemon", auth, async (req, res) => {
   try {
     // Check if the id exists
     const userExist = await User.findById(req.params.id);
     if (!userExist) return res.status(404).send("User can not be found.");
 
+    // Paginations
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit, 10) || 20;
+    const skip = (page - 1) * limit;
+
     // Finds pokemon by specific owner
     const isSameUser = req.user._id == req.params.id;
     const isQueryLocked = req.query.lockedOnly;
-    const isQueryTradeable = req.query.tradeableOnly;
+    const isQueryTrading = req.query.tradingOnly;
     const isQueryShiny = req.query.shinyOnly;
-    let filter = { currentOwner: req.params.id };
+    let filter = { currentOwner: new mongoose.Types.ObjectId(req.params.id) };
 
     if (!isSameUser) {
-      filter.isTradeable = true;
+      filter.isTrading = true;
     } else {
       if (isQueryLocked) filter.isLocked = true;
-      if (isQueryTradeable) filter.isTradeable = true;
+      if (isQueryTrading) filter.isTrading = true;
       if (isQueryShiny) filter.isShiny = true;
     }
-    const pokemon = await Pokemon.find(filter).populate([
-      { path: "species" },
-      {
-        path: "originalOwner",
-        select: "username _id",
+    const pokemon = await Pokemon.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .populate("species") // Populate species information
+      .populate("originalOwner", "username _id") // Populate originalOwner information
+      .populate("currentOwner", "username _id"); // Populate currentOwner information
+
+    // Count total Pokémon for pagination
+    const totalCount = await Pokemon.countDocuments(filter);
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Check if the requested page exceeds total pages
+    if (page > totalPages && totalPages > 0) {
+      return res
+        .status(400)
+        .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
+    }
+
+    return res.status(200).json({
+      success: true,
+      metadata: {
+        totalCount: totalCount,
+        page,
+        totalPages,
+        limit,
       },
-      {
-        path: "currentOwner",
-        select: "username _id",
-      },
-    ]);
-    return res.status(200).json(pokemon);
+      data: pokemon,
+    });
   } catch (error) {
     console.error("Error retrieving Pokemon: ", error);
     return res

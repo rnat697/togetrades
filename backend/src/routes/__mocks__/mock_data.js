@@ -95,7 +95,7 @@ const tokenNavia = jwt.sign(
 );
 const bearerNavia = `Bearer ${tokenNavia}`;
 
-// Navia
+// Venti
 const userVenti = {
   _id: new mongoose.Types.ObjectId("000000000000000000000003"),
   username: "Venti",
@@ -112,6 +112,24 @@ const tokenVenti = jwt.sign(
   { expiresIn: "7d" }
 );
 const bearerVenti = `Bearer ${tokenVenti}`;
+
+// Agatha
+const userAgatha = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000756"),
+  username: "Agatha",
+  email: "Agatha@email.com",
+  passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
+  image:
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+};
+
+// Valid token for Agatha - for authetication checks
+const tokenAgatha = jwt.sign(
+  { _id: "000000000000000000000756", username: "Agatha" },
+  process.env.JWT_KEY,
+  { expiresIn: "7d" }
+);
+const bearerAgatha = `Bearer ${tokenAgatha}`;
 
 // --------- Pokemon ---------
 // Lynney's Ivysaur
@@ -207,7 +225,7 @@ const pokemonVentisIvyasaur = {
 };
 // Venti's Lunala
 const pokemonVentisLunala = {
-  _id: new mongoose.Types.ObjectId("000000000000000000000084"),
+  _id: new mongoose.Types.ObjectId("000000000000000000000843"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
@@ -215,6 +233,37 @@ const pokemonVentisLunala = {
   isTrading: true,
   isLocked: false,
 };
+
+let pokemonAgathasLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000514"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  isShiny: false,
+  isTrading: true,
+  isLocked: false,
+}
+
+
+
+function makeAgathasPokemons(){
+  let pokemonList = [];
+  // Get the original ID as a number
+  let baseId = parseInt(pokemonAgathasLunala._id.toString(), 16); // Convert ObjectId to base 10 integer
+
+  for (let i = 0; i < 50; i++) {
+    // Increment the base ID
+    let newId = (baseId + i).toString(16).padStart(24, '0'); // Convert back to hex, ensure it's 24 characters
+
+    let newPokemon = {
+      ...pokemonAgathasLunala,
+      _id: new mongoose.Types.ObjectId(newId)
+    };
+
+    pokemonList.push(newPokemon);
+  }
+  return pokemonList;
+}
 
 // --------- Incubators ---------
 // Venti's incubators can be useful for not allowing
@@ -266,10 +315,11 @@ async function addMockSpecies() {
 }
 async function addMockUsers() {
   const usersDB = mongoose.connection.db.collection("users");
-  await usersDB.insertMany([userLynney, userNavia, userVenti]);
+  await usersDB.insertMany([userLynney, userNavia, userVenti, userAgatha]);
 }
 async function addMockPokemons() {
   const pokemonsDB = mongoose.connection.db.collection("pokemons");
+  let agathaList = makeAgathasPokemons();
   await pokemonsDB.insertMany([
     pokemonLynneysIvyasaur,
     pokemonNaviasLunala,
@@ -282,6 +332,7 @@ async function addMockPokemons() {
     pokemonVentisIvyasaur,
     pokemonVentisLunala,
   ]);
+  await pokemonsDB.insertMany(agathaList);
 }
 
 async function addMockIncubators() {
@@ -325,14 +376,17 @@ export {
   userLynney,
   userNavia,
   userVenti,
+  userAgatha,
   bearerLynney,
   bearerNavia,
   bearerVenti,
+  bearerAgatha,
   pokemonLynneysIvyasaur,
   pokemonNaviasLunala,
   pokemonNaviasIvysaur,
   pokemonVentisIvyasaur,
   pokemonVentisLunala,
+  pokemonAgathasLunala,
   ventisIncubatorGhost,
   ventisIncubatorGrass,
   addAllMockData,
