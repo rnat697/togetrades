@@ -77,7 +77,7 @@ router.get("/", auth, async (req, res) => {
 
 /**
  * GET /species/item/:id
- * Gets one species based on ID
+ * Gets one species based on ID, also has metadata field that shows next and previous species
  * @param {id} - the id of the speices
  * @param {user._id} - the id of the user
  *
@@ -105,25 +105,27 @@ router.get("/item/:id", auth, async (req, res) => {
     // Gets user's pokemon to compare
     const doesPokemonExist = await Pokemon.exists({
       species: req.params.id,
-      originalOwner: userId,
+      currentOwner: userId,
     });
 
     // finds missing species based on user's pokemon
     const updatedSpecies = {
       ...species,
       isMissing: !doesPokemonExist,
-      previous: previousSpecies || null,
-      next: nextSpecies || null,
     };
     return res.status(200).json({
       success: true,
+      metadata: {
+        previous: previousSpecies || null,
+        next: nextSpecies || null,
+      },
       data: updatedSpecies,
     });
   } catch (error) {
-    console.error("Error retrieving Species: ", error);
+    console.error("Error retrieving singular species: ", error);
     return res
       .status(500)
-      .send("Internal Server Error when retrieving Speices");
+      .send("Internal Server Error when retrieving singular speices.");
   }
 });
 
