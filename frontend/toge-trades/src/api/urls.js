@@ -8,7 +8,6 @@ export const LOGIN_URL = `${USERS_URL}/login`;
 export const ALL_USERS = `${USERS_URL}/`;
 export const USER_BY_ID_URL = (userId) => `${USERS_URL}/${userId}`;
 export const USER_POKEMON_URL = (userId) => `${USERS_URL}/${userId}/pokemon`;
-
 // ------ POKEMON ENDPOINTS ------
 export const POKEMON_URL = `${API_BASE_URL}/pokemons`;
 export const TOGGLE_LOCKED_URL = (pokeId) =>
@@ -20,3 +19,7 @@ export const USERS_INCUBATORS = `${INCUBATOR_URL}/`;
 export const CREATE_INCUBATOR_URL = (type) => `${INCUBATOR_URL}/${type}/create`;
 export const DELETE_INCUBATOR_URL = (id) => `${INCUBATOR_URL}/${id}/cancel`;
 export const HATCH_EGG_URL = (id) => `${INCUBATOR_URL}/${id}/hatch`;
+
+// ----- SPEICES ENDPOINTS ------
+export const SPEICES_URL = `${API_BASE_URL}/species`;
+export const FETCH_SPECIES_URL = `${SPEICES_URL}/`;
