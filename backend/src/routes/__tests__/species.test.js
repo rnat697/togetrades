@@ -74,4 +74,12 @@ describe("Getting species list with pagination, GET /api/v1/species/ ", () => {
         return done();
       });
   });
+  test("Unsuccessful pagination - 2nd page attempt, total pages 1", (done) => {
+    request(app)
+      .get(`/api/v1/species/?page=2`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(400)
+      .end(done);
+  });
 });
