@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import PokemonType from "../../pokemon-type/PokemonType";
 import { capitalizeFirstLetter, formatDexNumber } from "../../utils/utils";
 import "./PokedexCard.css";
 import { Tooltip } from "react-tooltip";
 
 export default function PokedexCard({ species }) {
+  const navigate = useNavigate();
   const handleOnClick = () => {
-    // navigate(`/pokedex/species/${species.id}`);
+    navigate(`/pokedex/entry/${species.dexNumber}`);
     console.log(`clicked - ${species.id}`);
     console.log(`clicked - ${species.name}`);
   };

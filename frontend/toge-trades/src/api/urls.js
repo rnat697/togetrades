@@ -23,4 +23,4 @@ export const HATCH_EGG_URL = (id) => `${INCUBATOR_URL}/${id}/hatch`;
 // ----- SPEICES ENDPOINTS ------
 export const SPEICES_URL = `${API_BASE_URL}/species`;
 export const SPECIES_ALL_URL = `${SPEICES_URL}/`;
-export const SPECIES_ITEM_URL = (id) => `${SPEICES_URL}/item/${id}`;
+export const SPECIES_ITEM_URL = (dexNum) => `${SPEICES_URL}/item/${dexNum}`;

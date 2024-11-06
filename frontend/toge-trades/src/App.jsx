@@ -8,6 +8,7 @@ import PokeBoxPage from "./Pages/Pokebox/PokeBoxPage.jsx";
 import IncubatorPage from "./Pages/Incubator/IncubatorPage.jsx";
 import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
 import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
+import PokedexSpeciesPage from "./Pages/Pokedex-species/PokedexSpeciesPage.jsx";
 
 function App() {
   return (
@@ -72,6 +73,15 @@ function App() {
           }
         />
         <Route index element={<Navigate to="/pokedex/1" replace />} />
+        <Route
+          path="pokedex/entry/:dexNumber"
+          element={
+            <RequiresAuth>
+              <PokedexSpeciesPage />
+            </RequiresAuth>
+          }
+        />
+        <Route index element={<Navigate to="/pokedex/entry/1" replace />} />
       </Route>
     </Routes>
   );
