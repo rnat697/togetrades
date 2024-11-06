@@ -19,6 +19,23 @@ const speciesShaymin = {
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/492.png",
   },
 };
+const speciesOddish = {
+  _id: new mongoose.Types.ObjectId("65f306233a6aae800ca98330"),
+  dexNumber: 43,
+  dexEntry:
+    "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.",
+  name: "oddish",
+  types: ["grass", "poison"],
+  height: 5,
+  weight: 54,
+  isLegendary: false,
+  image: {
+    normal:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/43.png",
+    shiny:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/43.png",
+  },
+};
 
 const speciesIvysaur = {
   _id: new mongoose.Types.ObjectId("000000000000000000000020"),
@@ -242,22 +259,20 @@ let pokemonAgathasLunala = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
-}
+};
 
-
-
-function makeAgathasPokemons(){
+function makeAgathasPokemons() {
   let pokemonList = [];
   // Get the original ID as a number
   let baseId = parseInt(pokemonAgathasLunala._id.toString(), 16); // Convert ObjectId to base 10 integer
 
   for (let i = 0; i < 50; i++) {
     // Increment the base ID
-    let newId = (baseId + i).toString(16).padStart(24, '0'); // Convert back to hex, ensure it's 24 characters
+    let newId = (baseId + i).toString(16).padStart(24, "0"); // Convert back to hex, ensure it's 24 characters
 
     let newPokemon = {
       ...pokemonAgathasLunala,
-      _id: new mongoose.Types.ObjectId(newId)
+      _id: new mongoose.Types.ObjectId(newId),
     };
 
     pokemonList.push(newPokemon);
@@ -311,7 +326,12 @@ const ventisIncubatorGrassDupe2 = {
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
-  await speciesDB.insertMany([speciesShaymin, speciesIvysaur, speciesLunala]);
+  await speciesDB.insertMany([
+    speciesShaymin,
+    speciesIvysaur,
+    speciesLunala,
+    speciesOddish,
+  ]);
 }
 async function addMockUsers() {
   const usersDB = mongoose.connection.db.collection("users");
@@ -373,6 +393,7 @@ export {
   speciesIvysaur,
   speciesLunala,
   speciesShaymin,
+  speciesOddish,
   userLynney,
   userNavia,
   userVenti,
