@@ -8,7 +8,8 @@ class SpeciesModel {
     height,
     weight,
     isLegendary,
-    image
+    image,
+    isMissing
   ) {
     this.id = id;
     this.dexNumber = dexNumber;
@@ -19,6 +20,7 @@ class SpeciesModel {
     this.weight = weight;
     this.isLegendary = isLegendary;
     this.image = image;
+    this.isMissing = isMissing || null;
   }
   static fromJSON(data) {
     return new SpeciesModel(
@@ -30,7 +32,8 @@ class SpeciesModel {
       data.height,
       data.weight,
       data.isLegendary,
-      data.image
+      data.image,
+      data.isMissing
     );
   }
 }

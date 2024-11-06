@@ -7,6 +7,7 @@ import { RequiresAuth, RequiresNonAuth } from "./api/auth.jsx";
 import PokeBoxPage from "./Pages/Pokebox/PokeBoxPage.jsx";
 import IncubatorPage from "./Pages/Incubator/IncubatorPage.jsx";
 import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
+import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
 
 function App() {
   return (
@@ -62,6 +63,15 @@ function App() {
             </RequiresAuth>
           }
         />
+        <Route
+          path="pokedex/:page?"
+          element={
+            <RequiresAuth>
+              <PokedexPage />
+            </RequiresAuth>
+          }
+        />
+        <Route index element={<Navigate to="/pokedex/1" replace />} />
       </Route>
     </Routes>
   );
