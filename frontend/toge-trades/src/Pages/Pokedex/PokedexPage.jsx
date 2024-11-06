@@ -5,6 +5,7 @@ import { usePokedex } from "../../controllers/PokedexController";
 import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import ReactPaginate from "react-paginate";
+import PokedexCard from "../../components/pokedex/pokedex-card/PokedexCard";
 
 export default function PokedexPage() {
   const { page } = useParams();
@@ -23,7 +24,7 @@ export default function PokedexPage() {
   }, [speciesList]);
 
   const handlePageChange = ({ selected }) => {
-    setFilteredSpecies([]);
+    setSpeciesData([]);
     setCurrentPage(selected + 1);
     navigate(`/pokedex/${selected + 1}`);
     window.scrollTo(0, 0);
@@ -37,7 +38,7 @@ export default function PokedexPage() {
         </div>
         <div className="pokedex-cards">
           {speciesData.map((species, index) => (
-            <p>{species.name}</p>
+            <PokedexCard key={species.id} species={species} />
           ))}
         </div>
         {isLoading && (
