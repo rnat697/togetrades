@@ -90,8 +90,9 @@ router.get("/item/:dexNumber", auth, async (req, res) => {
     if (!userExist) return res.status(404).send("User can not be found");
 
     // Gets specieic species based on species id
-    const species = await Species.findOne({dexNumber:req.params.dexNumber}).lean();
-    console.log(species);
+    const species = await Species.findOne({
+      dexNumber: req.params.dexNumber,
+    }).lean();
     
     if (!species) {
       return res.status(404).send("Species not found");
