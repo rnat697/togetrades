@@ -2,6 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./PokedexSpeciesPage.css";
 import { useState, useEffect } from "react";
 import { usePokedexEntry } from "../../controllers/PokedexController";
+import PokedexNavigation from "../../components/pokedex/pokedex-navigation/PokedexNavigation";
+import {
+  capitalizeFirstLetter,
+  formatDexNumber,
+} from "../../components/utils/utils";
 
 export default function PokedexSpeciesPage() {
   const { dexNumber } = useParams();
@@ -21,13 +26,19 @@ export default function PokedexSpeciesPage() {
     <div className="species-page-container">
       <div className="species-contents">
         <div className="species-navigation">
-          <h1>adsdlsjadsad</h1>
+          <PokedexNavigation metadata={entryMetadata.previous} />
+          <PokedexNavigation metadata={entryMetadata.next} isNext={true} />
         </div>
         <div className="species-entry">
           <div className="species-title">
-            <h1>{dexEntry.name}</h1>
-            <h1>{dexEntry.dexNumber}</h1>
+            <h1 className="name-species">
+              {capitalizeFirstLetter(dexEntry.name)}
+            </h1>
+            <h1 className="species-num">
+              {formatDexNumber(dexEntry.dexNumber)}
+            </h1>
           </div>
+          <div className="species-carousal"></div>
         </div>
       </div>
     </div>
