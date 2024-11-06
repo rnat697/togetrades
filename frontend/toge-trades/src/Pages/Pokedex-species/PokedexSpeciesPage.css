@@ -15,9 +15,17 @@
 .species-navigation{
   display: flex;
   justify-content: space-between;
+  position: relative;
   width: 100%;
   padding: 0 1em;
 }
+.previous-only{
+  justify-content: flex-start;
+}
+.next-only{
+  justify-content: flex-end;
+}
+
 .species-entry{
   display: flex;
   flex-direction: column;

@@ -33,7 +33,7 @@ export function usePokedexEntry(currentEntryId) {
     isLoading,
     error,
     refresh,
-  } = useGet(SPECIES_ITEM_URL(currentEntryId), [], true);
+  } = useGet(SPECIES_ITEM_URL(currentEntryId), [], true, false);
   const [entry, setEntry] = useState({});
   const [entryMetadata, setEntryMetadata] = useState([]);
 

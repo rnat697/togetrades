@@ -19,7 +19,7 @@ export default function PokedexNavigation({
         )}
       </div>
       <div className="titles">
-        <h2 className="dex-num">{formatDexNumber(metadata.dexNumber)}</h2>
+        <h2 className="entry-dex-num">{formatDexNumber(metadata.dexNumber)}</h2>
         <p className="species-name">{capitalizeFirstLetter(metadata.name)}</p>
       </div>
     </div>
