@@ -20,9 +20,7 @@ router.get("/", auth, async (req, res) => {
     // check if user exists
     let userId = req.user._id;
     const userExist = await User.findById(userId);
-    console.log("ADASDSADSADASDAS");
     if (!userExist) return res.status(404).send("User can not be found");
-    console.log("DSFFFFFF");
 
     // Pagination
     const page = parseInt(req.query.page) || 1;
@@ -76,4 +74,59 @@ router.get("/", auth, async (req, res) => {
       .send("Internal Server Error when retrieving Speices");
   }
 });
+
+/**
+ * GET /species/item/:id
+ * Gets one species based on ID, also has metadata field that shows next and previous species
+ * @param {id} - the id of the speices
+ * @param {user._id} - the id of the user
+ *
+ */
+router.get("/item/:id", auth, async (req, res) => {
+  try {
+    // check if user exists
+    let userId = req.user._id;
+    const userExist = await User.findById(userId);
+    if (!userExist) return res.status(404).send("User can not be found");
+
+    // Gets specieic species based on species id
+    const species = await Species.findById(req.params.id).lean();
+    if (!species) {
+      return res.status(404).send("Species not found");
+    }
+    // Use the species' pokedexNumber to find the previous and next species
+    const previousSpecies = await Species.findOne({
+      dexNumber: species.dexNumber - 1,
+    }).select("_id name dexNumber");
+    const nextSpecies = await Species.findOne({
+      dexNumber: species.dexNumber + 1,
+    }).select("_id name dexNumber");
+
+    // Gets user's pokemon to compare
+    const doesPokemonExist = await Pokemon.exists({
+      species: req.params.id,
+      currentOwner: userId,
+    });
+
+    // finds missing species based on user's pokemon
+    const updatedSpecies = {
+      ...species,
+      isMissing: !doesPokemonExist,
+    };
+    return res.status(200).json({
+      success: true,
+      metadata: {
+        previous: previousSpecies || null,
+        next: nextSpecies || null,
+      },
+      data: updatedSpecies,
+    });
+  } catch (error) {
+    console.error("Error retrieving singular species: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving singular speices.");
+  }
+});
+
 export default router;

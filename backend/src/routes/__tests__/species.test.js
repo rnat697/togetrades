@@ -7,15 +7,10 @@ import routes from "../species.js";
 import {
   addAllMockData,
   bearerNavia,
-  pokemonNaviasIvysaur,
-  pokemonNaviasLunala,
   speciesIvysaur,
-  speciesLunala,
+  speciesBulbasaur,
+  speciesVenusaur,
   speciesShaymin,
-  speciesOddish,
-  userLynney,
-  userNavia,
-  userVenti,
 } from "../__mocks__/mock_data.js";
 
 let mongod, db;
@@ -58,18 +53,18 @@ describe("Getting species list with pagination, GET /api/v1/species/ ", () => {
         // Check meta data
         const response = res.body;
         expect(response.success).toBe(true);
-        expect(response.metadata.totalCount).toBe(4);
+        expect(response.metadata.totalCount).toBe(6);
         expect(response.metadata.page).toBe(1);
         expect(response.metadata.totalPages).toBe(1);
         expect(response.metadata.limit).toBe(20);
 
         const species = response.data;
-        expect(species.length).toBe(4);
-        expect(species[0]._id).toBe(speciesShaymin._id.toString());
+        expect(species.length).toBe(6);
+        expect(species[3]._id).toBe(speciesShaymin._id.toString());
         expect(species[1]._id).toBe(speciesIvysaur._id.toString());
         expect(species[0].isMissing).toBe(true);
         expect(species[1].isMissing).toBe(false);
-        expect(species[3].isMissing).toBe(true);
+        expect(species[2].isMissing).toBe(true);
 
         return done();
       });
@@ -80,6 +75,71 @@ describe("Getting species list with pagination, GET /api/v1/species/ ", () => {
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(400)
+      .end(done);
+  });
+});
+
+describe("Getting singular species, GET /api/v1/species/item/:id ", () => {
+  test("Successful fetching of ivysaur with isMissing fields", (done) => {
+    request(app)
+      .get(`/api/v1/species/item/${speciesIvysaur._id}`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end(async (err, res) => {
+        if (err) return done(err);
+
+        // Check meta data
+        const response = res.body;
+        expect(response.success).toBe(true);
+        expect(response.metadata.next._id).toBe(speciesVenusaur._id.toString());
+        expect(response.metadata.previous._id).toBe(
+          speciesBulbasaur._id.toString()
+        );
+
+        const species = response.data;
+        expect(species._id).toBe(speciesIvysaur._id.toString());
+        expect(species.isMissing).toBe(false);
+
+        return done();
+      });
+  });
+  test("Successful fetching of bulbasaur, previous is null ", (done) => {
+    request(app)
+      .get(`/api/v1/species/item/${speciesBulbasaur._id}`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end(async (err, res) => {
+        if (err) return done(err);
+
+        // Check meta data
+        const response = res.body;
+        expect(response.success).toBe(true);
+        expect(response.metadata.next._id).toBe(speciesIvysaur._id.toString());
+        expect(response.metadata.previous).toBe(null);
+
+        const species = response.data;
+        expect(species._id).toBe(speciesBulbasaur._id.toString());
+        expect(species.isMissing).toBe(true);
+
+        return done();
+      });
+  });
+  test("Species not found", (done) => {
+    request(app)
+      .get(`/api/v1/species/item/000000000000000000000000`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+  test("User unauthorised", (done) => {
+    request(app)
+      .get(`/api/v1/species/item/000000000000000000000000`)
+      .set("Cookie", [`authorization=`])
+      .send()
+      .expect(401)
       .end(done);
   });
 });

@@ -54,6 +54,40 @@ const speciesIvysaur = {
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/2.png",
   },
 };
+const speciesBulbasaur = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000029"),
+  dexNumber: 1,
+  dexEntry:
+    "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
+  name: "bulbasaur",
+  types: ["grass", "poison"],
+  height: 10,
+  weight: 130,
+  isLegendary: false,
+  image: {
+    normal:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    shiny:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/2.png",
+  },
+};
+const speciesVenusaur = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000028"),
+  dexNumber: 3,
+  dexEntry:
+    "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
+  name: "ivysaur",
+  types: ["grass", "poison"],
+  height: 10,
+  weight: 130,
+  isLegendary: false,
+  image: {
+    normal:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    shiny:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/2.png",
+  },
+};
 
 const speciesLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000792"),
@@ -327,8 +361,10 @@ const ventisIncubatorGrassDupe2 = {
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
   await speciesDB.insertMany([
-    speciesShaymin,
+    speciesBulbasaur,
     speciesIvysaur,
+    speciesVenusaur,
+    speciesShaymin,
     speciesLunala,
     speciesOddish,
   ]);
@@ -390,7 +426,9 @@ async function addAllMockData() {
 }
 
 export {
+  speciesBulbasaur,
   speciesIvysaur,
+  speciesVenusaur,
   speciesLunala,
   speciesShaymin,
   speciesOddish,
