@@ -78,11 +78,11 @@ router.get("/", auth, async (req, res) => {
 /**
  * GET /species/item/:id
  * Gets one species based on ID, also has metadata field that shows next and previous species
- * @param {id} - the id of the speices
+ * @param {dexNumber} - the dexnumber of the species
  * @param {user._id} - the id of the user
  *
  */
-router.get("/item/:id", auth, async (req, res) => {
+router.get("/item/:dexNumber", auth, async (req, res) => {
   try {
     // check if user exists
     let userId = req.user._id;
@@ -90,7 +90,9 @@ router.get("/item/:id", auth, async (req, res) => {
     if (!userExist) return res.status(404).send("User can not be found");
 
     // Gets specieic species based on species id
-    const species = await Species.findById(req.params.id).lean();
+    const species = await Species.findOne({dexNumber:req.params.dexNumber}).lean();
+    console.log(species);
+    
     if (!species) {
       return res.status(404).send("Species not found");
     }
@@ -104,7 +106,7 @@ router.get("/item/:id", auth, async (req, res) => {
 
     // Gets user's pokemon to compare
     const doesPokemonExist = await Pokemon.exists({
-      species: req.params.id,
+      species: species._id,
       currentOwner: userId,
     });
 
