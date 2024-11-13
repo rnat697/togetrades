@@ -7,10 +7,10 @@
   transition: text-decoration 0.3s ease;
 }
 .arrows{
-  margin-right: 0.2em;
+  margin-right: 0.1em;
 }
 .next{
-  margin-left: 0.2em;
+  margin-left: 0.1em;
   order: 2;
 }
 .titles{
@@ -21,7 +21,7 @@
   font-weight: 700;
   line-height: 0.1em;
   position: relative;
-  margin-left: -1em;
+  margin-left: -0.1em;
   
 }
 .species-name {

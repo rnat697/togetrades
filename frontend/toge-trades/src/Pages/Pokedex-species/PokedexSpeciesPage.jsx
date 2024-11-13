@@ -13,17 +13,19 @@ import "swiper/css/pagination";
 
 import {
   capitalizeFirstLetter,
+  convertDecimeterToMeters,
+  convertHectogramToKilogram,
   formatDexNumber,
 } from "../../components/utils/utils";
+import PokemonType from "../../components/pokemon-type/PokemonType";
+import InfoTag from "../../components/info-tag/InfoTag";
 
 export default function PokedexSpeciesPage() {
   const { dexNumber } = useParams();
   const navigate = useNavigate();
   const initialEntry = dexNumber ? parseInt(dexNumber, 10) : 1;
-  console.log(initialEntry);
   const [currentEntry, setCurrentEntry] = useState(initialEntry);
   const [dexEntry, setDexEntry] = useState({});
-
   // ---- Get species entry ----
   const { entry, isLoading, error, refresh, entryMetadata } =
     usePokedexEntry(currentEntry);
@@ -37,30 +39,29 @@ export default function PokedexSpeciesPage() {
   };
   const isPreviousDefined = entryMetadata && entryMetadata.previous;
   const isNextDefined = entryMetadata && entryMetadata.next;
-  const status =
-    isPreviousDefined && !isNextDefined
-      ? "previous-only"
-      : isNextDefined && !isPreviousDefined
-      ? "next-only"
-      : "";
+  const status = isNextDefined && !isPreviousDefined ? "next-only" : "";
   return (
     <div className="species-page-container">
       <div className="species-contents">
         <div className={`species-navigation ${status}`}>
           {isPreviousDefined && (
-            <PokedexNavigation
-              metadata={entryMetadata.previous}
-              onClick={handleEntryChange}
-              className="previous"
-            />
+            <div className="left-nav">
+              <PokedexNavigation
+                metadata={entryMetadata.previous}
+                onClick={handleEntryChange}
+                className="previous"
+              />
+            </div>
           )}
           {isNextDefined && (
-            <PokedexNavigation
-              metadata={entryMetadata.next}
-              isNext={true}
-              onClick={handleEntryChange}
-              className="next-move"
-            />
+            <div className="right-nav">
+              <PokedexNavigation
+                metadata={entryMetadata.next}
+                isNext={true}
+                onClick={handleEntryChange}
+                className="next-move"
+              />
+            </div>
           )}
         </div>
         <div className="species-entry">
@@ -104,6 +105,42 @@ export default function PokedexSpeciesPage() {
                       <DexImage imageSrc={dexEntry.image.shiny} />
                     </SwiperSlide>
                   </Swiper>
+                </div>
+                <div className="species-type">
+                  {dexEntry.types.map((type, index) => (
+                    <PokemonType
+                      key={`species-type-${type}-${index}`}
+                      type={type}
+                    />
+                  ))}
+                </div>
+                <div className="species-dex-entry-content">
+                  <h2>Pokedex Entry</h2>
+                  <p>
+                    {dexEntry.dexEntry === ""
+                      ? "Pokedex entry unavailable. We don't have it stored on our database at the moment."
+                      : dexEntry.dexEntry}
+                  </p>
+                </div>
+                <div className="species-info-tags">
+                  <InfoTag
+                    title={"Height"}
+                    subtitle={
+                      convertDecimeterToMeters(dexEntry.height).toString() +
+                      " m"
+                    }
+                  />
+                  <InfoTag
+                    title={"Weight"}
+                    subtitle={
+                      convertHectogramToKilogram(dexEntry.weight).toString() +
+                      " kg"
+                    }
+                  />
+                  <InfoTag
+                    title={"Owned?"}
+                    subtitle={`${dexEntry.isMissing ? "No" : "Yes"}`}
+                  />
                 </div>
               </div>
             )
