@@ -36,6 +36,7 @@ export default function PokedexSpeciesPage() {
 
   const handleEntryChange = (metadata) => {
     setCurrentEntry(metadata.dexNumber);
+    navigate(`/pokedex/entry/${metadata.dexNumber}`);
   };
   const isPreviousDefined = entryMetadata && entryMetadata.previous;
   const isNextDefined = entryMetadata && entryMetadata.next;
