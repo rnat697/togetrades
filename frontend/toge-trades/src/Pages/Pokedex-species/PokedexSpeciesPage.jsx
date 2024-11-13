@@ -3,7 +3,14 @@ import "./PokedexSpeciesPage.css";
 import { useState, useEffect } from "react";
 import { usePokedexEntry } from "../../controllers/PokedexController";
 import PokedexNavigation from "../../components/pokedex/pokedex-navigation/PokedexNavigation";
+import { DexImage } from "../../components/pokedex/dex-image/DexImage";
 import { toast } from "react-toastify";
+import { Pagination, A11y } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
 import {
   capitalizeFirstLetter,
   formatDexNumber,
@@ -81,7 +88,23 @@ export default function PokedexSpeciesPage() {
                     {formatDexNumber(dexEntry.dexNumber)}
                   </h1>
                 </div>
-                <div className="species-carousel"></div>
+                <div className="species-carousel">
+                  <Swiper
+                    modules={[Pagination, A11y]}
+                    slidesPerView={1}
+                    centeredSlides={true}
+                    spaceBetween={3}
+                    pagination={{ clickable: true }}
+                    className="species-swiper"
+                  >
+                    <SwiperSlide>
+                      <DexImage imageSrc={dexEntry.image.normal} />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <DexImage imageSrc={dexEntry.image.shiny} />
+                    </SwiperSlide>
+                  </Swiper>
+                </div>
               </div>
             )
           )}

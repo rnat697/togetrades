@@ -1,7 +1,7 @@
 .species-page-container{
   justify-content: center;
   align-items: center;
-  margin-top:5em;
+  margin-top: 3em;
   height: 100vh;
 }
 .species-contents{
@@ -29,12 +29,15 @@
 .species-entry{
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   background-color: white;
-  height: 50em;
+  height: 600em;
   width: 40em;
   border-radius: 2em;
+}
+.species-entry-content{
+  justify-content: center;
+  align-items: center;
 }
 .species-title{
   display: flex;
@@ -50,4 +53,46 @@
   font-size: 2.2em;
   font-weight: 400;
   color: #616980;
+}
+.species-carousel{
+  width:20em;
+  height: 20em;
+  margin: 0 auto; 
+}
+.species-swiper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.species-swiper .swiper-pagination-bullet {
+  background-color: #616980;
+  height: 1em;
+  width: 1em;
+}
+.species-swiper .swiper-pagination-bullet-active {
+  background-color: white; /* Active dot color */
+}
+
+/* Mobile format */
+@media screen and (max-width: 688px) {
+  .species-navigation{
+    padding: 0 1em;
+  }
+  .species-entry{
+    width: 90vw;
+  }
+  .species-carousel{
+    width:10em;
+    height: 10em;
+  }
+  .species-swiper .swiper-pagination-bullet {
+    background-color: #616980;
+    height: 0.5em;
+    width: 0.5em;
+  }
+  .species-swiper .swiper-pagination-bullet-active {
+    background-color: white; /* Active dot color */
+  }
 }
