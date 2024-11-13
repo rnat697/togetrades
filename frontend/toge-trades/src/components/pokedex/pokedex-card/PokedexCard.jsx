@@ -8,8 +8,6 @@ export default function PokedexCard({ species }) {
   const navigate = useNavigate();
   const handleOnClick = () => {
     navigate(`/pokedex/entry/${species.dexNumber}`);
-    console.log(`clicked - ${species.id}`);
-    console.log(`clicked - ${species.name}`);
   };
   return (
     <div className="dex-card-container" onClick={handleOnClick}>
