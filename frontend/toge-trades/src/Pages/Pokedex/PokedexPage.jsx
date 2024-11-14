@@ -35,7 +35,6 @@ export default function PokedexPage() {
   if (error) toast.error(error);
 
   useEffect(() => {
-    console.log(speciesMetadata);
     setSpeciesData(speciesList);
     setMetadata(speciesMetadata);
   }, [speciesList, speciesMetadata]);
@@ -54,9 +53,17 @@ export default function PokedexPage() {
           <h1>Pokedex</h1>
         </div>
         <div className="pokedex-progress">
-          <p className="dex-progress-text">{`Owned ${metadata.foundCountAll} / ${metadata.totalCount}`}</p>
+          <p className="dex-progress-text">
+            {metadata.foundCountAll
+              ? `Owned ${metadata.foundCountAll} / ${metadata.totalCount}`
+              : ""}
+          </p>
           <Line
-            percent={(metadata.foundCountAll / metadata.totalCount) * 100}
+            percent={
+              metadata.foundCountAll
+                ? (metadata.foundCountAll / metadata.totalCount) * 100
+                : 0
+            }
             strokeColor={"#78A7E2"}
             className="dex-progress-bar"
             strokeWidth={2}
