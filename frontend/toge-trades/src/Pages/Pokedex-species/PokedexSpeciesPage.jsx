@@ -23,9 +23,22 @@ import InfoTag from "../../components/info-tag/InfoTag";
 export default function PokedexSpeciesPage() {
   const { dexNumber } = useParams();
   const navigate = useNavigate();
-  const initialEntry = dexNumber ? parseInt(dexNumber, 10) : 1;
+  // MAX species is 1025 so around 52 pages
+  let initialEntry =
+    parseInt(dexNumber) || parseInt(dexNumber) < 1 || parseInt(dexNumber) > 1025
+      ? 1
+      : parseInt(dexNumber);
   const [currentEntry, setCurrentEntry] = useState(initialEntry);
   const [dexEntry, setDexEntry] = useState({});
+
+  // ---- Redirect if dexNumber is invalid ----
+  useEffect(() => {
+    // Redirect to `/pokedex/entry/1`
+    if (initialEntry !== parseInt(dexNumber)) {
+      navigate(`/pokedex/entry/${initialEntry}`);
+    }
+  }, [initialEntry, dexNumber, navigate]);
+
   // ---- Get species entry ----
   const { entry, isLoading, error, refresh, entryMetadata } =
     usePokedexEntry(currentEntry);

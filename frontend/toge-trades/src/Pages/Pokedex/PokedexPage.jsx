@@ -10,9 +10,22 @@ import PokedexCard from "../../components/pokedex/pokedex-card/PokedexCard";
 export default function PokedexPage() {
   const { page } = useParams();
   const navigate = useNavigate();
-  const initialPage = page ? parseInt(page, 10) : 1;
+  // MAX species is 1025 so around 52 pages
+  let initialPage =
+    isNaN(parseInt(page)) || parseInt(page) < 1 || parseInt(page) > 52
+      ? 1
+      : parseInt(page);
+
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [speciesData, setSpeciesData] = useState([]);
+
+  // ---- Redirect if dexNumber is invalid ----
+  useEffect(() => {
+    // Redirect to `/pokedex/1`
+    if (initialPage !== parseInt(page)) {
+      navigate(`/pokedex/${initialPage}`);
+    }
+  }, [initialPage, page, navigate]);
 
   // ---- Get species in pokedex function ----
   const { speciesList, isLoading, error, refresh, speciesMetadata } =
