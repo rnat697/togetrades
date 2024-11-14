@@ -27,6 +27,9 @@ router.get("/", auth, async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 20;
     const skip = (page - 1) * limit;
 
+    // Gets all species (no pagination) to get a count of missing species
+    const allSpecies = await Species.find({});
+
     // Gets all species based on page number
     const species = await Species.aggregate([
       {
@@ -57,6 +60,16 @@ router.get("/", auth, async (req, res) => {
       isMissing: !caughtSpeciesId.includes(specie._id.toString()),
     }));
 
+    // finds ALL missing species (no pagination)
+    const allFoundSpecies = allSpecies.map((specie) => ({
+      ...specie,
+      isMissing: !caughtSpeciesId.includes(specie._id.toString()),
+    }));
+    // Count how many have isMissing: false
+    const foundCountAll = allFoundSpecies.filter(
+      (specie) => !specie.isMissing
+    ).length;
+
     return res.status(200).json({
       success: true,
       metadata: {
@@ -64,6 +77,7 @@ router.get("/", auth, async (req, res) => {
         page,
         totalPages,
         limit,
+        foundCountAll,
       },
       data: updatedSpecies,
     });
