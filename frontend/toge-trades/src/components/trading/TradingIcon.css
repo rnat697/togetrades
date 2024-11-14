@@ -5,13 +5,15 @@
   width: 1.5em;
   height: 1.5em;
   border-radius: 50%;
-  border-color: #88A0E6;
   border-width: 0.1em; 
   border-style: solid;
-  transition: background-color 0.3s ease-in-out;
+  opacity: 0;
+  transition: background-color 0.3s ease-in-out,  opacity 0.3s ease-in-out;
 }
 .selected-container{
-  background-color: #88A0E6;
+  background-color: #212A4A;
+  border-color: #212A4A;
+  opacity: 1;
 }
 .trade-icon{
   font-size: 1.5em;
@@ -19,7 +21,10 @@
 }
 .not-selected-trade-icon{
   color:#88A0E6;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 .selected-trade-icon{
-  color:#212A4A;
+  color:#88A0E6;
+  opacity: 1;
 }
