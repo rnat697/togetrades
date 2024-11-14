@@ -15,7 +15,6 @@
   background-color: #A3C5EC;
 }
 .dex-card-contents{ 
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,16 +40,18 @@
 
 /* MOBILE FORMAT */
 @media screen and (max-width: 550px) {
-  .dex-card-contents{
-    height: 7em;
-    width:7em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .dex-card-container{
+    height: 8em;
+    width:9em;
   }
   .dex-card-contents p{
     margin:0;
-    font-size: 1.2em;
+    font-size: 1em;
+  }
+  .species-img{
+    height: 4em;
+    width: auto;
+    margin-top: 2em;
+    margin-bottom: 0;
   }
 }

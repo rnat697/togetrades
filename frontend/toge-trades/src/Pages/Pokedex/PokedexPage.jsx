@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { usePokedex } from "../../controllers/PokedexController";
 import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
+import { Line } from "rc-progress";
 import ReactPaginate from "react-paginate";
 import PokedexCard from "../../components/pokedex/pokedex-card/PokedexCard";
 
@@ -18,6 +19,7 @@ export default function PokedexPage() {
 
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [speciesData, setSpeciesData] = useState([]);
+  const [metadata, setMetadata] = useState({});
 
   // ---- Redirect if dexNumber is invalid ----
   useEffect(() => {
@@ -33,8 +35,10 @@ export default function PokedexPage() {
   if (error) toast.error(error);
 
   useEffect(() => {
+    console.log(speciesMetadata);
     setSpeciesData(speciesList);
-  }, [speciesList]);
+    setMetadata(speciesMetadata);
+  }, [speciesList, speciesMetadata]);
 
   const handlePageChange = ({ selected }) => {
     setSpeciesData([]);
@@ -48,6 +52,16 @@ export default function PokedexPage() {
       <div className="pokedex-content">
         <div className="pokedex-title">
           <h1>Pokedex</h1>
+        </div>
+        <div className="pokedex-progress">
+          <p className="dex-progress-text">{`Owned ${metadata.foundCountAll} / ${metadata.totalCount}`}</p>
+          <Line
+            percent={(metadata.foundCountAll / metadata.totalCount) * 100}
+            strokeColor={"#78A7E2"}
+            className="dex-progress-bar"
+            strokeWidth={2}
+            trailWidth={2}
+          />
         </div>
         <div className="pokedex-cards">
           {speciesData.map((species, index) => (
@@ -71,7 +85,7 @@ export default function PokedexPage() {
           nextLabel=">"
           pageRangeDisplayed={5}
           onPageChange={handlePageChange}
-          pageCount={speciesMetadata?.totalPages ?? 1}
+          pageCount={metadata?.totalPages ?? 1}
           previousLabel="<"
           renderOnZeroPageCount={null}
           containerClassName="pagination"
