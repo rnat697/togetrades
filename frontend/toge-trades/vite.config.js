@@ -9,4 +9,7 @@ export default defineConfig({
     environment: "jsdom",
     css: true,
   },
+  optimizeDeps: {
+    exclude: ["swiper"],
+  },
 });

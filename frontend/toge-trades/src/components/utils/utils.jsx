@@ -37,6 +37,11 @@ export function convertDecimeterToMeters(height) {
   return height / 10;
 }
 
+export function formatDexNumber(number) {
+  let formatedDexNumber = "#" + number.toString().padStart(4, "0");
+  return formatedDexNumber;
+}
+
 
 export function getTypeColorAndImage(type) {
   const data = { src: "", color: "", lowOpacityColor: "" };

@@ -1,0 +1,35 @@
+.entry-nav-container{
+  width: 12em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.8em;
+  transition: text-decoration 0.3s ease;
+}
+.arrows{
+  margin-right: 0.1em;
+}
+.next{
+  margin-left: 0.1em;
+  order: 2;
+}
+.titles{
+  color: #616980;
+}
+.entry-dex-num {
+  font-size: 1.7em;
+  font-weight: 700;
+  line-height: 0.1em;
+  position: relative;
+  margin-left: -0.1em;
+  
+}
+.species-name {
+  margin-top: -0.1em;
+  font-size: 1em;
+}
+.entry-nav-container:hover .species-name,
+.entry-nav-container:hover .dex-num {
+  text-decoration: underline;
+  text-decoration-color:  #616980; 
+}

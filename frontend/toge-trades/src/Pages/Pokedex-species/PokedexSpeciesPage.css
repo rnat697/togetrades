@@ -1,0 +1,152 @@
+.species-page-container{
+  justify-content: center;
+  align-items: center;
+  margin-top: 6em;
+  height: 100vh;
+  padding-bottom: 3em;
+}
+.species-contents{
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+}
+
+.species-navigation{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  position: relative;
+  width: 100%;
+  padding: 0 1em;
+}
+
+.species-navigation .left-nav {
+  justify-self: start; 
+}
+
+.species-navigation .right-nav {
+  justify-self: end;
+}
+.next-only{
+  grid-template-columns: 1fr auto; 
+}
+
+.species-entry{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  height: auto;
+  width: 40em;
+  border-radius: 2em;
+  padding-bottom: 2em;
+}
+.species-entry-content{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.species-title{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+}
+.name-species{
+  margin-right: 0.3em;
+}
+.species-num{
+  font-size: 2.2em;
+  font-weight: 400;
+  color: #616980;
+}
+.species-carousel{
+  width:20em;
+  height: 20em;
+  margin: 0 auto; 
+}
+.species-swiper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.species-swiper .swiper-pagination-bullet {
+  background-color: #616980;
+  height: 1em;
+  width: 1em;
+}
+.species-swiper .swiper-pagination-bullet-active {
+  background-color: white; /* Active dot color */
+}
+.species-type{
+  padding:1em;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:1em;
+}
+.species-dex-entry-content{
+  width: 80%;
+}
+.species-dex-entry-content h2,
+.species-dex-entry-content p {
+  margin: 0;
+  padding: 0;
+}
+.sspecies-dex-entry-content h2{
+  margin-bottom:  0.5em;
+}
+.species-dex-entry-content p{
+  padding-left: 1em;
+  padding-right: 1em;
+  line-height: 1.2;
+  text-align: left;
+}
+.species-info-tags{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2em;
+  padding: 1em;
+  width: 80%;
+  justify-content: center;
+}
+
+/* Mobile format */
+@media screen and (max-width: 688px) {
+  .species-page-container{
+    margin-top: 3.5em;
+  }
+  .species-entry{
+    width: 90vw;
+  }
+  .species-carousel{
+    width:10em;
+    height: 10em;
+  }
+  .species-swiper .swiper-pagination-bullet {
+    background-color: #616980;
+    height: 0.5em;
+    width: 0.5em;
+  }
+  .species-swiper .swiper-pagination-bullet-active {
+    background-color: white; /* Active dot color */
+  }
+  .species-info-tags{
+    gap: 0.5em;
+    padding: 1em;
+  }
+}
+@media screen and (max-width: 588px) {
+   .species-navigation{
+    padding: 0 1em;
+    justify-content: center;
+    margin-inline-start: 0;
+  }
+}

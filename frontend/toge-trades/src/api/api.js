@@ -31,6 +31,7 @@ export const toggleLocked = (pokemonId, isLocked) =>
     { withCredentials: true }
   );
 
+// ------ INCUBATOR API ------
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
 

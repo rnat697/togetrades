@@ -1,0 +1,17 @@
+.dex-img-container{
+  width:100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #A3C5EC;
+  /* margin: 0 auto; */
+}
+.dex-img-container img{
+  display: block;
+  object-fit: cover;
+  height: 80%;
+  width: 80%;
+  margin: auto;
+}

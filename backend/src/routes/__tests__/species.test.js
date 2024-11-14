@@ -79,10 +79,10 @@ describe("Getting species list with pagination, GET /api/v1/species/ ", () => {
   });
 });
 
-describe("Getting singular species, GET /api/v1/species/item/:id ", () => {
+describe("Getting singular species, GET /api/v1/species/item/:dexNumber ", () => {
   test("Successful fetching of ivysaur with isMissing fields", (done) => {
     request(app)
-      .get(`/api/v1/species/item/${speciesIvysaur._id}`)
+      .get(`/api/v1/species/item/${speciesIvysaur.dexNumber}`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(200)
@@ -106,7 +106,7 @@ describe("Getting singular species, GET /api/v1/species/item/:id ", () => {
   });
   test("Successful fetching of bulbasaur, previous is null ", (done) => {
     request(app)
-      .get(`/api/v1/species/item/${speciesBulbasaur._id}`)
+      .get(`/api/v1/species/item/${speciesBulbasaur.dexNumber}`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(200)
@@ -128,7 +128,7 @@ describe("Getting singular species, GET /api/v1/species/item/:id ", () => {
   });
   test("Species not found", (done) => {
     request(app)
-      .get(`/api/v1/species/item/000000000000000000000000`)
+      .get(`/api/v1/species/item/-1`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(404)
@@ -136,7 +136,7 @@ describe("Getting singular species, GET /api/v1/species/item/:id ", () => {
   });
   test("User unauthorised", (done) => {
     request(app)
-      .get(`/api/v1/species/item/000000000000000000000000`)
+      .get(`/api/v1/species/item/2035`)
       .set("Cookie", [`authorization=`])
       .send()
       .expect(401)
