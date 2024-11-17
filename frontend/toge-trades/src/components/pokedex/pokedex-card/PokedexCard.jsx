@@ -18,7 +18,7 @@ export default function PokedexCard({ species }) {
         <a
           data-tooltip-id="pokedex-tooltips"
           data-tooltip-content={`You ${
-            species.isMissing ? "don't own" : "own"
+            species.isMissing ? "don't own" : "own or haved owned"
           } ${capitalizeFirstLetter(species.name)}`}
         >
           <img

@@ -6,6 +6,7 @@ import { generateStartingPokemonForUser } from "../db/pokemon-utils.js";
 import auth from "../auth/auth.js";
 import Pokemon from "../db/pokemon-schema.js";
 import mongoose from "mongoose";
+import Species from "../db/species-schema.js";
 
 const router = express.Router();
 // logi/register - https://www.youtube.com/watch?v=-8OEfGQPJ8c
@@ -176,6 +177,123 @@ router.get("/:id", auth, async (req, res) => {
     return res
       .status(500)
       .send("Internal Server Error when retrieving user information.");
+  }
+});
+
+// ----- FETCH WISHLIST -----
+// cant use /wishlist bc it conflicts with /:id??
+/// https://stackoverflow.com/questions/78339610/cast-to-objectid-failed-for-value-cart-type-string-at-path-id-for-mo
+router.get("/:id/wishlist", auth, async (req, res) => {
+  try {
+    let userId = req.params.id;
+    const userExist = await User.findById(userId);
+    if (!userExist) return res.status(404).send("User can not be found.");
+
+    // Fetch user and their wishlist
+    const user = await User.findById(userId).populate("wishlist.species");
+    return res.status(200).json({
+      success: true,
+      data: user.wishlist, // Return wishlist with species ObjectId
+    });
+  } catch (error) {
+    console.error("Error retrieving wishlist:", error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+// ----- ADD SPECIES TO WISHLIST -----
+router.post("/wishlist/add", auth, async (req, res) => {
+  try {
+    let userId = req.user._id;
+    let { speciesId } = req.body;
+
+    // check if speciesId isn't empty
+    if (!speciesId) {
+      return res.status(400).send("Species ID is required");
+    }
+
+    // Check if species exists
+    const species = await Species.findById(speciesId);
+    if (!species) return res.status(404).send("Pokemon species not found");
+
+    // check if species is already in wishlist
+    const user = await User.findById(userId);
+    const alreadyInWishlist = user.wishlist.some(
+      (item) => item.species.toString() === speciesId
+    );
+
+    if (alreadyInWishlist) {
+      return res
+        .status(400)
+        .send(`The species "${species.name}" is already in your wishlist`);
+    }
+    // Update the user's wishlist by adding the new species
+
+    const result = await User.updateOne(
+      { _id: userId }, // Find the user by ID
+      { $push: { wishlist: { species: speciesId } } } // Push the new species into the wishlist array
+    );
+
+    if (result.nModified === 0) {
+      return res
+        .status(400)
+        .send(`Failed to add the species "${species.name}" to wishlist`);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `The species, ${species.name}, has been added to your wishlist.`,
+    });
+  } catch (error) {
+    console.error("Error adding speices to wishlist: ", error);
+    return res
+      .status(500)
+      .send("Internal server error when adding species to wishlist.");
+  }
+});
+
+// ---- REMOVE SPECIES On WISHLIST ----
+router.delete("/wishlist/remove", auth, async (req, res) => {
+  try {
+    let userId = req.user._id;
+    let { speciesId } = req.body;
+
+    // check if speciesId isn't empty
+    if (!speciesId) {
+      return res.status(400).send("Species ID is required");
+    }
+
+    // Check if species exists
+    const species = await Species.findById(speciesId);
+    if (!species) return res.status(404).send("Pokemon species not found");
+
+    const user = await User.findById(userId);
+
+    // check if wishlist actually has the species
+    const isInWishlist = user.wishlist.some(
+      (item) => item.species.toString() === speciesId
+    );
+    if (!isInWishlist)
+      return res
+        .status(404)
+        .send(
+          `The species, ${species.name}, is not in your wishlist and can't be removed.`
+        );
+    // Filter out species from the wishlist
+    user.wishlist = user.wishlist.filter(
+      (item) => item.species.toString() !== speciesId
+    );
+
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: `The species, ${species.name}, has been removed from your wishlist.`,
+    });
+  } catch (error) {
+    console.error("Error removing speices from wishlist: ", error);
+    return res
+      .status(500)
+      .send("Internal server error when removing species from wishlist.");
   }
 });
 

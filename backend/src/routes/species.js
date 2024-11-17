@@ -48,11 +48,21 @@ router.get("/", auth, async (req, res) => {
         .status(400)
         .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
     }
-    // Gets user's pokemon to compare
-    const pokemon = await Pokemon.find({ currentOwner: userId }).select(
-      "species"
-    );
-    const caughtSpeciesId = pokemon.map((poke) => poke.species.toString());
+    // Gets user's pokemon (both if its currently owned or originally owned) to compare
+    // & only find unique specie ids
+    const pokemon = await Pokemon.aggregate([
+      {
+        $match: {
+          $or: [{ currentOwner: userId }, { originalOwner: userId }],
+        },
+      },
+      {
+        $group: {
+          _id: "$species", // Group by species
+        },
+      },
+    ]);
+    const caughtSpeciesId = pokemon.map((species) => species._id.toString());
 
     // finds missing species based on user's pokemon
     const updatedSpecies = species[0].data.map((specie) => ({
