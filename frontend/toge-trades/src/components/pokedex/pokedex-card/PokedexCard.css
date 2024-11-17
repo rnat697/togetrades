@@ -37,6 +37,14 @@
   filter: grayscale(100%)
 
 }
+.dex-wish{
+  position: absolute;
+  right:0em; 
+  top: 1em ;
+  padding-right: 1em;
+  font-weight: 450;
+  z-index: 1000;
+}
 
 /* MOBILE FORMAT */
 @media screen and (max-width: 550px) {
