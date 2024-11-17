@@ -17,8 +17,11 @@ import {
   pokemonNaviasLunala,
   pokemonVentisIvyasaur,
   pokemonVentisLunala,
+  speciesBulbasaur,
   speciesIvysaur,
   speciesLunala,
+  speciesOddish,
+  speciesVenusaur,
   userAgatha,
   userLynney,
   userNavia,
@@ -484,7 +487,7 @@ describe("GET /api/v1/users/:id", () => {
         expect(user._id).toBe(userNavia._id.toString());
         expect(user.username).toBe(userNavia.username.toString());
         expect(user.email).toBe(userNavia.email.toString());
-        expect(user).not.toHaveProperty('passHash');
+        expect(user).not.toHaveProperty("passHash");
         return done();
       });
   });
@@ -499,6 +502,190 @@ describe("GET /api/v1/users/:id", () => {
   });
 
   test("Unauthetnicated user fetching of a user in database", (done) => {
-    request(app).get(`/api/v1/users/${userNavia._id}`).send().expect(401).end(done);
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}`)
+      .send()
+      .expect(401)
+      .end(done);
+  });
+});
+
+// ------- FETCH USER'S WISHLIST -------
+describe("GET /api/v1/users/:id/wishlist", () => {
+  test("Successful fetching of a user's wishlist", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userLynney._id}/wishlist`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const response = res.body;
+        expect(response.success).toBe(true);
+
+        const wishlist = response.data;
+        expect(wishlist.length).toBe(3);
+        expect(wishlist[0].species._id).toBe(speciesBulbasaur._id.toString());
+        expect(wishlist[1].species._id).toBe(speciesLunala._id.toString());
+        expect(wishlist[2].species._id).toBe(speciesVenusaur._id.toString());
+
+        return done();
+      });
+  });
+
+  test("Successful fetching of a user's empty wishlist", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userNavia._id}/wishlist`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const response = res.body;
+        expect(response.success).toBe(true);
+
+        const wishlist = response.data;
+        expect(wishlist.length).toBe(0);
+        return done();
+      });
+  });
+  test("Unauthenticated user fetching user's wishlist", (done) => {
+    request(app)
+      .get(`/api/v1/users/${userLynney}/wishlist`)
+      .send()
+      .expect(401)
+      .end(done);
+  });
+  test("Fetching a non-existent user's wishlist", (done) => {
+    request(app)
+      .get(`/api/v1/users/000000000000000000000054/wishlist`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+});
+
+// ------- ADD TO USER'S WISHLIST -------
+describe("POST /api/v1/users/wishlist/add", () => {
+  test("Successful adding of Oddish to user's wishlist", (done) => {
+    request(app)
+      .post(`/api/v1/users/wishlist/add`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({
+        speciesId: speciesOddish._id,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const response = res.body;
+        expect(response.success).toBe(true);
+
+        const wishlistMsg = response.message;
+        expect(wishlistMsg).toBe(
+          "The species, oddish, has been added to your wishlist."
+        );
+
+        return done();
+      });
+  });
+  test("Adding a species to wishlist but it's already on it", (done) => {
+    request(app)
+      .post(`/api/v1/users/wishlist/add`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({
+        speciesId: speciesLunala._id,
+      })
+      .expect(400)
+      .end(done);
+  });
+  test("Unauthenticated user adding oddish to their wishlist", (done) => {
+    request(app)
+      .post(`/api/v1/users/wishlist/add`)
+      .send({
+        speciesId: speciesOddish._id,
+      })
+      .expect(401)
+      .end(done);
+  });
+  test("Adding a species to wishlist but no speciesId in resp body", (done) => {
+    request(app)
+      .post(`/api/v1/users/wishlist/add`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({})
+      .expect(400)
+      .end(done);
+  });
+  test("Adding a species to wishlist but no speciesId doesn't exist", (done) => {
+    request(app)
+      .post(`/api/v1/users/wishlist/add`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({
+        speciesId: "000000000000000000000054",
+      })
+      .expect(404)
+      .end(done);
+  });
+});
+
+// ------- REMOVE FROM USER'S WISHLIST -------
+describe("DELETE /api/v1/users/wishlist/remove", () => {
+  test("Successful removing of Bulbasaur from Lynney's wishlist", (done) => {
+    request(app)
+      .delete(`/api/v1/users/wishlist/remove`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({
+        speciesId: speciesBulbasaur._id,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const response = res.body;
+        expect(response.success).toBe(true);
+
+        const wishlistMsg = response.message;
+        expect(wishlistMsg).toBe(
+          "The species, bulbasaur, has been removed from your wishlist."
+        );
+
+        return done();
+      });
+  });
+  test("Removing a species from wishlist but oddish isn't in the wishlist", (done) => {
+    request(app)
+      .delete(`/api/v1/users/wishlist/remove`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({
+        speciesId: speciesOddish._id,
+      })
+      .expect(404)
+      .end(done);
+  });
+  test("Unauthenticated user removing oddish to their wishlist", (done) => {
+    request(app)
+      .delete(`/api/v1/users/wishlist/remove`)
+      .send({
+        speciesId: speciesOddish._id,
+      })
+      .expect(401)
+      .end(done);
+  });
+  test("Removing a species from wishlist but no speciesId in resp body", (done) => {
+    request(app)
+      .delete(`/api/v1/users/wishlist/remove`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send({})
+      .expect(400)
+      .end(done);
+  });
+  test("Removing a species from wishlist but no speciesId doesn't exist", (done) => {
+    request(app)
+      .delete(`/api/v1/users/wishlist/remove`)
+      .set("Cookie", [`authorization=${bearerLynney}`])
+      .send({
+        speciesId: "000000000000000000000054",
+      })
+      .expect(404)
+      .end(done);
   });
 });

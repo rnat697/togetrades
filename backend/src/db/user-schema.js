@@ -12,6 +12,14 @@ const userSchema = new Schema({
   email: { type: String, unique: true, required: true },
   passHash: { type: String, required: true },
   image: { type: String },
+  wishlist: [
+    {
+      species: {
+        type: Schema.Types.ObjectId,
+        ref: "Species",
+      },
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);

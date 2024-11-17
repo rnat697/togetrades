@@ -118,6 +118,20 @@ const userLynney = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000710000000001"),
+    },
+    {
+      species: speciesLunala._id,
+      _id: new mongoose.Types.ObjectId("000000000000720000000001"),
+    },
+    {
+      species: speciesVenusaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000730000000001"),
+    },
+  ],
 };
 
 // Valid token for Lynney - for authetication checks
@@ -136,6 +150,7 @@ const userNavia = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+  wishlist: [],
 };
 
 // Valid token for Navia - for authetication checks
@@ -154,6 +169,7 @@ const userVenti = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+  wishlist: [],
 };
 
 // Valid token for Navia - for authetication checks
@@ -172,6 +188,7 @@ const userAgatha = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+  wishlist: [],
 };
 
 // Valid token for Agatha - for authetication checks
