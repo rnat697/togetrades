@@ -20,7 +20,7 @@ const router = express.Router();
  */
 router.post("/create", auth, async (req, res) => {
   try {
-    let userId = req.params.id;
+    let userId = req.user._id;
     const { offeredPokeId, seekSpeciesId } = req.body;
 
     // check if pokemon exists
