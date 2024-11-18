@@ -48,7 +48,7 @@ router.post("/create", auth, async (req, res) => {
         );
 
     // check if pokemon has been traded away before
-    if (!pokeExist.canBeTraded)
+    if (pokeExist.hasBeenTraded)
       return res
         .status(400)
         .send("Pokemon has been traded away before and can't be traded again.");

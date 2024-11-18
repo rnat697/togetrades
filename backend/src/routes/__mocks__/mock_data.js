@@ -219,7 +219,7 @@ const pokemonLynneysIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: true,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 // Navia's Lunala
 const pokemonNaviasLunala = {
@@ -230,7 +230,7 @@ const pokemonNaviasLunala = {
   isShiny: false,
   isTrading: false,
   isLocked: false,
-  canBeTraded: false,
+  hasBeenTraded: true,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaur = {
@@ -241,7 +241,7 @@ const pokemonNaviasIvysaur = {
   isShiny: true,
   isTrading: false,
   isLocked: true,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 // Navia's Lunala
 const pokemonNaviasLunalaDup1 = {
@@ -252,7 +252,7 @@ const pokemonNaviasLunalaDup1 = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe1 = {
@@ -263,7 +263,7 @@ const pokemonNaviasIvysaurDupe1 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 const pokemonNaviasLunalaDup2 = {
   _id: new mongoose.Types.ObjectId("000000000000000000000081"),
@@ -273,7 +273,7 @@ const pokemonNaviasLunalaDup2 = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe2 = {
@@ -284,7 +284,7 @@ const pokemonNaviasIvysaurDupe2 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 
 // Navia's ivysaur
@@ -296,7 +296,7 @@ const pokemonNaviasIvysaurDupe3 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 
 // Venti's IvySaur
@@ -308,7 +308,7 @@ const pokemonVentisIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 // Venti's Lunala
 const pokemonVentisLunala = {
@@ -319,7 +319,7 @@ const pokemonVentisLunala = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
-  canBeTraded: true,
+  hasBeenTraded: false,
 };
 
 let pokemonAgathasLunala = {
@@ -330,6 +330,7 @@ let pokemonAgathasLunala = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
+  hasBeenTraded: false,
 };
 
 function makeAgathasPokemons() {
