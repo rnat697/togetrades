@@ -250,7 +250,7 @@ const pokemonNaviasLunalaDup1 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -261,7 +261,7 @@ const pokemonNaviasIvysaurDupe1 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -271,7 +271,7 @@ const pokemonNaviasLunalaDup2 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -282,7 +282,7 @@ const pokemonNaviasIvysaurDupe2 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -294,7 +294,7 @@ const pokemonNaviasIvysaurDupe3 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -328,7 +328,7 @@ let pokemonAgathasLunala = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
