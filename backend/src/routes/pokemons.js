@@ -10,6 +10,7 @@ import {
 import Pokemon from "../db/pokemon-schema.js";
 import User from "../db/user-schema.js";
 import mongoose from "mongoose";
+import Species from "../db/species-schema.js";
 
 const router = express.Router();
 
@@ -114,6 +115,22 @@ router.get("/all-eligible-pokemon", auth, async (req, res) => {
 router.get("/elegible-pokemon/:id", auth, async (req, res) => {
   try {
     const speciesId = req.params.id;
+    const userId = req.user._id;
+
+    const speciesExist = await Species.findById(speciesId);
+    if (!speciesExist) return res.status(404).send("Species not found.");
+
+    const query = {
+      species: speciesId,
+      currentOwner: userId,
+      isLocked: false,
+      isTrading: false,
+      hasBeenTraded: false,
+    };
+    const pokemon = await Pokemon.find(query);
+    return res
+      .status(200)
+      .json({ success: true, data: pokemon, isEmpty: pokemon.length === 0 });
   } catch (e) {
     console.error("Error retrieving tradeable Pokemon: ", e);
     return res
