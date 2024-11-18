@@ -150,7 +150,12 @@ const userNavia = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
-  wishlist: [],
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000710000000001"),
+    },
+  ],
 };
 
 // Valid token for Navia - for authetication checks
@@ -169,7 +174,12 @@ const userVenti = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
-  wishlist: [],
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000740000000001"),
+    },
+  ],
 };
 
 // Valid token for Navia - for authetication checks
@@ -209,16 +219,18 @@ const pokemonLynneysIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: true,
+  canBeTraded: true,
 };
 // Navia's Lunala
 const pokemonNaviasLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000076"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
-  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
   isTrading: false,
   isLocked: false,
+  canBeTraded: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaur = {
@@ -227,8 +239,9 @@ const pokemonNaviasIvysaur = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
-  isLocked: false,
+  isTrading: false,
+  isLocked: true,
+  canBeTraded: true,
 };
 // Navia's Lunala
 const pokemonNaviasLunalaDup1 = {
@@ -239,6 +252,7 @@ const pokemonNaviasLunalaDup1 = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe1 = {
@@ -249,6 +263,7 @@ const pokemonNaviasIvysaurDupe1 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 const pokemonNaviasLunalaDup2 = {
   _id: new mongoose.Types.ObjectId("000000000000000000000081"),
@@ -258,6 +273,7 @@ const pokemonNaviasLunalaDup2 = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe2 = {
@@ -268,6 +284,7 @@ const pokemonNaviasIvysaurDupe2 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 
 // Navia's ivysaur
@@ -279,6 +296,7 @@ const pokemonNaviasIvysaurDupe3 = {
   isShiny: true,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 
 // Venti's IvySaur
@@ -290,6 +308,7 @@ const pokemonVentisIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: false,
+  canBeTraded: true,
 };
 // Venti's Lunala
 const pokemonVentisLunala = {
@@ -300,6 +319,7 @@ const pokemonVentisLunala = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
+  canBeTraded: true,
 };
 
 let pokemonAgathasLunala = {

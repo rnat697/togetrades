@@ -23,6 +23,13 @@ router.post("/create", auth, async (req, res) => {
     let userId = req.user._id;
     const { offeredPokeId, seekSpeciesId } = req.body;
 
+    // check if offeredPokeId and seekSpeciesId isn't empty
+    if (!offeredPokeId || !seekSpeciesId) {
+      return res
+        .status(400)
+        .send("offered pokemon ID or seeking species ID is required");
+    }
+
     // check if pokemon exists
     const pokeExist = await Pokemon.findById(offeredPokeId);
     if (!pokeExist) return res.status(404).send("Pokemon can not be found.");
