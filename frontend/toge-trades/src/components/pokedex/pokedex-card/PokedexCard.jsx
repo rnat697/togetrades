@@ -3,15 +3,16 @@ import PokemonType from "../../pokemon-type/PokemonType";
 import { capitalizeFirstLetter, formatDexNumber } from "../../utils/utils";
 import "./PokedexCard.css";
 import { Tooltip } from "react-tooltip";
+import WishlistButton from "../../wishlist/WishlistButton";
 
-export default function PokedexCard({ species }) {
+export default function PokedexCard({ species, isWishlisted }) {
   const navigate = useNavigate();
   const handleOnClick = () => {
     navigate(`/pokedex/entry/${species.dexNumber}`);
   };
   return (
-    <div className="dex-card-container" onClick={handleOnClick}>
-      <div className="dex-card-contents">
+    <div className="dex-card-container">
+      <div className="dex-card-contents" onClick={handleOnClick}>
         <div className="dex-num">
           <p>{formatDexNumber(species.dexNumber)}</p>
         </div>
@@ -27,8 +28,15 @@ export default function PokedexCard({ species }) {
           />
         </a>
         <p>{capitalizeFirstLetter(species.name)}</p>
-        <Tooltip id="pokedex-tooltips" />
       </div>
+      <div className="dex-wish">
+        <WishlistButton
+          speciesId={species.id}
+          isMissing={species.isMissing}
+          isWishlisted={isWishlisted}
+        />
+      </div>
+      <Tooltip id="pokedex-tooltips" />
     </div>
   );
 }

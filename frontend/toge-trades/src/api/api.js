@@ -10,8 +10,12 @@ import {
   CREATE_INCUBATOR_URL,
   DELETE_INCUBATOR_URL,
   HATCH_EGG_URL,
+  WISHLIST_URL,
+  ADD_TO_WISHLIST_URL,
+  REMOVE_FROM_WISHLIST_URL,
 } from "./urls";
 
+// ------ USERS API ------
 export const loginAPI = (username, password) =>
   axios.post(LOGIN_URL, { username, password }, { withCredentials: true });
 
@@ -24,6 +28,21 @@ export const signupAPI = (username, email, password) =>
 
 export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
+export const getWishlistAPI =  (userId) => axios.get(WISHLIST_URL(userId), {withCredentials:true});
+
+export const addWishlist = (speciesId) =>
+  axios.post(
+    ADD_TO_WISHLIST_URL,
+    { speciesId: speciesId },
+    { withCredentials: true }
+  );
+export const removeWishlist = (speciesId) =>
+  axios.delete(REMOVE_FROM_WISHLIST_URL, {
+    data: { speciesId: speciesId },
+    withCredentials: true,
+  });
+
+// ------ POKEMON API ------
 export const toggleLocked = (pokemonId, isLocked) =>
   axios.patch(
     TOGGLE_LOCKED_URL(pokemonId),

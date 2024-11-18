@@ -25,7 +25,9 @@ export default function PokedexSpeciesPage() {
   const navigate = useNavigate();
   // MAX species is 1025 so around 52 pages
   let initialEntry =
-    parseInt(dexNumber) || parseInt(dexNumber) < 1 || parseInt(dexNumber) > 1025
+    isNaN(parseInt(dexNumber)) ||
+    parseInt(dexNumber) < 1 ||
+    parseInt(dexNumber) > 1025
       ? 1
       : parseInt(dexNumber);
   const [currentEntry, setCurrentEntry] = useState(initialEntry);
@@ -46,6 +48,17 @@ export default function PokedexSpeciesPage() {
   useEffect(() => {
     setDexEntry(entry);
   }, [entry]);
+
+  // ---- Update Tab title ----
+  useEffect(() => {
+    if (dexEntry.name) {
+      document.title = `${capitalizeFirstLetter(
+        dexEntry.name
+      )} - Pokedex Entry | Toge Trades`;
+    } else {
+      document.title = "Loading... - Pokedex Entry | Toge Trades";
+    }
+  }, [dexEntry.name]);
 
   const handleEntryChange = (metadata) => {
     setCurrentEntry(metadata.dexNumber);

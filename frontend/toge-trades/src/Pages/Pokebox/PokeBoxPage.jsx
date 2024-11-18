@@ -37,6 +37,11 @@ export default function PokeBoxPage() {
       : setFilteredPokes(pokemonList);
   }, [pokemonList, searchQuery]);
 
+  // ---- Update document title based on the current page ----
+  useEffect(() => {
+    document.title = `Pokedex - Page ${currentPage} | Toge Trades`;
+  }, [currentPage, pokemonList]);
+
   const selectedPokemon = pokemonList.find((poke) => poke.id == selectedPokeId);
   const handleDetailsClose = () => {
     setShowDetails(false);

@@ -1,16 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./PokedexPage.css";
 import { useState, useEffect } from "react";
-import { usePokedex } from "../../controllers/PokedexController";
+import { getWishlist, usePokedex } from "../../controllers/PokedexController";
 import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import { Line } from "rc-progress";
 import ReactPaginate from "react-paginate";
 import PokedexCard from "../../components/pokedex/pokedex-card/PokedexCard";
+import { useAuth } from "../../api/auth";
 
 export default function PokedexPage() {
   const { page } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   // MAX species is 1025 so around 52 pages
   let initialPage =
     isNaN(parseInt(page)) || parseInt(page) < 1 || parseInt(page) > 52
@@ -20,6 +22,7 @@ export default function PokedexPage() {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [speciesData, setSpeciesData] = useState([]);
   const [metadata, setMetadata] = useState({});
+  const [wishlistData, setWishlist] = useState([]);
 
   // ---- Redirect if dexNumber is invalid ----
   useEffect(() => {
@@ -34,10 +37,22 @@ export default function PokedexPage() {
     usePokedex(currentPage);
   if (error) toast.error(error);
 
+  // ---- Get user's wishlist on first render ---
+  useEffect(() => {
+    getWishlist(user._id).then((data) => {
+      setWishlist(data);
+    });
+  }, []);
+
   useEffect(() => {
     setSpeciesData(speciesList);
     setMetadata(speciesMetadata);
   }, [speciesList, speciesMetadata]);
+
+  // ---- Update document title based on the current page ----
+  useEffect(() => {
+    document.title = `Pokedex - Page ${currentPage} | Toge Trades`;
+  }, [currentPage, speciesList]);
 
   const handlePageChange = ({ selected }) => {
     setSpeciesData([]);
@@ -71,9 +86,18 @@ export default function PokedexPage() {
           />
         </div>
         <div className="pokedex-cards">
-          {speciesData.map((species, index) => (
-            <PokedexCard key={species.id} species={species} />
-          ))}
+          {speciesData.map((species, index) => {
+            const isWished = wishlistData.some(
+              (item) => item.id === species.id
+            );
+            return (
+              <PokedexCard
+                key={species.id}
+                species={species}
+                isWishlisted={isWished}
+              />
+            );
+          })}
         </div>
         {isLoading && (
           <div className="pokebox-loader">
