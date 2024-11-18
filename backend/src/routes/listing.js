@@ -54,7 +54,7 @@ router.post("/create", auth, async (req, res) => {
 
     // check if species is in user's wishlist
     const user = await User.findById(userId);
-    if (!user.wishlist.some((species) => species._id === seekSpeciesId))
+    if (!user.wishlist.some((item) => item.species._id == seekSpeciesId))
       return res.status(404).send("Species not found in user's wishlist,");
 
     // Get next listing number
