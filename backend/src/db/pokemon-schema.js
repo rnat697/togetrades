@@ -24,6 +24,7 @@ const pokemonSchema = new Schema({
   },
   isShiny: { type: Boolean, default: false },
   isTrading: { type: Boolean, default: false }, // Changed to isTrading - true if in active trade, false otherwise
+  canBeTraded: { type: Boolean, default: true }, // Flag to see if it has been traded once before (can only trade pokemon that hasnt been traded b4)
   isLocked: { type: Boolean, default: false },
 });
 const Pokemon = mongoose.model("Pokemon", pokemonSchema);
