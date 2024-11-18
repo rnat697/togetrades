@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "./App.css";
 import PageLayout from "./Pages/page-layout/PageLayout.jsx";
 import LandingPage from "./Pages/Landing/LandingPage.jsx";
@@ -11,6 +12,25 @@ import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
 import PokedexSpeciesPage from "./Pages/Pokedex-species/PokedexSpeciesPage.jsx";
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const titles = {
+      "/": "Toge Trades",
+      "/landing": "Toge Trades",
+      "/login": "Login | Toge Trades",
+      "/signup": "Signup | Toge Trades",
+      "/incubator": "Incubator | TogeTrades",
+      "/incubator/egg-picker": "Egg Picker | Toge Trades",
+      "/tradehub": "Trade Hub | Toge Trades",
+    };
+    if (
+      !location.pathname.startsWith("/pokedex/") ||
+      !location.pathname.startsWith("/pokebox/")
+    )
+      document.title = titles[location.pathname] || "Toge Trades";
+  }, [location]);
+
   return (
     <Routes>
       <Route path="/" element={<PageLayout />}>

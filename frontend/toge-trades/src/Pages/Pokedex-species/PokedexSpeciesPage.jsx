@@ -49,6 +49,17 @@ export default function PokedexSpeciesPage() {
     setDexEntry(entry);
   }, [entry]);
 
+  // ---- Update Tab title ----
+  useEffect(() => {
+    if (dexEntry.name) {
+      document.title = `${capitalizeFirstLetter(
+        dexEntry.name
+      )} - Pokedex Entry | Toge Trades`;
+    } else {
+      document.title = "Loading... - Pokedex Entry | Toge Trades";
+    }
+  }, [dexEntry.name]);
+
   const handleEntryChange = (metadata) => {
     setCurrentEntry(metadata.dexNumber);
     navigate(`/pokedex/entry/${metadata.dexNumber}`);

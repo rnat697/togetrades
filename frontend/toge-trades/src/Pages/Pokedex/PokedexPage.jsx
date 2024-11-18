@@ -49,6 +49,11 @@ export default function PokedexPage() {
     setMetadata(speciesMetadata);
   }, [speciesList, speciesMetadata]);
 
+  // ---- Update document title based on the current page ----
+  useEffect(() => {
+    document.title = `Pokedex - Page ${currentPage} | Toge Trades`;
+  }, [currentPage, speciesList]);
+
   const handlePageChange = ({ selected }) => {
     setSpeciesData([]);
     setCurrentPage(selected + 1);
