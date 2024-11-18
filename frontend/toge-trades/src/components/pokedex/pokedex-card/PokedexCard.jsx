@@ -5,7 +5,7 @@ import "./PokedexCard.css";
 import { Tooltip } from "react-tooltip";
 import WishlistButton from "../../wishlist/WishlistButton";
 
-export default function PokedexCard({ species }) {
+export default function PokedexCard({ species, isWishlisted }) {
   const navigate = useNavigate();
   const handleOnClick = () => {
     navigate(`/pokedex/entry/${species.dexNumber}`);
@@ -30,7 +30,10 @@ export default function PokedexCard({ species }) {
         <p>{capitalizeFirstLetter(species.name)}</p>
       </div>
       <div className="dex-wish">
-        <WishlistButton isMissing={species.isMissing} />
+        <WishlistButton
+          isMissing={species.isMissing}
+          isWishlisted={isWishlisted}
+        />
       </div>
       <Tooltip id="pokedex-tooltips" />
     </div>
