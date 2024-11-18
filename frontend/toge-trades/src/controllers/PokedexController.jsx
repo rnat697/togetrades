@@ -2,7 +2,7 @@ import useGet from "../hooks/useGet";
 import { useEffect, useState } from "react";
 import SpeciesModel from "../models/SpeciesModel";
 import { SPECIES_ALL_URL, SPECIES_ITEM_URL } from "../api/urls";
-import { getWishlistAPI } from "../api/api";
+import { addWishlist, getWishlistAPI } from "../api/api";
 import { toast } from "react-toastify";
 
 // --- Fetches Species for pokedex ---
@@ -57,7 +57,6 @@ export function getWishlist(userId) {
   return getWishlistAPI(userId)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res.data.data[0]);
         const wishlisted = res.data.data.map((item) =>
           SpeciesModel.fromJSON(item.species)
         );
@@ -71,3 +70,21 @@ export function getWishlist(userId) {
       );
     });
 }
+
+// --- Adds species to user's wishlist ---
+export function addToWishlist(speciesId){
+  return addWishlist(speciesId).then((res)=>{
+    if(res.status === 200){
+      toast(res.data.message);
+      return res.data.success;
+    }
+  }).catch((error)=>{
+    toast(
+      "Error when adding Pokemon species to wishlist: " +
+        (error.response?.data || "An unexpected error occurred")
+    );
+  })
+}
+
+
+// --- Removes species from user's wishlist ---

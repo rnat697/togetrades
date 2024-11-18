@@ -31,6 +31,7 @@ export default function PokedexCard({ species, isWishlisted }) {
       </div>
       <div className="dex-wish">
         <WishlistButton
+          speciesId={species.id}
           isMissing={species.isMissing}
           isWishlisted={isWishlisted}
         />

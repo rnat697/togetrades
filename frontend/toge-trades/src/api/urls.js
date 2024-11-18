@@ -9,8 +9,8 @@ export const ALL_USERS = `${USERS_URL}/`;
 export const USER_BY_ID_URL = (userId) => `${USERS_URL}/${userId}`;
 export const USER_POKEMON_URL = (userId) => `${USERS_URL}/${userId}/pokemon`;
 export const WISHLIST_URL = (userId) => `${USERS_URL}/${userId}/wishlist`;
-export const ADD_TO_WISHLIST_URL = `${USERS_URL}/users/wishlist/add`;
-export const REMOVE_FROM_WISHLIST_URL = `${USERS_URL}/users/wishlist/remove`;
+export const ADD_TO_WISHLIST_URL = `${USERS_URL}/wishlist/add`;
+export const REMOVE_FROM_WISHLIST_URL = `${USERS_URL}/wishlist/remove`;
 
 // ------ POKEMON ENDPOINTS ------
 export const POKEMON_URL = `${API_BASE_URL}/pokemons`;

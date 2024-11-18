@@ -30,8 +30,18 @@ export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
 export const getWishlistAPI =  (userId) => axios.get(WISHLIST_URL(userId), {withCredentials:true});
 
-export const addWishlist = (speciesId) => axios.post(ADD_TO_WISHLIST_URL, { speciesId }, {withCredentials:true} );
-export const removeWishlist = (speciesId) => axios.delete(REMOVE_FROM_WISHLIST_URL, { speciesId }, {withCredentials: true});
+export const addWishlist = (speciesId) =>
+  axios.post(
+    ADD_TO_WISHLIST_URL,
+    { speciesId: speciesId },
+    { withCredentials: true }
+  );
+export const removeWishlist = (speciesId) =>
+  axios.delete(
+    REMOVE_FROM_WISHLIST_URL,
+    { speciesId: speciesId },
+    { withCredentials: true }
+  );
 
 // ------ POKEMON API ------
 export const toggleLocked = (pokemonId, isLocked) =>

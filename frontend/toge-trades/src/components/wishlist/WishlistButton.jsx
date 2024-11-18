@@ -1,6 +1,8 @@
 import styles from "./WishlistButton.module.css";
 import React, { useState, useEffect } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { addToWishlist } from "../../controllers/PokedexController";
+import { toast } from "react-toastify";
 
 export default function WishlistButton({ speciesId, isWishlisted, isMissing }) {
   const [isWished, setWished] = useState(isWishlisted);
@@ -10,19 +12,14 @@ export default function WishlistButton({ speciesId, isWishlisted, isMissing }) {
   }, [isWishlisted]);
 
   const handleWishClicked = () => {
-    let successAPI = false;
     // TODO: ADD api call here
     if (isWished) {
       // Remove species from wishlist
-
-      successAPI = true;
     } else {
       // Add species to wishlist
-
-      successAPI = true;
-    }
-    if (successAPI) {
-      setWished((prevState) => !prevState);
+      addToWishlist(speciesId).then((success) => {
+        if (success) setWished(!isWished);
+      });
     }
   };
   return (
