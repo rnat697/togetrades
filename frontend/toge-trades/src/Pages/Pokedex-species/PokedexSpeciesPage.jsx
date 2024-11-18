@@ -25,7 +25,9 @@ export default function PokedexSpeciesPage() {
   const navigate = useNavigate();
   // MAX species is 1025 so around 52 pages
   let initialEntry =
-    parseInt(dexNumber) || parseInt(dexNumber) < 1 || parseInt(dexNumber) > 1025
+    isNaN(parseInt(dexNumber)) ||
+    parseInt(dexNumber) < 1 ||
+    parseInt(dexNumber) > 1025
       ? 1
       : parseInt(dexNumber);
   const [currentEntry, setCurrentEntry] = useState(initialEntry);
