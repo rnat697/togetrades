@@ -10,7 +10,7 @@
 }
 .found-disable{
   cursor: not-allowed;
-  opacity: 0.3;
+  opacity: 0.2;
   pointer-events: none;
 }
 .wishlist-icon {
@@ -24,7 +24,6 @@
 
 .visible {
   opacity: 1;
-  pointer-events: all; 
 }
 
 

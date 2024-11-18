@@ -37,11 +37,10 @@ export const addWishlist = (speciesId) =>
     { withCredentials: true }
   );
 export const removeWishlist = (speciesId) =>
-  axios.delete(
-    REMOVE_FROM_WISHLIST_URL,
-    { speciesId: speciesId },
-    { withCredentials: true }
-  );
+  axios.delete(REMOVE_FROM_WISHLIST_URL, {
+    data: { speciesId: speciesId },
+    withCredentials: true,
+  });
 
 // ------ POKEMON API ------
 export const toggleLocked = (pokemonId, isLocked) =>

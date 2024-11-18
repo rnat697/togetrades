@@ -1,7 +1,10 @@
 import styles from "./WishlistButton.module.css";
 import React, { useState, useEffect } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { addToWishlist } from "../../controllers/PokedexController";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../controllers/PokedexController";
 import { toast } from "react-toastify";
 
 export default function WishlistButton({ speciesId, isWishlisted, isMissing }) {
@@ -12,9 +15,12 @@ export default function WishlistButton({ speciesId, isWishlisted, isMissing }) {
   }, [isWishlisted]);
 
   const handleWishClicked = () => {
-    // TODO: ADD api call here
+    // if (!isMissing) return;
     if (isWished) {
       // Remove species from wishlist
+      removeFromWishlist(speciesId).then((success) => {
+        if (success) setWished(!isWished);
+      });
     } else {
       // Add species to wishlist
       addToWishlist(speciesId).then((success) => {
