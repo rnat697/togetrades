@@ -25,7 +25,7 @@ let mongod, db;
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api/v1/listing", routes);
+app.use("/api/v1/listings", routes);
 
 // Start in-memory DB before tests run
 beforeAll(async () => {
@@ -52,7 +52,7 @@ afterAll(async () => {
 describe("Listing creation POST /api/v1/listing/create", () => {
   test("Successful creation of Listing", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: pokemonVentisIvyasaur._id,
@@ -69,7 +69,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("No offered Pokemon ID sent, 400 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         seekSpeciesId: userVenti.wishlist[0].species._id,
@@ -79,7 +79,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("No seeking species ID sent, 400 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: pokemonVentisIvyasaur._id,
@@ -89,7 +89,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Pokemon can't be found, 404 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: "000000000000000000000054",
@@ -100,7 +100,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Species can't be found, 404 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: pokemonVentisIvyasaur._id,
@@ -111,7 +111,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Pokemon in active trade, 409 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: pokemonVentisLunala._id,
@@ -122,7 +122,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Pokemon has been traded before, 400 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send({
         offeredPokeId: pokemonNaviasLunala._id,
@@ -133,7 +133,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Pokemon is locked, 423 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send({
         offeredPokeId: pokemonNaviasIvysaur._id,
@@ -144,7 +144,7 @@ describe("Listing creation POST /api/v1/listing/create", () => {
   });
   test("Species is not in user's wishlist, 404 Code", (done) => {
     request(app)
-      .post("/api/v1/listing/create")
+      .post("/api/v1/listings/create")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send({
         offeredPokeId: pokemonVentisIvyasaur._id,

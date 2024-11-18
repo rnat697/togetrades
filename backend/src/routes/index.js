@@ -10,7 +10,7 @@ router.use("/users", user);
 router.use("/pokemons", pokemon);
 router.use("/incubators", incubator);
 router.use("/species", species);
-router.use("/listing", listing);
+router.use("/listings", listing);
 
 
 
