@@ -26,6 +26,7 @@ const listingSchema = new Schema({
     ref: "Species",
     required: true,
   },
+  isSeekingShiny: { type: Boolean, default: false, required: true },
   listedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   dateCreated: { type: Date, default: Date.now(), required: true },
   status: { type: String, enum: ["Active", "Inactive"], default: "Active" },

@@ -21,10 +21,10 @@ const router = express.Router();
 router.post("/create", auth, async (req, res) => {
   try {
     let userId = req.user._id;
-    const { offeredPokeId, seekSpeciesId } = req.body;
+    const { offeredPokeId, seekSpeciesId, isSeekingShiny } = req.body;
 
     // check if offeredPokeId and seekSpeciesId isn't empty
-    if (!offeredPokeId || !seekSpeciesId) {
+    if (!offeredPokeId || !seekSpeciesId || !isSeekingShiny) {
       return res
         .status(400)
         .send("offered pokemon ID or seeking species ID is required");
@@ -76,9 +76,14 @@ router.post("/create", auth, async (req, res) => {
       listingNum: listingNum,
       offeringPokemon: offeredPokeId,
       seekingSpecies: seekSpeciesId,
+      isSeekingShiny: isSeekingShiny,
       listedBy: userId,
       dateCreated: Date.now(),
     });
+
+    // Update pokemon's isTrading to true because its an active trade
+    pokeExist.isTrading = true;
+    await pokeExist.save();
 
     return res
       .status(201)
@@ -88,6 +93,60 @@ router.post("/create", auth, async (req, res) => {
     return res
       .status(500)
       .send("Internal Server Error when retrieving Pokemon.");
+  }
+});
+
+// ----- GETS ALL LISTINGS -----
+/**
+ * fetches all listings, sorted by recents and pagination
+ * - Pokemon offered must not be in an active trade, hasn't been traded away before and isn't locked.
+ * - Species sought must be in user's wishlist (at the moment, can be changed later)
+ * @param {page} - page number
+ * @param {limit} - the limit of the number of listings, default 10
+ */
+router.get("/", auth, async (req, res) => {
+  try {
+    // Paginations
+    const page = parseInt(req.query.page) || 1;
+    if (page <= 0) page = 1;
+    const limit = parseInt(req.query.limit, 10) || 20;
+    const skip = (page - 1) * limit;
+    // fetch all listings (a)
+    const listings = await Listing.find({ status: "Active" })
+      .sort({ dateCreated: -1 }) // Sort by recency
+      .skip(skip) // Pagination
+      .limit(limit)
+      .populate({
+        path: "offeringPokemon",
+        populate: { path: "species", model: "Species" },
+      })
+      .populate("seekingSpecies")
+      .populate("listedBy", "username image");
+
+    const totalCount = await Listing.countDocuments({ status: "Active" });
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Check if the requested page exceeds total pages
+    if (page > totalPages && totalPages > 0) {
+      return res
+        .status(400)
+        .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
+    }
+    return res.status(200).json({
+      succuess: true,
+      metadata: {
+        totalCount: totalCount,
+        page,
+        totalPages,
+        limit,
+      },
+      data: listings,
+    });
+  } catch (e) {
+    console.error("Error retrieving recent listings: ", e);
+    return res
+      .status(500)
+      .send("Internal server error when fetching recent listings.");
   }
 });
 
