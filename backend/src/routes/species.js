@@ -23,7 +23,8 @@ router.get("/", auth, async (req, res) => {
     if (!userExist) return res.status(404).send("User can not be found");
 
     // Pagination
-    const page = parseInt(req.query.page) || 1;
+    let page = parseInt(req.query.page) || 1;
+    if (page <= 0) page = 1;
     const limit = parseInt(req.query.limit, 10) || 20;
     const skip = (page - 1) * limit;
 

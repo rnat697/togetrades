@@ -150,7 +150,12 @@ const userNavia = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
-  wishlist: [],
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000710000000001"),
+    },
+  ],
 };
 
 // Valid token for Navia - for authetication checks
@@ -169,7 +174,12 @@ const userVenti = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
-  wishlist: [],
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000740000000001"),
+    },
+  ],
 };
 
 // Valid token for Navia - for authetication checks
@@ -188,7 +198,20 @@ const userAgatha = {
   passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
   image:
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
-  wishlist: [],
+  wishlist: [
+    {
+      species: speciesBulbasaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000810000000001"),
+    },
+    {
+      species: speciesShaymin._id,
+      _id: new mongoose.Types.ObjectId("000000000000820000000001"),
+    },
+    {
+      species: speciesVenusaur._id,
+      _id: new mongoose.Types.ObjectId("000000000000830000000001"),
+    },
+  ],
 };
 
 // Valid token for Agatha - for authetication checks
@@ -209,16 +232,18 @@ const pokemonLynneysIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: true,
+  hasBeenTraded: false,
 };
 // Navia's Lunala
 const pokemonNaviasLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000076"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
-  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000001"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
   isTrading: false,
   isLocked: false,
+  hasBeenTraded: true,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaur = {
@@ -227,8 +252,9 @@ const pokemonNaviasIvysaur = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
-  isLocked: false,
+  isTrading: false,
+  isLocked: true,
+  hasBeenTraded: false,
 };
 // Navia's Lunala
 const pokemonNaviasLunalaDup1 = {
@@ -237,8 +263,9 @@ const pokemonNaviasLunalaDup1 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe1 = {
@@ -247,8 +274,9 @@ const pokemonNaviasIvysaurDupe1 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 const pokemonNaviasLunalaDup2 = {
   _id: new mongoose.Types.ObjectId("000000000000000000000081"),
@@ -256,8 +284,9 @@ const pokemonNaviasLunalaDup2 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 // Navia's ivysaur
 const pokemonNaviasIvysaurDupe2 = {
@@ -266,8 +295,9 @@ const pokemonNaviasIvysaurDupe2 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 
 // Navia's ivysaur
@@ -277,8 +307,9 @@ const pokemonNaviasIvysaurDupe3 = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000002"),
   isShiny: true,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 
 // Venti's IvySaur
@@ -290,6 +321,7 @@ const pokemonVentisIvyasaur = {
   isShiny: true,
   isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 // Venti's Lunala
 const pokemonVentisLunala = {
@@ -300,6 +332,7 @@ const pokemonVentisLunala = {
   isShiny: false,
   isTrading: true,
   isLocked: false,
+  hasBeenTraded: false,
 };
 
 let pokemonAgathasLunala = {
@@ -308,8 +341,9 @@ let pokemonAgathasLunala = {
   orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   isShiny: false,
-  isTrading: true,
+  isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
 };
 
 function makeAgathasPokemons() {
@@ -331,6 +365,41 @@ function makeAgathasPokemons() {
   return pokemonList;
 }
 
+function makeAgathasListings() {
+  let listings = [];
+  let originalDate = new Date();
+  let totalOffsetMinutes = 30;
+  let intervalMilliseconds = (totalOffsetMinutes * 60 * 1000) / 29;
+  // Get the original ID as a number
+  let baseId = parseInt(pokemonAgathasLunala._id.toString(), 16); // Convert ObjectId to base 10 integer
+  let listingBaseId = parseInt("000000000000000000003868", 16);
+
+  for (let i = 0; i < 30; i++) {
+    // Increment the base ID
+    let newId = (baseId + i).toString(16).padStart(24, "0"); // Convert back to hex, ensure it's 24 characters
+    let newListingId = (listingBaseId + i).toString(16).padStart(24, "0");
+    // change time where first is furtherest from original time
+    let adjustedDate = new Date(
+      originalDate.getTime() + i * intervalMilliseconds
+    );
+
+    let listing = {
+      _id: newListingId,
+      listingNum: 5 + i,
+      offeringPokemon: new mongoose.Types.ObjectId(newId),
+      seekingSpecies: speciesBulbasaur._id,
+      isSeekingShiny: (i + 1) % 5 === 0, // every 5th one is true
+      listedBy: userAgatha._id,
+      dateCreated: adjustedDate,
+      status: "Active",
+      offers: [],
+      acceptedOffer: null,
+    };
+
+    listings.push(listing);
+  }
+  return listings;
+}
 // --------- Incubators ---------
 // Venti's incubators can be useful for not allowing
 // adding incubators when there are already 4 active.
@@ -374,6 +443,55 @@ const ventisIncubatorGrassDupe2 = {
   species: new mongoose.Types.ObjectId("000000000000000000000020"),
 };
 
+// --------- LISTINGS ---------
+const listingIvyForBulbVenti = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003864"),
+  listingNum: 1,
+  offeringPokemon: pokemonVentisIvyasaur._id,
+  seekingSpecies: speciesBulbasaur._id,
+  isSeekingShiny: true,
+  listedBy: userVenti._id,
+  dateCreated: new Date(1716069600), // Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
+  status: "Active",
+  offers: [],
+  acceptedOffer: null,
+};
+const listingIvyForBulbNavia = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003865"),
+  listingNum: 2,
+  offeringPokemon: pokemonNaviasIvysaur._id,
+  seekingSpecies: speciesBulbasaur._id,
+  isSeekingShiny: false,
+  listedBy: userNavia._id,
+  dateCreated: new Date(1729265961), // Sat Oct 19 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
+  status: "Active",
+  offers: [],
+  acceptedOffer: null,
+};
+const listingIvyForLunaLynney = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003866"),
+  listingNum: 3,
+  offeringPokemon: pokemonLynneysIvyasaur._id,
+  seekingSpecies: speciesLunala._id,
+  isSeekingShiny: false,
+  listedBy: userLynney._id,
+  dateCreated: new Date(1731857961), //Mon Nov 18 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
+  status: "Active",
+  offers: [],
+  acceptedOffer: null,
+};
+const listingLunaForBulbNavia = {
+  _id: new mongoose.Types.ObjectId("000000000000000000003867"),
+  listingNum: 4,
+  offeringPokemon: pokemonNaviasLunalaDup1._id,
+  seekingSpecies: speciesBulbasaur._id,
+  isSeekingShiny: false,
+  listedBy: userNavia._id,
+  dateCreated: new Date(1731914354), // Mon Nov 18 2024 20:19:14 GMT+1300 (New Zealand Daylight Time)
+  status: "Active",
+  offers: [],
+  acceptedOffer: null,
+};
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
@@ -427,6 +545,19 @@ async function addMockIncubators() {
   ]);
 }
 
+async function addMockListings() {
+  let listingDB = mongoose.connection.db.collection("listings");
+  let agathasListings = makeAgathasListings();
+
+  await listingDB.insertMany([
+    listingIvyForBulbVenti,
+    listingIvyForBulbNavia,
+    listingIvyForLunaLynney,
+    listingLunaForBulbNavia,
+    ...agathasListings,
+  ]);
+}
+
 async function dropData() {
   const collections = await mongoose.connection.db.collections();
   for (const collection of collections) {
@@ -440,6 +571,7 @@ async function addAllMockData() {
   await addMockUsers();
   await addMockPokemons();
   await addMockIncubators();
+  await addMockListings();
 }
 
 export {
@@ -465,5 +597,9 @@ export {
   pokemonAgathasLunala,
   ventisIncubatorGhost,
   ventisIncubatorGrass,
+  listingIvyForBulbNavia,
+  listingIvyForLunaLynney,
+  listingIvyForBulbVenti,
+  listingLunaForBulbNavia,
   addAllMockData,
 };

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import routes from "../pokemons.js";
 import {
   addAllMockData,
+  bearerAgatha,
   bearerLynney,
   bearerNavia,
   bearerVenti,
@@ -46,106 +47,6 @@ afterAll(async () => {
   await mongoose.disconnect();
   await mongod.stop();
 });
-
-// // ------- Pokemon Trading Toggling ------- FIXME:
-// describe("Pokemon Tradeable Toggling PATCH /api/v1/pokemons/id/setTradeable", () => {
-//   test("Successful setting tradeablility of a pokemon", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonVentisIvyasaur._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerVenti}`])
-//       .send({
-//         isTradeable: true,
-//       })
-//       .expect(204)
-//       .end(async (err, res) => {
-//         if (err) return done(err);
-
-//         const fromDb = await mongoose.connection.db
-//           .collection("pokemons")
-//           .findOne({ _id: pokemonVentisIvyasaur._id });
-//         expect(fromDb.isTradeable).toBe(true);
-//         return done();
-//       }, 10000);
-//   });
-
-//   test("Successful removing tradeablility of a pokemon", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasIvysaur._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerNavia}`])
-//       .send({
-//         isTradeable: false,
-//       })
-//       .expect(204)
-//       .end(async (err, res) => {
-//         if (err) return done(err);
-
-//         const fromDb = await mongoose.connection.db
-//           .collection("pokemons")
-//           .findOne({ _id: pokemonNaviasIvysaur._id });
-//         expect(fromDb.isTradeable).toBe(false);
-//         return done();
-//       });
-//   });
-
-//   test("No body sent (HTTP 422) - can't change tradeable status", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerNavia}`])
-//       .send()
-//       .expect(422)
-//       .end(done);
-//   });
-//   test("Not the owner of the pokemon (HTTP 403) - can't change tradeable", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerVenti}`])
-//       .send({ isTradeable: false })
-//       .expect(403)
-//       .end(done);
-//   });
-//   test("Pokemon doesn't exist (HTTP 404) - can't change tradeable", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/000000000000000000500009/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerNavia}`])
-//       .send({ isTradeable: false })
-//       .expect(404)
-//       .end(done);
-//   });
-
-//   test("User not authenticated (HTTP 401) - can't change tradeable", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setTradeable`)
-//       .send({ isTradeable: false })
-//       .expect(401)
-//       .end(done);
-//   });
-
-//   test("Maximum tradeable Pokemon limit reached (HTTP 403) - can't add more pokemon to be tradeable", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerNavia}`])
-//       .send({ isTradeable: true })
-//       .expect(403)
-//       .end(done);
-//   });
-//   test("Maximum tradeable Pokemon limit reached BUT pokemon is already tradeable and want to remove it HTTP(204) ", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonNaviasIvysaur._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerNavia}`])
-//       .send({ isTradeable: false })
-//       .expect(204)
-//       .end(done);
-//   });
-
-//   test("Pokemon is locked (HTTP 403) - can't be traded", (done) => {
-//     request(app)
-//       .patch(`/api/v1/pokemons/${pokemonLynneysIvyasaur._id}/setTradeable`)
-//       .set("Cookie", [`authorization=${bearerLynney}`])
-//       .send({ isTradeable: true })
-//       .expect(403)
-//       .end(done);
-//   });
-// });
 
 // ------- Lock Pokemon Toggling -------
 describe("Lock Pokemon Toggling PATCH /api/v1/pokemons/id/setLocked", () => {
@@ -226,6 +127,130 @@ describe("Lock Pokemon Toggling PATCH /api/v1/pokemons/id/setLocked", () => {
       .patch(`/api/v1/pokemons/${pokemonNaviasLunala._id}/setLocked`)
       .send({ isLocked: false })
       .expect(401)
+      .end(done);
+  });
+});
+
+describe("Fetching all eligible pokemons for trade offering GET /api/v1/pokemons/all-eligible-pokemon", () => {
+  test("Successful fetch of elegible pokemons for trade offering (small)", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon")
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(5);
+        expect(metadata.totalPages).toBe(1);
+        let pokemon = response.data;
+        expect(pokemon.length).toBe(5);
+        return done();
+      });
+  });
+  test("Successful fetch of elegible pokemons for trade offering (large)", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon")
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(50);
+        expect(metadata.totalPages).toBe(3);
+
+        let pokemon = response.data;
+        expect(pokemon.length).toBe(24);
+        return done();
+      });
+  });
+  test("Successful fetch of elegible pokemons for trade offering Page 2", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon?page=2")
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(50);
+        expect(metadata.page).toBe(2);
+
+        let pokemon = response.data;
+        expect(pokemon.length).toBe(24);
+        return done();
+      });
+  });
+  test("Successful fetch of elegible pokemons for trade offering, Last Page", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon?page=3")
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(50);
+        expect(metadata.page).toBe(3);
+
+        let pokemon = response.data;
+        expect(pokemon.length).toBe(2);
+        return done();
+      });
+  });
+  test("Outside of page scope, >totalPages", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon?page=4")
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(400)
+      .end(done);
+  });
+  test("Outside of page scope, <=0", (done) => {
+    request(app)
+      .get("/api/v1/pokemons/all-eligible-pokemon?page=-1")
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(400)
+      .end(done);
+  });
+});
+
+describe("Fetching specific species of eligible pokemons for trade offering GET /api/v1/pokemons/elegible-pokemon/:id", () => {
+  test("Successful fetch of specific species (elegible pokemons) for trade offering", (done) => {
+    request(app)
+      .get(`/api/v1/pokemons/elegible-pokemon/${speciesLunala._id}`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+        console.log(response);
+        let pokemon = response.data;
+        expect(pokemon.length).toBe(2);
+
+        let isEmpty = response.isEmpty;
+        expect(isEmpty).toBe(false);
+        return done();
+      });
+  });
+  test("Invalid species", (done) => {
+    request(app)
+      .get(`/api/v1/pokemons/elegible-pokemon/000000000000000000000592`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
       .end(done);
   });
 });

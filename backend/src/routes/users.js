@@ -100,6 +100,7 @@ router.get("/:id/pokemon", auth, async (req, res) => {
 
     // Paginations
     const page = parseInt(req.query.page) || 1;
+    if (page <= 0) page = 1;
     const limit = parseInt(req.query.limit, 10) || 20;
     const skip = (page - 1) * limit;
 
@@ -181,6 +182,7 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 // ----- FETCH WISHLIST -----
+// TODO: maybe change to pagination?
 // cant use /wishlist bc it conflicts with /:id??
 /// https://stackoverflow.com/questions/78339610/cast-to-objectid-failed-for-value-cart-type-string-at-path-id-for-mo
 router.get("/:id/wishlist", auth, async (req, res) => {
