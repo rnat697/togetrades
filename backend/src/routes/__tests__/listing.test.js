@@ -9,6 +9,7 @@ import {
   bearerLynney,
   bearerNavia,
   bearerVenti,
+  listingIvyForBulbVenti,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
   pokemonVentisIvyasaur,
@@ -172,12 +173,12 @@ describe("Fetch recent listings GET /api/v1/listing/", () => {
         expect(metadata.page).toBe(1);
         expect(metadata.totalPages).toBe(2);
         expect(metadata.limit).toBe(20);
-        
+
         // Check if its in descending order
         let listings = response.data;
         expect(listings.length).toBe(20);
-        for(let i = 34; i> (34-20); i--){
-          expect(listings[34-i].listingNum).toBe(i)
+        for (let i = 34; i > 34 - 20; i--) {
+          expect(listings[34 - i].listingNum).toBe(i);
         }
         return done();
       });
@@ -198,12 +199,12 @@ describe("Fetch recent listings GET /api/v1/listing/", () => {
         expect(metadata.page).toBe(2);
         expect(metadata.totalPages).toBe(2);
         expect(metadata.limit).toBe(20);
-        
+
         // Check if its in descending order
         let listings = response.data;
         expect(listings.length).toBe(14);
-        for(let i = 14; i> 0 ; i--){
-          expect(listings[14-i].listingNum).toBe(i)
+        for (let i = 14; i > 0; i--) {
+          expect(listings[14 - i].listingNum).toBe(i);
         }
         return done();
       });
@@ -214,6 +215,62 @@ describe("Fetch recent listings GET /api/v1/listing/", () => {
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
       .expect(400)
+      .end(done);
+  });
+});
+
+// ---------------- FETCH SPECIFIC LISTING  ----------------
+describe("Fetch specific listings GET /api/v1/listing/:listingId", () => {
+  test("Successful fetching of a listing", (done) => {
+    request(app)
+      .get(`/api/v1/listings/${listingIvyForBulbVenti._id}`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let listing = response.data;
+        expect(listing.listingNum).toBe(1);
+        expect(listing.offeringPokemon.species.name).toBe("ivysaur");
+        expect(listing.seekingSpecies.name).toBe("bulbasaur");
+        expect(listing.isSeekingShiny).toBe(true);
+        expect(listing.listedBy.username).toBe("Venti");
+        expect(listing.status).toBe("Active");
+
+        return done();
+      });
+  });
+  test("Successful fetching of a listing, other people viewing venti's", (done) => {
+    request(app)
+      .get(`/api/v1/listings/${listingIvyForBulbVenti._id}`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let listing = response.data;
+        expect(listing.listingNum).toBe(1);
+        expect(listing.offeringPokemon.species.name).toBe("ivysaur");
+        expect(listing.seekingSpecies.name).toBe("bulbasaur");
+        expect(listing.isSeekingShiny).toBe(true);
+        expect(listing.listedBy.username).toBe("Venti");
+        expect(listing.status).toBe("Active");
+
+        return done();
+      });
+  });
+  test("Unsuccessful fetching of a listing", (done) => {
+    request(app)
+      .get(`/api/v1/listings/000000000000000000000054`)
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(404)
       .end(done);
   });
 });

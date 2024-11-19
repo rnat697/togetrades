@@ -98,9 +98,7 @@ router.post("/create", auth, async (req, res) => {
 
 // ----- GETS ALL LISTINGS -----
 /**
- * fetches all listings, sorted by recents and pagination
- * - Pokemon offered must not be in an active trade, hasn't been traded away before and isn't locked.
- * - Species sought must be in user's wishlist (at the moment, can be changed later)
+ * fetches all listings, sorted by recents and pagination, only finds "Active" listings
  * @param {page} - page number
  * @param {limit} - the limit of the number of listings, default 10
  */
@@ -149,5 +147,37 @@ router.get("/", auth, async (req, res) => {
       .send("Internal server error when fetching recent listings.");
   }
 });
+
+// ----- GETS SPECIFIC LISTING -----
+/**
+ * Fetches a specified listing
+ * @param {id} - Listing Id
+ */
+router.get("/:listingId", auth, async (req,res)=>{
+  try{
+    const listingId  = req.params.listingId;
+
+    const listing = await Listing.findById(listingId)
+      .populate({
+        path: "offeringPokemon",
+        populate: { path: "species", model: "Species" },
+      })
+      .populate("seekingSpecies")
+      .populate("listedBy", "username image");
+
+    if(!listing) return res.status(404).send("Listing not found.");
+
+    return res.status(200).json({
+      success: true,
+      data: listing,
+    })
+  }catch(error){
+    console.error("Error retrieving listing: ", error);
+      return res
+        .status(500)
+        .send("Internal Server Error when retrieving listing.");
+  }
+});
+
 
 export default router;
