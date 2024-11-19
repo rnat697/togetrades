@@ -154,3 +154,66 @@ describe("Listing creation POST /api/v1/listing/create", () => {
       .end(done);
   });
 });
+// ---------------- FETCH RECENT LISTINGS  ----------------
+describe("Fetch recent listings GET /api/v1/listing/", () => {
+  test("Successful fetching of recent listings", (done) => {
+    request(app)
+      .get("/api/v1/listings/")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(34);
+        expect(metadata.page).toBe(1);
+        expect(metadata.totalPages).toBe(2);
+        expect(metadata.limit).toBe(20);
+        
+        // Check if its in descending order
+        let listings = response.data;
+        expect(listings.length).toBe(20);
+        for(let i = 34; i> (34-20); i--){
+          expect(listings[34-i].listingNum).toBe(i)
+        }
+        return done();
+      });
+  });
+  test("Successful fetching of recent listings, Page 2", (done) => {
+    request(app)
+      .get("/api/v1/listings/?page=2")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(34);
+        expect(metadata.page).toBe(2);
+        expect(metadata.totalPages).toBe(2);
+        expect(metadata.limit).toBe(20);
+        
+        // Check if its in descending order
+        let listings = response.data;
+        expect(listings.length).toBe(14);
+        for(let i = 14; i> 0 ; i--){
+          expect(listings[14-i].listingNum).toBe(i)
+        }
+        return done();
+      });
+  });
+  test("fetching recent listing out of scope, Page 3", (done) => {
+    request(app)
+      .get("/api/v1/listings/?page=3")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(400)
+      .end(done);
+  });
+});

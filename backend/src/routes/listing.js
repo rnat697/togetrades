@@ -111,7 +111,7 @@ router.get("/", auth, async (req, res) => {
     if (page <= 0) page = 1;
     const limit = parseInt(req.query.limit, 10) || 20;
     const skip = (page - 1) * limit;
-    // fetch all listings (a)
+    // fetch all listings (active)
     const listings = await Listing.find({ status: "Active" })
       .sort({ dateCreated: -1 }) // Sort by recency
       .skip(skip) // Pagination
@@ -133,7 +133,7 @@ router.get("/", auth, async (req, res) => {
         .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
     }
     return res.status(200).json({
-      succuess: true,
+      success: true,
       metadata: {
         totalCount: totalCount,
         page,
