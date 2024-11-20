@@ -3,7 +3,7 @@
     align-items: center;
     flex-direction: row;
     height: 100%;
-    background-color: transparent;
+    width: 14em;
     
 }
 
@@ -12,8 +12,8 @@
     height: auto;
 }
 
-.brand-name {
-    font-size: 1.8em;
+.logo-brand-name{
+    font-size: 1.6em;
     font-weight: 600;
     color: #213547;
 }
