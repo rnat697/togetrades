@@ -15,6 +15,7 @@
   grid-template-columns: repeat(2, 1fr);
   width:60%;
   justify-self: center;
+  margin-top: 2em;
 
 }
 .hub-nav{

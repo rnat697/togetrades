@@ -1,0 +1,55 @@
+.selection-modal-container{
+  position:fixed;
+  left:0;
+  top:0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; 
+  visibility: hidden; 
+  background-color: rgba(0,0,0,0.2);
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  width: 100%;
+  height: 100%;
+}
+.show-modal {
+  opacity: 1;
+  visibility: visible; 
+  transition: opacity 0.3s ease-in-out; 
+}
+.show-modal .modal {
+  transform: translateY(0); 
+}
+.modal{
+  position:relative;
+  background: white;
+  border-radius: 2em;
+  padding:1.5rem;
+  width: 45em;
+  height: 30em;
+  transform: translateY(-20px);
+  transition: transform 0.2s ease-in-out;
+}
+.modal-close{
+  position:absolute;
+  top: 2rem;
+  right: 2rem;
+}
+.selection-modal-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.selection-modal-title h2{
+  padding-right: 0.5em;
+}
+.selection-modal-pokemon{
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows:  repeat(4, 1fr);
+}
+.selection-modal-button{
+  width: 80%;
+}

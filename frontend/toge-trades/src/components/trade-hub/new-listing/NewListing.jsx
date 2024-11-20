@@ -1,10 +1,7 @@
 import ListingBox from "./listing-box/ListingBox";
 import styles from "./NewListing.module.css";
 
-export default function NewListing() {
-  const handleOnClicked = (isOffered) => {
-    console.log("clicked, on offered? ", isOffered);
-  };
+export default function NewListing({ onClicked, pokemon, species }) {
   return (
     <div className={styles["new-listing-container"]}>
       <div className={styles["new-listing-content"]}>
@@ -13,7 +10,7 @@ export default function NewListing() {
             title="I am Offering"
             tooltipMsg="Pick one Pokemon that you want to offer."
             isOffering={true}
-            onClicked={handleOnClicked}
+            onClicked={(isOffered) => onClicked(isOffered)}
           />
           <img
             className={styles["trade-icon"]}
@@ -22,7 +19,7 @@ export default function NewListing() {
           <ListingBox
             title={"I am Seeking"}
             tooltipMsg={"Pick one from your wishlist that you are seeking."}
-            onClicked={handleOnClicked}
+            onClicked={(isOffered) => onClicked(isOffered)}
           />
         </div>
         <div className={styles["new-listing-button"]}>
