@@ -1,6 +1,5 @@
 .listing-box-container{
   background-color: #C9DCF4;
-  width: auto;
   justify-content: center;
   align-items: center;
   width: 12em;
@@ -35,4 +34,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .listing-box-container{
+    width: 8em;
+    height:9em;
+  }
+  .listing-box-title{
+    font-size: 0.8em;
+    justify-content: center;
+    width: 100%;
+  
+  }
+  .listing-box-add{
+    width: 5em;
+    height: 5em;
+  }
 }

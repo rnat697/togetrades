@@ -32,3 +32,20 @@
 .new-listing-button button{
   width: 90%;
 }
+
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .new-listing-container{
+    height: 13em;
+    width: 20em;
+  }
+  .trade-icon{
+    width: 2em;
+    height: 2em;
+    padding: 0.5em;
+    align-self: center;
+  }
+  .new-listing-button button{
+    width: 80%;
+  }
+}

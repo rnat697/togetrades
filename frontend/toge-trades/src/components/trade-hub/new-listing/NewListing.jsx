@@ -11,7 +11,7 @@ export default function NewListing() {
         <div className={styles["offering-seeking-container"]}>
           <ListingBox
             title="I am Offering"
-            tooltipMsg="Pick one of your eligble Pokemon that you want to offer."
+            tooltipMsg="Pick one Pokemon that you want to offer."
             isOffering={true}
             onClicked={handleOnClicked}
           />
@@ -21,9 +21,7 @@ export default function NewListing() {
           />
           <ListingBox
             title={"I am Seeking"}
-            tooltipMsg={
-              "Pick one of the Pokemon in your wishlist that you are seeking."
-            }
+            tooltipMsg={"Pick one from your wishlist that you are seeking."}
             onClicked={handleOnClicked}
           />
         </div>
