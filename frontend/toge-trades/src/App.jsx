@@ -10,6 +10,7 @@ import IncubatorPage from "./Pages/Incubator/IncubatorPage.jsx";
 import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
 import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
 import PokedexSpeciesPage from "./Pages/Pokedex-species/PokedexSpeciesPage.jsx";
+import TradeHubPage from "./Pages/Trade-hub/TradeHubPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -102,6 +103,14 @@ function App() {
           }
         />
         <Route index element={<Navigate to="/pokedex/entry/1" replace />} />
+        <Route
+          path="tradehub"
+          element={
+            <RequiresAuth>
+              <TradeHubPage />
+            </RequiresAuth>
+          }
+        />
       </Route>
     </Routes>
   );

@@ -1,0 +1,38 @@
+.listing-box-container{
+  background-color: #C9DCF4;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  width: 12em;
+  height:12em;
+  border-radius: 1em;
+}
+.seeking{
+  background-color: #F4E1C9;
+}
+.listing-box-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.listing-box-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 70%;
+
+}
+.listing-box-title p{
+  font-weight: 600;
+}
+.listing-box-add{
+  width: 7em;
+  height: 7em;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

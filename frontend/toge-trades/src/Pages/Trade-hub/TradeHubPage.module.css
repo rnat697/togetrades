@@ -1,0 +1,37 @@
+.trade-hub-container{
+  justify-content: center;
+  align-items: center;
+  margin-top:5em;
+
+}
+.trade-hub-content{
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.hub-title-listings{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width:60%;
+  justify-self: center;
+
+}
+.hub-nav{
+  justify-self: center;
+}
+.create-listing-container{
+  justify-self: center;
+  align-self: center;
+}
+.hub-title-listings button{
+  width:8em;
+  justify-self: flex-end;
+}
+.hub-title-listings h3{
+  justify-self: flex-start;
+}
+.hub-listings{
+  display:flex;
+  flex-direction: rows;
+}
