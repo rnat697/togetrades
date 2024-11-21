@@ -5,7 +5,6 @@ import styles from "./NewListing.module.css";
 export default function NewListing({ onClicked, pokemon, species, isShiny }) {
   const [selectedPoke, setSelectedPoke] = useState(null);
   const [selectedSpecies, setSelectedSpecies] = useState(null);
-
   useEffect(() => {
     if (pokemon) {
       setSelectedPoke(pokemon);
@@ -14,6 +13,7 @@ export default function NewListing({ onClicked, pokemon, species, isShiny }) {
 
   useEffect(() => {
     if (species) {
+      console.log("HII ", species);
       setSelectedSpecies(species);
     }
   }, [species]);
@@ -36,6 +36,7 @@ export default function NewListing({ onClicked, pokemon, species, isShiny }) {
             tooltipMsg={"Pick one from your wishlist that you are seeking."}
             onClicked={(isOffered) => onClicked(isOffered)}
             pokemon={selectedSpecies}
+            isSpecies={true}
           />
         </div>
         <div className={styles["new-listing-button"]}>

@@ -9,7 +9,6 @@ export default function TradeHubPage() {
   const [showSeekModal, setShowSeek] = useState(false);
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
-  const [isSeekingShiny, setSeekingShiny] = useState(null);
   const { page } = useParams();
   const navigate = useNavigate();
 
@@ -35,10 +34,9 @@ export default function TradeHubPage() {
     setShowSeek(false);
     console.log("we closing seeking");
   };
-  const handleSeekModalConfirm = (species, isSeekingShiny) => {
+  const handleSeekModalConfirm = (species) => {
     setShowSeek(false);
     setSpecies(species);
-    setSeekingShiny(isSeekingShiny);
   };
 
   return (

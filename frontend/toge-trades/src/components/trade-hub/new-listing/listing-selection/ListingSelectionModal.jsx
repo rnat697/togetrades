@@ -35,7 +35,6 @@ export default function ListingSelectionModal({
 
   // Selected item from the infinite scroll / pagination thingies
   const handleSelectedItemChange = (item) => {
-    console.log(item);
     setSelectedItem(item);
   };
 
