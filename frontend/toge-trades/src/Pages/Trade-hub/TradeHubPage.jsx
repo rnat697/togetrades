@@ -26,9 +26,9 @@ export default function TradeHubPage() {
     setShowOffer(false);
     console.log("we closing");
   };
-  const handleOfferModalConfirm = () => {
-    //params is pokemon
-    // pass it back into NewListing?
+  const handleOfferModalConfirm = (pokemon) => {
+    setShowOffer(false);
+    setPokemon(pokemon);
   };
   const handleSeekModalClose = () => {
     setShowSeek(false);
@@ -53,6 +53,7 @@ export default function TradeHubPage() {
           <NewListing
             onClicked={(isOffered) => openListingSelectionModal(isOffered)}
             species={species}
+            pokemon={pokemon}
           />
         </div>
         <ListingSelectionModal

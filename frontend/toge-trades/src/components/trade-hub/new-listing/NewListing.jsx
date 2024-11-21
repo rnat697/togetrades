@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ListingBox from "./listing-box/ListingBox";
 import styles from "./NewListing.module.css";
 
-export default function NewListing({ onClicked, pokemon, species, isShiny }) {
+export default function NewListing({ onClicked, pokemon, species }) {
   const [selectedPoke, setSelectedPoke] = useState(null);
   const [selectedSpecies, setSelectedSpecies] = useState(null);
   useEffect(() => {
@@ -13,7 +13,6 @@ export default function NewListing({ onClicked, pokemon, species, isShiny }) {
 
   useEffect(() => {
     if (species) {
-      console.log("HII ", species);
       setSelectedSpecies(species);
     }
   }, [species]);
@@ -26,6 +25,7 @@ export default function NewListing({ onClicked, pokemon, species, isShiny }) {
             tooltipMsg="Pick one Pokemon that you want to offer."
             isOffering={true}
             onClicked={(isOffered) => onClicked(isOffered)}
+            pokemon={selectedPoke}
           />
           <img
             className={styles["trade-icon"]}

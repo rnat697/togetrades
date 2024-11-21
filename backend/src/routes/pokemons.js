@@ -75,7 +75,9 @@ router.get("/all-eligible-pokemon", auth, async (req, res) => {
     const pokemon = await Pokemon.find(query)
       .skip(skip)
       .limit(limit)
-      .populate("species");
+      .populate("species")
+      .populate("originalOwner", "username _id")
+      .populate("currentOwner", "username _id");
 
     // count total pokemon for pagination
     const totalCount = await Pokemon.countDocuments(query);

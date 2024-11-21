@@ -18,7 +18,7 @@ export const POKEMON_URL = `${API_BASE_URL}/pokemons`;
 export const TOGGLE_LOCKED_URL = (pokeId) =>
   `${POKEMON_URL}/${pokeId}/setLocked`;
 export const ALL_ELIGIBLE_POKEMON = `${POKEMON_URL}/all-eligible-pokemon`;
-// specific eligible pokemon goes here
+// TODO: specific eligible pokemon goes here
 
 // ------ INCUBATOR ENDPOINTS ------
 export const INCUBATOR_URL = `${API_BASE_URL}/incubators`;

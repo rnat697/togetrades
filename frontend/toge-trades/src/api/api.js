@@ -13,6 +13,7 @@ import {
   ADD_TO_WISHLIST_URL,
   REMOVE_FROM_WISHLIST_URL,
   ALL_WISHLIST_URL,
+  ALL_ELIGIBLE_POKEMON,
 } from "./urls";
 
 // ------ USERS API ------
@@ -50,6 +51,12 @@ export const toggleLocked = (pokemonId, isLocked) =>
     { isLocked: isLocked },
     { withCredentials: true }
   );
+
+export const allEligiblePokemon = (page) =>
+  axios.get(`${ALL_ELIGIBLE_POKEMON}/?page=${page}&limit=15`, {
+    withCredentials: true,
+  });
+
 
 // ------ INCUBATOR API ------
 export const createIncubator = (type) =>
