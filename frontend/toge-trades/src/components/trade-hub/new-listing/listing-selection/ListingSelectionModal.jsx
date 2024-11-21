@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../../api/auth";
 import { getAllWishlist } from "../../../../controllers/PokedexController";
 import InfiniteScroll from "../infinite-scroll/InfiniteScroll";
-import getEligibleTradePokemon from "../../../../controllers/ListingsController";
+import { getEligibleTradePokemon } from "../../../../controllers/ListingsController";
 import ReactPaginate from "react-paginate";
 import { capitalizeFirstLetter } from "../../../utils/utils";
 export default function ListingSelectionModal({
@@ -20,6 +20,7 @@ export default function ListingSelectionModal({
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [metadata, setMetadata] = useState({});
+  const [isSeekingShiny, setIsSeekingShiny] = useState(false);
   const tooltipMessages = [
     "Offerable Pokémon: unlocked, not traded before, and not in active trades.",
     "Sought Pokémon: from your wishlist.",
@@ -62,6 +63,12 @@ export default function ListingSelectionModal({
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
   };
+
+  // for is seeking shiny radio buttons
+  const handleRadioChange = (event) => {
+    setIsSeekingShiny(event.target.value === "yes");
+  };
+
   return (
     <div
       className={`${styles["selection-modal-container"]} ${
@@ -148,13 +155,40 @@ export default function ListingSelectionModal({
               breakClassName={styles["page-item"]}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className={styles["seeking-shiny"]}>
+            <h3>Are you seeking a shiny?</h3>
+            <div>
+              <input
+                type="radio"
+                id="yes"
+                name="seekingShiny"
+                value="yes"
+                checked={isSeekingShiny === true}
+                onChange={handleRadioChange}
+              />
+              <label htmlFor="yes">Yes</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="no"
+                name="seekingShiny"
+                value="no"
+                checked={isSeekingShiny === false}
+                onChange={handleRadioChange}
+              />
+              <label htmlFor="no">No</label>
+            </div>
+          </div>
+        )}
         <div className={styles["selection-modal-button"]}>
           <button
             onClick={() => {
               setCurrentPage(1);
-              return onConfirm(selectedItem);
+              return onConfirm(selectedItem, isSeekingShiny);
             }}
+            disabled={selectedItem === null}
           >
             {`Add ${isOffered ? "Offering" : "Seeking"}`}
           </button>

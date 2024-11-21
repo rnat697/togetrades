@@ -23,8 +23,8 @@ export function getEligibleTradePokemon(page = 1) {
     });
 }
 
-export function createNewListing(pokeId, speciesId) {
-  return createListing(pokeId, speciesId)
+export function createNewListing(pokeId, speciesId, isSeekingShiny) {
+  return createListing(pokeId, speciesId, isSeekingShiny)
     .then((res) => {
       if (res.status === 201) {
         const message = res.data.message;

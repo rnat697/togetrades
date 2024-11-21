@@ -64,7 +64,7 @@
   width: 4em;
 }
 .pagination-item:hover {
-  background-color: #E1EBF8; /* Change background color when hovered */
+  background-color: #C9DCF4; /* Change background color when hovered */
 }
 .pagination-item.selected {
   border: 0.2em solid #78A7E2; 
@@ -101,10 +101,21 @@
 }
 .selection-modal-infnite-scroll{
   justify-self: center;
-  height: 70%;
+  height: 65%;
+  width: 100%;
 }
+.seeking-shiny{
+  margin-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:  0 1em;
+
+}
+
 .selection-modal-button{
-  margin-top: 1.5em;
+  margin-top: 0.5em;
   justify-self:center ;
   width: 80%;
 }

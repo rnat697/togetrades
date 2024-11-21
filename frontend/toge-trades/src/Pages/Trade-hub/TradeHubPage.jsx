@@ -9,6 +9,8 @@ export default function TradeHubPage() {
   const [showSeekModal, setShowSeek] = useState(false);
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
+  const [isSeekingShiny, setIsSeekingShiny] = useState(false);
+
   const { page } = useParams();
   const navigate = useNavigate();
 
@@ -24,19 +26,18 @@ export default function TradeHubPage() {
   };
   const handleOfferModalClose = () => {
     setShowOffer(false);
-    console.log("we closing");
   };
-  const handleOfferModalConfirm = (pokemon) => {
+  const handleOfferModalConfirm = (pokemon, isSeekingShiny) => {
     setShowOffer(false);
     setPokemon(pokemon);
   };
   const handleSeekModalClose = () => {
     setShowSeek(false);
-    console.log("we closing seeking");
   };
-  const handleSeekModalConfirm = (species) => {
+  const handleSeekModalConfirm = (species, isSeekingShiny) => {
     setShowSeek(false);
     setSpecies(species);
+    setIsSeekingShiny(isSeekingShiny);
   };
 
   return (
@@ -54,6 +55,7 @@ export default function TradeHubPage() {
             onClicked={(isOffered) => openListingSelectionModal(isOffered)}
             species={species}
             pokemon={pokemon}
+            isShinyWanted={isSeekingShiny}
           />
         </div>
         <ListingSelectionModal

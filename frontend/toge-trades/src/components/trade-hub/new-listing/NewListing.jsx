@@ -4,9 +4,15 @@ import styles from "./NewListing.module.css";
 import { createNewListing } from "../../../controllers/ListingsController";
 import { ToastContainer } from "react-toastify";
 
-export default function NewListing({ onClicked, pokemon, species }) {
+export default function NewListing({
+  onClicked,
+  pokemon,
+  species,
+  isShinyWanted,
+}) {
   const [selectedPoke, setSelectedPoke] = useState(null);
   const [selectedSpecies, setSelectedSpecies] = useState(null);
+  const [isSeekingShiny, setIsSeekingShiny] = useState(false);
   useEffect(() => {
     if (pokemon) {
       setSelectedPoke(pokemon);
@@ -19,13 +25,19 @@ export default function NewListing({ onClicked, pokemon, species }) {
     }
   }, [species]);
 
+  useEffect(() => {
+    setIsSeekingShiny(isShinyWanted);
+  }, [isShinyWanted]);
+
   const handleCreateListing = () => {
-    createNewListing(selectedPoke.id, selectedSpecies.id).then((success) => {
-      if (success) {
-        setSelectedPoke(null);
-        setSelectedSpecies(null);
+    createNewListing(selectedPoke.id, selectedSpecies.id, isSeekingShiny).then(
+      (success) => {
+        if (success) {
+          setSelectedPoke(null);
+          setSelectedSpecies(null);
+        }
       }
-    });
+    );
   };
 
   return (
@@ -49,6 +61,7 @@ export default function NewListing({ onClicked, pokemon, species }) {
             onClicked={(isOffered) => onClicked(isOffered)}
             pokemon={selectedSpecies}
             isSpecies={true}
+            isShinyWanted={isSeekingShiny}
           />
         </div>
         <div className={styles["new-listing-button"]}>

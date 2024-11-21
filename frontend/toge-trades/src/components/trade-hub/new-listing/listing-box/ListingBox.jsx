@@ -11,16 +11,19 @@ export default function ListingBox({
   isOffering = false,
   pokemon = null,
   isSpecies = false,
+  isShinyWanted = false,
 }) {
   const [image, setImage] = useState(null);
-  const [isPokeShiny, setPokeShiny] = useState(false);
+  const [isShiny, setShiny] = useState(false);
   useEffect(() => {
     if (pokemon) {
       setImage(isSpecies ? pokemon.image : pokemon.species.image);
       if (!isSpecies) {
-        setPokeShiny(pokemon.isShiny);
+        setShiny(pokemon.isShiny);
+      } else {
+        setShiny(isShinyWanted);
       }
-    }else{
+    } else {
       setImage(null);
     }
   }, [pokemon]);
@@ -48,7 +51,7 @@ export default function ListingBox({
           {image ? (
             <img
               className={styles["pokemon-img"]}
-              src={isPokeShiny ? image.shiny : image.normal}
+              src={isShiny ? image.shiny : image.normal}
             />
           ) : (
             <FaPlus size={50} />

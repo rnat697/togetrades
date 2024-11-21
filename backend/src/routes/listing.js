@@ -22,7 +22,6 @@ router.post("/create", auth, async (req, res) => {
   try {
     let userId = req.user._id;
     const { offeredPokeId, seekSpeciesId, isSeekingShiny } = req.body;
-    console.log(req.body);
 
     // check if offeredPokeId and seekSpeciesId isn't empty
     if (!offeredPokeId || !seekSpeciesId || isSeekingShiny == null) {

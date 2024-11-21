@@ -1,14 +1,14 @@
 .infinite-scroll-container{
+  display: flex;
   overflow-y:auto;
   height: 100%;
-  width: 100%;
   scroll-behavior: smooth;
 }
 .scroll-grid{
   display:grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5em;
-
+  width: 100%;
 }
 .item {
   padding: 1em;
@@ -27,6 +27,6 @@
 }
 
 .item img{
-  height: 5em;
-  width: 5em;
+  height: 4em;
+  width: 4em;
 }
