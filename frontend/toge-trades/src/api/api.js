@@ -13,6 +13,7 @@ import {
   WISHLIST_URL,
   ADD_TO_WISHLIST_URL,
   REMOVE_FROM_WISHLIST_URL,
+  ALL_WISHLIST_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -28,7 +29,8 @@ export const signupAPI = (username, email, password) =>
 
 export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
-export const getWishlistAPI =  (userId) => axios.get(WISHLIST_URL(userId), {withCredentials:true});
+export const getAllWishlistAPI = (userId) =>
+  axios.get(ALL_WISHLIST_URL(userId), { withCredentials: true });
 
 export const addWishlist = (speciesId) =>
   axios.post(

@@ -181,11 +181,10 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-// ----- FETCH WISHLIST -----
-// TODO: maybe change to pagination?
+// ----- FETCH WISHLIST ALL -----
 // cant use /wishlist bc it conflicts with /:id??
 /// https://stackoverflow.com/questions/78339610/cast-to-objectid-failed-for-value-cart-type-string-at-path-id-for-mo
-router.get("/:id/wishlist", auth, async (req, res) => {
+router.get("/:id/all-wishlist", auth, async (req, res) => {
   try {
     let userId = req.params.id;
     const userExist = await User.findById(userId);
