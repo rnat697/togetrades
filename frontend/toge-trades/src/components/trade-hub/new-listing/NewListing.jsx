@@ -4,12 +4,7 @@ import styles from "./NewListing.module.css";
 import { createNewListing } from "../../../controllers/ListingsController";
 import { ToastContainer } from "react-toastify";
 
-export default function NewListing({
-  onClicked,
-  pokemon,
-  species,
-  isShinyWanted,
-}) {
+export default function NewListing({ onClicked, pokemon, species, isShinyWanted, onSuccess }) {
   const [selectedPoke, setSelectedPoke] = useState(null);
   const [selectedSpecies, setSelectedSpecies] = useState(null);
   const [isSeekingShiny, setIsSeekingShiny] = useState(false);
@@ -35,6 +30,7 @@ export default function NewListing({
         if (success) {
           setSelectedPoke(null);
           setSelectedSpecies(null);
+          return onSuccess();
         }
       }
     );

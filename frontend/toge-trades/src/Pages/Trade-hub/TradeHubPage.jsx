@@ -40,6 +40,12 @@ export default function TradeHubPage() {
     setIsSeekingShiny(isSeekingShiny);
   };
 
+  const handleSuccessNewListing = () => {
+    setPokemon(null);
+    setSpecies(null);
+    setIsSeekingShiny(false);
+  };
+
   return (
     <div className={styles["trade-hub-container"]}>
       <div className={styles["trade-hub-content"]}>
@@ -56,6 +62,7 @@ export default function TradeHubPage() {
             species={species}
             pokemon={pokemon}
             isShinyWanted={isSeekingShiny}
+            onSuccess={handleSuccessNewListing}
           />
         </div>
         <ListingSelectionModal

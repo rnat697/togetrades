@@ -33,6 +33,7 @@ function InfiniteScroll({ items, onItemSelect }) {
           <a
             data-tooltip-id="infinite-scroll-tooltip"
             data-tooltip-content={capitalizeFirstLetter(item.name)}
+            key={`${item.id}-${index}`}
           >
             <div
               className={`${styles["item"]} ${
