@@ -2,12 +2,7 @@ import useGet from "../hooks/useGet";
 import { useEffect, useState } from "react";
 import SpeciesModel from "../models/SpeciesModel";
 import { SPECIES_ALL_URL, SPECIES_ITEM_URL } from "../api/urls";
-import {
-  addWishlist,
-  getAllWishlistAPI,
-  getWishlistAPI,
-  removeWishlist,
-} from "../api/api";
+import { addWishlist, getAllWishlistAPI, removeWishlist } from "../api/api";
 import { toast } from "react-toastify";
 
 // --- Fetches Species for pokedex ---
