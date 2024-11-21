@@ -10,9 +10,11 @@ import {
   CREATE_INCUBATOR_URL,
   DELETE_INCUBATOR_URL,
   HATCH_EGG_URL,
-  WISHLIST_URL,
   ADD_TO_WISHLIST_URL,
   REMOVE_FROM_WISHLIST_URL,
+  ALL_WISHLIST_URL,
+  ALL_ELIGIBLE_POKEMON,
+  CREATE_LISTING_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -28,7 +30,8 @@ export const signupAPI = (username, email, password) =>
 
 export const allUsers = () => axios.get(ALL_USERS, { withCredentials: true });
 
-export const getWishlistAPI =  (userId) => axios.get(WISHLIST_URL(userId), {withCredentials:true});
+export const getAllWishlistAPI = (userId) =>
+  axios.get(ALL_WISHLIST_URL(userId), { withCredentials: true });
 
 export const addWishlist = (speciesId) =>
   axios.post(
@@ -50,6 +53,11 @@ export const toggleLocked = (pokemonId, isLocked) =>
     { withCredentials: true }
   );
 
+export const allEligiblePokemon = (page) =>
+  axios.get(`${ALL_ELIGIBLE_POKEMON}/?page=${page}&limit=15`, {
+    withCredentials: true,
+  });
+
 // ------ INCUBATOR API ------
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
@@ -58,3 +66,15 @@ export const cancelIncubatorAPI = (id) =>
   axios.delete(DELETE_INCUBATOR_URL(id), { withCredentials: true });
 export const hatchIncubatorAPI = (id) =>
   axios.delete(HATCH_EGG_URL(id), { withCredentials: true });
+
+// ------ LISTING API ------
+export const createListing = (
+  offeredPokeId,
+  seekSpeciesId,
+  isSeekingShiny = false
+) =>
+  axios.post(
+    CREATE_LISTING_URL,
+    { offeredPokeId, seekSpeciesId, isSeekingShiny },
+    { withCredentials: true }
+  );

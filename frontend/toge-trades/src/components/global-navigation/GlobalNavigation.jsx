@@ -18,7 +18,7 @@ export default function GlobalNavigation() {
   };
 
   const closeMenu = () => {
-    if (window.innerWidth <= 1150) {
+    if (window.innerWidth <= 1198) {
       setShowMenu(false);
     }
   };
@@ -26,7 +26,7 @@ export default function GlobalNavigation() {
   return (
     <header className="nav-header">
       <nav className="nav-container">
-        <NavLink to="/pokebox" className="nav-logo">
+        <NavLink to="/landing" className="nav-logo">
           <Logo />
         </NavLink>
         <div

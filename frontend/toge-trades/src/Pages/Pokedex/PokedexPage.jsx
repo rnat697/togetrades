@@ -1,7 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./PokedexPage.css";
 import { useState, useEffect } from "react";
-import { getWishlist, usePokedex } from "../../controllers/PokedexController";
+import {
+  getAllWishlist,
+  usePokedex,
+} from "../../controllers/PokedexController";
 import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import { Line } from "rc-progress";
@@ -39,7 +42,7 @@ export default function PokedexPage() {
 
   // ---- Get user's wishlist on first render ---
   useEffect(() => {
-    getWishlist(user._id).then((data) => {
+    getAllWishlist(user._id).then((data) => {
       setWishlist(data);
     });
   }, []);

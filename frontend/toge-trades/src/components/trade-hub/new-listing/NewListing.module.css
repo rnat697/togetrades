@@ -1,0 +1,51 @@
+.new-listing-container{
+  display:flex;
+  background-color: white;
+  padding: 0.5em;
+  justify-content: center;
+  align-items: center;
+  width: 34em;
+  border-radius: 2em;
+  height: 18em;
+
+}
+.new-listing-content{
+  display:flex;
+  flex-direction: column;
+
+}
+.offering-seeking-container{
+  display: flex;
+  flex-direction: row;
+}
+.trade-icon{
+  width: 2em;
+  height: 2em;
+  padding: 2em;
+  align-self: center;
+}
+.new-listing-button{
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  width: 100%;
+}
+.new-listing-button button{
+  width: 90%;
+}
+
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .new-listing-container{
+    height: 13em;
+    width: 20em;
+  }
+  .trade-icon{
+    width: 2em;
+    height: 2em;
+    padding: 0.5em;
+    align-self: center;
+  }
+  .new-listing-button button{
+    width: 80%;
+  }
+}

@@ -1,0 +1,124 @@
+.selection-modal-container{
+  position:fixed;
+  left:0;
+  top:0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; 
+  visibility: hidden; 
+  background-color: rgba(0,0,0,0.2);
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.show-modal {
+  opacity: 1;
+  visibility: visible; 
+  transition: opacity 0.3s ease-in-out; 
+}
+.show-modal .modal {
+  transform: translateY(0); 
+}
+.modal{
+  position:relative;
+  background: white;
+  border-radius: 2em;
+  padding:1.5rem;
+  width: 45em;
+  height: 30em;
+  transform: translateY(-20px);
+  transition: transform 0.2s ease-in-out;
+}
+.modal-close{
+  position:absolute;
+  top: 2rem;
+  right: 2rem;
+}
+.selection-modal-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.selection-modal-title h2{
+  padding-right: 0.5em;
+}
+.selection-modal-poke-pagination{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5em;
+  row-gap: 0.5em;
+  height: 55%
+}
+.pagination-item{
+  padding: 0.5em;
+  border-radius: 1em;
+  transition: all 0.3s ease; /* Smooth transition */
+  cursor: pointer;
+}
+.pagination-item img{
+  height: 4em;
+  width: 4em;
+}
+.pagination-item:hover {
+  background-color: #C9DCF4; /* Change background color when hovered */
+}
+.pagination-item.selected {
+  border: 0.2em solid #78A7E2; 
+  box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); 
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0.4em;
+}
+
+.page-item {
+  margin: 0 0.6em;
+  padding: 0.3em;
+}
+
+.page-item a {
+  text-decoration: none;
+  color: #616980;
+  padding: 0.6em 0.9em;
+  border-radius: 0.5em;
+}
+
+.page-item a:hover {
+  background-color: #78A7E2; 
+  color: white; 
+}
+
+.pagination-active a{
+  background-color: #78A7E2;
+  color: white;
+}
+.selection-modal-infnite-scroll{
+  justify-self: center;
+  height: 65%;
+  width: 100%;
+}
+.seeking-shiny{
+  margin-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:  0 1em;
+
+}
+
+.selection-modal-button{
+  margin-top: 0.5em;
+  justify-self:center ;
+  width: 80%;
+}
+.selection-modal-button button{
+  width: 100%;
+}

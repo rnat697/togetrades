@@ -2,7 +2,7 @@ import useGet from "../hooks/useGet";
 import { useEffect, useState } from "react";
 import SpeciesModel from "../models/SpeciesModel";
 import { SPECIES_ALL_URL, SPECIES_ITEM_URL } from "../api/urls";
-import { addWishlist, getWishlistAPI, removeWishlist } from "../api/api";
+import { addWishlist, getAllWishlistAPI, removeWishlist } from "../api/api";
 import { toast } from "react-toastify";
 
 // --- Fetches Species for pokedex ---
@@ -53,8 +53,8 @@ export function usePokedexEntry(currentEntryId) {
 }
 
 // --- Fetches user's wishlist ---
-export function getWishlist(userId) {
-  return getWishlistAPI(userId)
+export function getAllWishlist(userId) {
+  return getAllWishlistAPI(userId)
     .then((res) => {
       if (res.status === 200) {
         const wishlisted = res.data.data.map((item) =>
