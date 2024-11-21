@@ -16,11 +16,14 @@
   transition: all 0.3s ease; /* Smooth transition */
   cursor: pointer;
 }
+.item:hover{
+  background-color: #E1EBF8;
+}
 
 
 .item.selected {
-  border: 0.2em solid #78A7E2; /* Change the color and width of the border as needed */
-  box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); /* Optional: Add shadow effect */
+  border: 0.2em solid #78A7E2; 
+  box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); 
 }
 
 .item img{

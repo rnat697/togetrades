@@ -1,5 +1,7 @@
+import { Tooltip } from "react-tooltip";
 import styles from "./InfiniteScroll.module.css";
 import { useState, useEffect } from "react";
+import { capitalizeFirstLetter } from "../../../utils/utils";
 
 const NUM_ITEMS_TO_LOAD = 15;
 
@@ -28,17 +30,23 @@ function InfiniteScroll({ items, onItemSelect }) {
     >
       <div className={styles["scroll-grid"]}>
         {items.slice(0, visibleItems).map((item, index) => (
-          <div
-            className={`${styles["item"]} ${
-              selectedItem === item ? styles.selected : ""
-            }`}
-            key={`${item.name}-${index}`}
-            onClick={() => handleItemClick(item)}
+          <a
+            data-tooltip-id="infinite-scroll-tooltip"
+            data-tooltip-content={capitalizeFirstLetter(item.name)}
           >
-            <img src={item.image.normal} />
-          </div>
+            <div
+              className={`${styles["item"]} ${
+                selectedItem === item ? styles.selected : ""
+              }`}
+              key={`${item.name}-${index}`}
+              onClick={() => handleItemClick(item)}
+            >
+              <img src={item.image.normal} />
+            </div>
+          </a>
         ))}
       </div>
+      <Tooltip id="infinite-scroll-tooltip" />
     </div>
   );
 }
