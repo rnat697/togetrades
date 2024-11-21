@@ -14,6 +14,7 @@ import {
   REMOVE_FROM_WISHLIST_URL,
   ALL_WISHLIST_URL,
   ALL_ELIGIBLE_POKEMON,
+  CREATE_LISTING_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -57,7 +58,6 @@ export const allEligiblePokemon = (page) =>
     withCredentials: true,
   });
 
-
 // ------ INCUBATOR API ------
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
@@ -66,3 +66,15 @@ export const cancelIncubatorAPI = (id) =>
   axios.delete(DELETE_INCUBATOR_URL(id), { withCredentials: true });
 export const hatchIncubatorAPI = (id) =>
   axios.delete(HATCH_EGG_URL(id), { withCredentials: true });
+
+// ------ LISTING API ------
+export const createListing = (
+  offeredPokeId,
+  seekSpeciesId,
+  isSeekingShiny = false
+) =>
+  axios.post(
+    CREATE_LISTING_URL,
+    { offeredPokeId, seekSpeciesId, isSeekingShiny },
+    { withCredentials: true }
+  );

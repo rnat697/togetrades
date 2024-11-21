@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ListingBox from "./listing-box/ListingBox";
 import styles from "./NewListing.module.css";
+import { createNewListing } from "../../../controllers/ListingsController";
+import { ToastContainer } from "react-toastify";
 
 export default function NewListing({ onClicked, pokemon, species }) {
   const [selectedPoke, setSelectedPoke] = useState(null);
@@ -16,6 +18,16 @@ export default function NewListing({ onClicked, pokemon, species }) {
       setSelectedSpecies(species);
     }
   }, [species]);
+
+  const handleCreateListing = () => {
+    createNewListing(selectedPoke.id, selectedSpecies.id).then((success) => {
+      if (success) {
+        setSelectedPoke(null);
+        setSelectedSpecies(null);
+      }
+    });
+  };
+
   return (
     <div className={styles["new-listing-container"]}>
       <div className={styles["new-listing-content"]}>
@@ -40,8 +52,9 @@ export default function NewListing({ onClicked, pokemon, species }) {
           />
         </div>
         <div className={styles["new-listing-button"]}>
-          <button>Create New Listing</button>
+          <button onClick={handleCreateListing}>Create New Listing</button>
         </div>
+        <ToastContainer />
       </div>
     </div>
   );

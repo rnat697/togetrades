@@ -20,6 +20,8 @@ export default function ListingBox({
       if (!isSpecies) {
         setPokeShiny(pokemon.isShiny);
       }
+    }else{
+      setImage(null);
     }
   }, [pokemon]);
 

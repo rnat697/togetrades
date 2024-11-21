@@ -22,9 +22,10 @@ router.post("/create", auth, async (req, res) => {
   try {
     let userId = req.user._id;
     const { offeredPokeId, seekSpeciesId, isSeekingShiny } = req.body;
+    console.log(req.body);
 
     // check if offeredPokeId and seekSpeciesId isn't empty
-    if (!offeredPokeId || !seekSpeciesId || !isSeekingShiny) {
+    if (!offeredPokeId || !seekSpeciesId || isSeekingShiny == null) {
       return res
         .status(400)
         .send("offered pokemon ID or seeking species ID is required");
