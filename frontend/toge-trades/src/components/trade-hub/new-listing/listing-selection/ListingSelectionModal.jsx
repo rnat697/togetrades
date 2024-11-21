@@ -75,7 +75,7 @@ export default function ListingSelectionModal({
           </div>
         )}
         <div className={styles["selection-modal-button"]}>
-          <button onClick={() => onConfirm()}>{`Add ${
+          <button onClick={() => onConfirm(selectedItem)}>{`Add ${
             isOffered ? "Offering" : "Seeking"
           }`}</button>
         </div>

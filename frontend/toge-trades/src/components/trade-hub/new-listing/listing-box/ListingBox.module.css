@@ -35,6 +35,14 @@
   align-items: center;
   justify-content: center;
 }
+ .pokemon-img{
+  width: 80%;
+  height: 80%;
+}
+.pokemon-img img{
+  height: 100%;
+  width: 100%;
+}
 
 /* Mobile format */
 @media screen and (max-width: 715px) {

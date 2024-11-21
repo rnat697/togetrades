@@ -7,6 +7,9 @@ import ListingSelectionModal from "../../components/trade-hub/new-listing/listin
 export default function TradeHubPage() {
   const [showOfferModal, setShowOffer] = useState(false);
   const [showSeekModal, setShowSeek] = useState(false);
+  const [pokemon, setPokemon] = useState(null);
+  const [species, setSpecies] = useState(null);
+  const [isSeekingShiny, setSeekingShiny] = useState(null);
   const { page } = useParams();
   const navigate = useNavigate();
 
@@ -32,9 +35,10 @@ export default function TradeHubPage() {
     setShowSeek(false);
     console.log("we closing seeking");
   };
-  const handleSeekModalConfirm = () => {
-    //params is species
-    // pass it back into NewListing?
+  const handleSeekModalConfirm = (species, isSeekingShiny) => {
+    setShowSeek(false);
+    setSpecies(species);
+    setSeekingShiny(isSeekingShiny);
   };
 
   return (
@@ -50,6 +54,7 @@ export default function TradeHubPage() {
         <div className={styles["create-listing-container"]}>
           <NewListing
             onClicked={(isOffered) => openListingSelectionModal(isOffered)}
+            species={species}
           />
         </div>
         <ListingSelectionModal
