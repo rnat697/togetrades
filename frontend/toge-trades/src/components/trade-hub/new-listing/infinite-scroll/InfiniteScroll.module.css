@@ -1,0 +1,29 @@
+.infinite-scroll-container{
+  overflow-y:auto;
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+.scroll-grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5em;
+
+}
+.item {
+  padding: 1em;
+  border-radius: 1em;
+  transition: all 0.3s ease; /* Smooth transition */
+  cursor: pointer;
+}
+
+
+.item.selected {
+  border: 0.2em solid #78A7E2; /* Change the color and width of the border as needed */
+  box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); /* Optional: Add shadow effect */
+}
+
+.item img{
+  height: 5em;
+  width: 5em;
+}

@@ -12,6 +12,7 @@
   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 .show-modal {
   opacity: 1;
@@ -45,11 +46,20 @@
 .selection-modal-title h2{
   padding-right: 0.5em;
 }
-.selection-modal-pokemon{
+.selection-modal-poke-pagination{
   display:grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows:  repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5em;
+}
+.selection-modal-infnite-scroll{
+  justify-self: center;
+  height: 70%;
 }
 .selection-modal-button{
+  margin-top: 1.5em;
+  justify-self:center ;
   width: 80%;
+}
+.selection-modal-button button{
+  width: 100%;
 }

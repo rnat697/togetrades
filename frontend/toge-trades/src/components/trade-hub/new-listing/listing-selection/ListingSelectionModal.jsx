@@ -1,16 +1,43 @@
 import { Tooltip } from "react-tooltip";
 import styles from "./ListingSelectionModal.module.css";
 import { IoIosClose, IoIosInformationCircle } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../../api/auth";
+import { getAllWishlist } from "../../../../controllers/PokedexController";
+import InfiniteScroll from "../infinite-scroll/InfiniteScroll";
 export default function ListingSelectionModal({
   showModal,
-  isOffered,
+  isOffered = false,
   onConfirm,
   onClose,
 }) {
+  const { user } = useAuth();
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
   const tooltipMessages = [
     "Offerable Pokémon: unlocked, not traded before, and not in active trades.",
     "Sought Pokémon: from your wishlist.",
   ];
+
+  // --- GET requests for selections ---
+  useEffect(() => {
+    if (showModal) {
+      if (isOffered) {
+        // get request for pokemons
+      } else {
+        // get request for wishlisted species
+        getAllWishlist(user._id).then((data) => {
+          setItems(data);
+        });
+      }
+    }
+  }, [showModal, isOffered]);
+
+  // Selected item from the infinite scroll / pagination thingies
+  const handleSelectedItemChange = (item) => {
+    console.log(item);
+    setSelectedItem(item);
+  };
 
   return (
     <div
@@ -37,7 +64,16 @@ export default function ListingSelectionModal({
             <IoIosInformationCircle size={23} />
           </a>
         </div>
-        <div className={styles["selection-modal-pokemon"]}></div>
+        {isOffered ? (
+          <div className={styles["selection-modal-poke-pagination"]}></div>
+        ) : (
+          <div className={styles["selection-modal-infnite-scroll"]}>
+            <InfiniteScroll
+              items={items}
+              onItemSelect={handleSelectedItemChange}
+            />
+          </div>
+        )}
         <div className={styles["selection-modal-button"]}>
           <button onClick={() => onConfirm()}>{`Add ${
             isOffered ? "Offering" : "Seeking"
