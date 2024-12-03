@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { allEligiblePokemon, createListing } from "../api/api";
+import {
+  allEligiblePokemon,
+  createListing,
+  getSpecificListingAPI,
+} from "../api/api";
 import { useAuth } from "../api/auth";
 import PokemonModel from "../models/PokemonModel";
 import { toast } from "react-toastify";
@@ -68,4 +72,22 @@ export function useListings(currentPage) {
     }
   }, [rawData]);
   return { listings, isLoading, error, refresh, listingsMetadata };
+}
+
+// ---- Fetches a specific listing ----
+export function getByListingId(listingId) {
+  return getSpecificListingAPI(listingId)
+    .then((res) => {
+      if (res.status === 200) {
+        const listing = ListingModel.fromJSON(res.data.data);
+        console.log(listing);
+        return listing;
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when fetching wishlist: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
 }

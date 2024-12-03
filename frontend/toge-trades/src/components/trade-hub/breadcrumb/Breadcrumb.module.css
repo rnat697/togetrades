@@ -1,0 +1,19 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  margin: 1em 0;
+}
+
+.breadcrumb-link {
+  text-decoration: none;
+  color: #354B98;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #616980;
+}

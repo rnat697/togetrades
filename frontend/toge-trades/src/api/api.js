@@ -80,5 +80,5 @@ export const createListing = (
     { withCredentials: true }
   );
 
-export const getSpecificListing = (listingId) =>
+export const getSpecificListingAPI = (listingId) =>
   axios.get(LISTING_DETAIL_URL(listingId), { withCredentials: true });

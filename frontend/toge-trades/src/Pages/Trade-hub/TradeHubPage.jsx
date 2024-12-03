@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TradeHubPage.module.css";
 import NewListing from "../../components/trade-hub/new-listing/NewListing";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ListingSelectionModal from "../../components/trade-hub/new-listing/listing-selection/ListingSelectionModal";
 import { useListings } from "../../controllers/ListingsController";
 import "ldrs/infinity";
 import ReactPaginate from "react-paginate";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ListingCards from "../../components/trade-hub/listing-cards/ListingCards";
 
 export default function TradeHubPage() {
@@ -23,6 +23,11 @@ export default function TradeHubPage() {
   const { listings, isLoading, error, refresh, listingsMetadata } =
     useListings(currentPage);
   if (error) toast.error(error);
+
+  // ---- Update document title based on the current page ----
+  useEffect(() => {
+    document.title = `Trade Hub - Page ${currentPage} | Toge Trades`;
+  }, [currentPage, listings]);
 
   // ----- Offer/seek modal handling ----
   const openListingSelectionModal = (isOffered) => {

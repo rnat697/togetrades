@@ -1,0 +1,15 @@
+.listing-page-container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:5em;
+}
+
+.listing-loader{
+  justify-self: center;
+  margin-top: 40%;
+}
+.listing-page-contents{
+  background-color: pink;
+  width: 80%;
+}
