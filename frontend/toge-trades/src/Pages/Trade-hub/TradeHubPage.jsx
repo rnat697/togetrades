@@ -37,7 +37,7 @@ export default function TradeHubPage() {
   const handleOfferModalClose = () => {
     setShowOffer(false);
   };
-  const handleOfferModalConfirm = (pokemon, isSeekingShiny) => {
+  const handleOfferModalConfirm = (pokemon) => {
     setShowOffer(false);
     setPokemon(pokemon);
   };
@@ -54,6 +54,17 @@ export default function TradeHubPage() {
     setPokemon(null);
     setSpecies(null);
     setIsSeekingShiny(false);
+  };
+
+  // --- Handle Refresh ---
+  const handleRefresh = () => {
+    refresh();
+  };
+  // --- Handle page change ---
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected + 1); // react-paginate uses 0-based index
+    navigate(`/tradehub/${selected + 1}`); // Update the URL
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -89,15 +100,11 @@ export default function TradeHubPage() {
         />
         <div className={styles["hub-title-listings"]}>
           <h3>Recent Listings</h3>
-          <button>Refresh</button>
+          <button onClick={handleRefresh}>Refresh</button>
         </div>
         <div className={styles["hub-listings"]}>
           {listings.map((listing) => (
-            <ListingCards
-              key={listing.id}
-              listing={listing}
-              // isInMyListings={true}
-            />
+            <ListingCards key={listing.id} listing={listing} />
           ))}
           {isLoading && (
             <div className="pokebox-loader">
@@ -112,6 +119,21 @@ export default function TradeHubPage() {
             </div>
           )}
         </div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          pageRangeDisplayed={5}
+          onPageChange={handlePageChange}
+          pageCount={listingsMetadata?.totalPages ?? 1}
+          previousLabel="<"
+          renderOnZeroPageCount={null}
+          containerClassName={styles["pagination"]}
+          activeClassName={styles["pagination-active"]}
+          pageClassName={styles["page-item"]}
+          previousClassName={styles["page-item"]}
+          nextClassName={styles["page-item"]}
+          breakClassName={styles["page-item"]}
+        />
         <ToastContainer />
       </div>
     </div>

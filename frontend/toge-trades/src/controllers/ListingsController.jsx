@@ -59,7 +59,7 @@ export function useListings(currentPage) {
   useEffect(() => {
     if (rawData.success) {
       let listingsData = rawData.data;
-      setListingsMetadata(listingsData.metadata);
+      setListingsMetadata(rawData.metadata);
 
       const listingModels = listingsData.map((data) =>
         ListingModel.fromJSON(data)

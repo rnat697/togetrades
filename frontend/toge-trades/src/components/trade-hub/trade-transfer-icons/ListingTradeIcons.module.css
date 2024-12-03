@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   gap: 1.5em;
-  width: 19em;
+  width: 100%;
 }
 .offered, .seeking p{
   line-height: 1;
@@ -47,4 +47,14 @@
   left: 0;
   color: #88A0E6;
   font-size: 1.5em;
+}
+
+@media screen and (max-width: 715px) {
+  .trade-icon{
+    width: 1.5em;
+    height: 1.5em;
+  }
+  .image-container {
+    width: 3em;
+  }
 }

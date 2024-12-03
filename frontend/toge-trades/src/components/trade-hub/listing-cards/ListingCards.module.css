@@ -68,3 +68,41 @@
 .listing-btn button:hover{
   background-color: #F2F6FC;
 }
+
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .listing-card-container{
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .title{
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 1em;
+  }
+  .title h3{
+    text-align: left;
+  }
+  .user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .user img{
+    margin-right: 0.5em;
+  }
+  .listing-btn{
+    width: 90%;
+  }
+  .listing-btn button{
+    width: 100%;
+  }
+  .trades{
+    width:90%
+  }
+}
