@@ -8,7 +8,7 @@ export default function ListingCards({ listing, isInMyListings = false }) {
   return (
     <div className={styles["listing-card-container"]}>
       <div className={styles["title"]}>
-        <h3>{`Listing #${listing.listingNum}`}</h3>
+        <h3>{`Listing #${listing.listingNum.toString().padStart(4, "0")}`}</h3>
         {isInMyListings ? (
           <div
             className={`${styles["listing-status"]} ${
