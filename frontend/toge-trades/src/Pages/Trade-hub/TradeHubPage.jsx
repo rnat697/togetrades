@@ -4,6 +4,10 @@ import NewListing from "../../components/trade-hub/new-listing/NewListing";
 import { useState } from "react";
 import ListingSelectionModal from "../../components/trade-hub/new-listing/listing-selection/ListingSelectionModal";
 import { useListings } from "../../controllers/ListingsController";
+import "ldrs/infinity";
+import ReactPaginate from "react-paginate";
+import { ToastContainer } from "react-toastify";
+import ListingCards from "../../components/trade-hub/listing-cards/ListingCards";
 
 export default function TradeHubPage() {
   const [showOfferModal, setShowOffer] = useState(false);
@@ -87,7 +91,28 @@ export default function TradeHubPage() {
           <h3>Recent Listings</h3>
           <button>Refresh</button>
         </div>
-        <div className={styles["hub-listings"]}></div>
+        <div className={styles["hub-listings"]}>
+          {listings.map((listing) => (
+            <ListingCards
+              key={listing.id}
+              listing={listing}
+              // isInMyListings={true}
+            />
+          ))}
+          {isLoading && (
+            <div className="pokebox-loader">
+              <l-infinity
+                size="55"
+                stroke="4"
+                stroke-length="0.15"
+                bg-opacity="0.1"
+                speed="1.3"
+                color="#78A7E2"
+              />
+            </div>
+          )}
+        </div>
+        <ToastContainer />
       </div>
     </div>
   );

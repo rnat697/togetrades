@@ -1,0 +1,50 @@
+.trade-transfer-icon-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+  width: 19em;
+}
+.offered, .seeking p{
+  line-height: 1;
+  text-align: center; 
+  white-space: normal; 
+  word-wrap: break-word; 
+}
+.offered img{
+  background-color: #C9DCF4;
+}
+.trade-icon{
+  width: 2em;
+  height: 2em;
+}
+.offered, .seeking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.image-container {
+  position: relative;
+  display: inline-block;
+  width: 4em;
+
+}
+.seeking img{
+  background-color: #F4E1C9;
+}
+
+.image-container img {
+  display: block;
+  width: 100%; 
+  border-radius: 50%;
+  padding: 0.5em;
+}
+.shiny-star{
+  position:absolute;
+  top:0;
+  left: 0;
+  color: #88A0E6;
+  font-size: 1.5em;
+}

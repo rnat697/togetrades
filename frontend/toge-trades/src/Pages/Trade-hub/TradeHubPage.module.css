@@ -36,8 +36,12 @@
   justify-self: flex-start;
 }
 .hub-listings{
+  margin-top: 01em;
   display:flex;
-  flex-direction: rows;
+  flex-direction: column;
+  gap: 1em;
+  width: 40em;
+  justify-self: center;
  
 }
 
