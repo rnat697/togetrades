@@ -107,7 +107,7 @@ router.get("/", auth, async (req, res) => {
     // Paginations
     const page = parseInt(req.query.page) || 1;
     if (page <= 0) page = 1;
-    const limit = parseInt(req.query.limit, 10) || 20;
+    const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
     // fetch all listings (active)
     const listings = await Listing.find({ status: "Active" })
