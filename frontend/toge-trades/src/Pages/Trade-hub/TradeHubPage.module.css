@@ -25,6 +25,9 @@
   justify-self: center;
   align-self: center;
 }
+.hub-title-listings{
+  width: 30em;
+}
 .hub-title-listings button{
   width:8em;
   justify-self: flex-end;
@@ -35,4 +38,12 @@
 .hub-listings{
   display:flex;
   flex-direction: rows;
+ 
+}
+
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .hub-title-listings{
+    width: 100%;
+  }
 }

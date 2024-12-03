@@ -3,6 +3,7 @@ import styles from "./TradeHubPage.module.css";
 import NewListing from "../../components/trade-hub/new-listing/NewListing";
 import { useState } from "react";
 import ListingSelectionModal from "../../components/trade-hub/new-listing/listing-selection/ListingSelectionModal";
+import { useListings } from "../../controllers/ListingsController";
 
 export default function TradeHubPage() {
   const [showOfferModal, setShowOffer] = useState(false);
@@ -13,6 +14,11 @@ export default function TradeHubPage() {
 
   const { page } = useParams();
   const navigate = useNavigate();
+  const initialPage = page ? parseInt(page, 10) : 1;
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const { listings, isLoading, error, refresh, listingsMetadata } =
+    useListings(currentPage);
+  if (error) toast.error(error);
 
   // ----- Offer/seek modal handling ----
   const openListingSelectionModal = (isOffered) => {
