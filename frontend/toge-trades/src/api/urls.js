@@ -35,3 +35,4 @@ export const SPECIES_ITEM_URL = (dexNum) => `${SPEICES_URL}/item/${dexNum}`;
 // ----- LISTING ENDPOINTS ------
 export const LISTING_URL = `${API_BASE_URL}/listings`;
 export const CREATE_LISTING_URL = `${LISTING_URL}/create`;
+export const LISTING_DETAIL_URL = (listingId) => `${LISTING_URL}/${listingId}`;

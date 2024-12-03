@@ -15,6 +15,7 @@ import {
   ALL_WISHLIST_URL,
   ALL_ELIGIBLE_POKEMON,
   CREATE_LISTING_URL,
+  LISTING_DETAIL_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -78,3 +79,6 @@ export const createListing = (
     { offeredPokeId, seekSpeciesId, isSeekingShiny },
     { withCredentials: true }
   );
+
+export const getSpecificListing = (listingId) =>
+  axios.get(LISTING_DETAIL_URL(listingId), { withCredentials: true });
