@@ -42,6 +42,34 @@ export function formatDexNumber(number) {
   return formatedDexNumber;
 }
 
+export function formatRelativeTime(date) {
+  const now = new Date();
+  const timeDiff = date - now;
+
+  // Relative time format
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  const seconds = 1000;
+  const minutes = seconds * 60;
+  const hours = minutes * 60;
+  const days = hours * 24;
+  const months = days * 30; // Approximate months
+  const years = days * 365; // Approximate years
+
+  if (Math.abs(timeDiff) < minutes) {
+    return rtf.format(Math.floor(timeDiff / seconds), "seconds");
+  } else if (Math.abs(timeDiff) < hours) {
+    return rtf.format(Math.floor(timeDiff / minutes), "minutes");
+  } else if (Math.abs(timeDiff) < days) {
+    return rtf.format(Math.floor(timeDiff / hours), "hours");
+  } else if (Math.abs(timeDiff) < months) {
+    return rtf.format(Math.floor(timeDiff / days), "days");
+  } else if (Math.abs(timeDiff) < years) {
+    return rtf.format(Math.floor(timeDiff / months), "months");
+  } else {
+    return rtf.format(Math.floor(timeDiff / years), "years");
+  }
+}
+
 
 export function getTypeColorAndImage(type) {
   const data = { src: "", color: "", lowOpacityColor: "" };
