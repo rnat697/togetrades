@@ -1,3 +1,4 @@
+import { formatRelativeTime } from "../../utils/utils";
 import ListingTradeIcons from "../trade-transfer-icons/ListingTradeIcons";
 import styles from "./ListingCards.module.css";
 
@@ -33,6 +34,7 @@ export default function ListingCards({ listing, isInMyListings = false }) {
       </div>
       <div className={styles["listing-btn"]}>
         <button onClick={handleOnClick}>View Listing</button>
+        <p>{`Posted ${formatRelativeTime(listing.dateCreated)}`}</p>
       </div>
     </div>
   );
