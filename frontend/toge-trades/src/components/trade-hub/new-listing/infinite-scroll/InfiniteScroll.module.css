@@ -20,7 +20,6 @@
   background-color: #E1EBF8;
 }
 
-
 .item.selected {
   border: 0.2em solid #78A7E2; 
   box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); 
@@ -29,4 +28,16 @@
 .item img{
   height: 4em;
   width: 4em;
+}
+/* Mobile format */
+@media screen and (max-width: 715px) {
+  .scroll-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5em;
+    width: 100%;
+  }
+  .item {
+    padding:0.5em
+  }
 }
