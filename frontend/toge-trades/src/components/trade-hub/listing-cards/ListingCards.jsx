@@ -1,4 +1,4 @@
-import TradeTransferIcons from "../trade-transfer-icons/ListingTradeIcons";
+import ListingTradeIcons from "../trade-transfer-icons/ListingTradeIcons";
 import styles from "./ListingCards.module.css";
 
 export default function ListingCards({ listing, isInMyListings = false }) {
@@ -25,7 +25,7 @@ export default function ListingCards({ listing, isInMyListings = false }) {
         )}
       </div>
       <div className={styles["trades"]}>
-        <TradeTransferIcons
+        <ListingTradeIcons
           offered={listing.offeringPokemon}
           seeking={listing.seekingSpecies}
           isSeekingShiny={listing.isSeekingShiny}

@@ -8,13 +8,14 @@
   justify-content: flex-start;
   align-items: center;
   border-radius: 2em;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  gap: 1em;
 }
 .title{
   display:flex;
   flex-direction: column;
-  padding-left: 2em;
-  padding-right: 2em;
+  margin-left: 1em;
+  width: 10em;
 }
 .title h3{
   text-align: left;
@@ -52,7 +53,8 @@
   flex-grow: 1;
 }
 .listing-btn{
-  padding: 1em;
+  padding: 0.5em;
+  width: 10em;
 }
 .listing-btn button{
   border-color: #5988D8;

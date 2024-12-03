@@ -3,7 +3,7 @@ import styles from "./ListingTradeIcons.module.css";
 import { Tooltip } from "react-tooltip";
 import { BsStars } from "react-icons/bs";
 
-export default function TradeTransferIcons({
+export default function ListingTradeIcons({
   offered,
   seeking,
   isSeekingShiny,
