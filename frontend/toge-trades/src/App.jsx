@@ -35,6 +35,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<PageLayout />}>
+        <Route path="*" element={<Navigate to="/landing" replace />} />
         <Route index element={<Navigate to="landing" replace />} />
         <Route
           path="landing"
@@ -68,7 +69,7 @@ function App() {
             </RequiresAuth>
           }
         />
-        <Route index element={<Navigate to="/pokebox/1" replace />} />
+        <Route path="pokebox" element={<Navigate to="/pokebox/1" replace />} />
         <Route
           path="incubator"
           element={
@@ -93,7 +94,7 @@ function App() {
             </RequiresAuth>
           }
         />
-        <Route index element={<Navigate to="/pokedex/1" replace />} />
+        <Route path="pokedex" element={<Navigate to="/pokedex/1" replace />} />
         <Route
           path="pokedex/entry/:dexNumber"
           element={
@@ -104,12 +105,16 @@ function App() {
         />
         <Route index element={<Navigate to="/pokedex/entry/1" replace />} />
         <Route
-          path="tradehub"
+          path="tradehub/:page?"
           element={
             <RequiresAuth>
               <TradeHubPage />
             </RequiresAuth>
           }
+        />
+        <Route
+          path="tradehub"
+          element={<Navigate to="/tradehub/1" replace />}
         />
       </Route>
     </Routes>

@@ -61,7 +61,9 @@ export default function NewListing({ onClicked, pokemon, species, isShinyWanted,
           />
         </div>
         <div className={styles["new-listing-button"]}>
-          <button onClick={handleCreateListing}>Create New Listing</button>
+          <button onClick={handleCreateListing} disabled={!pokemon || !species}>
+            Create New Listing
+          </button>
         </div>
         <ToastContainer />
       </div>
