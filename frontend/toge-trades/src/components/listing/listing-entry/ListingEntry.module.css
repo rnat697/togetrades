@@ -9,9 +9,11 @@
   background-color: #C9DCF4;
   border-radius: 1em;
   padding: 1em;
+  height: fit-content;
 }
 .seeking{
   background-color: #F4E1C9;
+
 }
 .listing-poke-img img{
   width: 6em;

@@ -1,0 +1,23 @@
+.offer-box-container{
+  display:flex;
+  flex-direction: column;
+  justify-self:center ;
+  justify-content: flex-start;
+  padding: 1em;
+  background-color: #fff;
+  border-radius: 1em;
+  width: 80%;
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
+}
+.offer-box-container h2{
+  text-align: left;
+}
+.send-offer-button{
+  display: flex;
+  width: 80%;
+  justify-self: center;
+  align-self: center;
+}
+.send-offer-button button{
+  width: 100%;
+}

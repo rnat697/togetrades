@@ -9,8 +9,16 @@
   justify-self: center;
   margin-top: 40%;
 }
-.listing-page-contents{
+.listing-page-all{
   width: 80%;
+}
+
+.listing-page-contents{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
 }
 
 /* Mobile format */

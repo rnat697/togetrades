@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import { useAuth } from "../../api/auth";
 import ListingDetail from "../../components/listing/listing-details/ListingDetail";
+import TradeOfferBox from "../../components/listing/trade-offer-box/TradeOfferBox";
 
 export default function ListingPage() {
   const { id } = useParams();
@@ -49,15 +50,17 @@ export default function ListingPage() {
           />
         </div>
       ) : (
-        <div className={styles["listing-page-contents"]}>
+        <div className={styles["listing-page-all"]}>
           <Breadcrumb
             currentPageName={`Listing #${listing.listingNum
               .toString()
               .padStart(4, "0")}`}
           />
-          <ListingDetail listing={listing} metadata={metadata} />
+          <div className={styles["listing-page-contents"]}>
+            <ListingDetail listing={listing} metadata={metadata} />
 
-          {/* Add intersted in trade */}
+            <TradeOfferBox seeking={listing.seekingSpecies} />
+          </div>
         </div>
       )}
 
