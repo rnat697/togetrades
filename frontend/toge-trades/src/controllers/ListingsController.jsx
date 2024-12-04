@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { allEligiblePokemon, createListing } from "../api/api";
+import {
+  allEligiblePokemon,
+  createListing,
+  getSpecificListingAPI,
+  specificEligiblePokemonAPI,
+} from "../api/api";
 import { useAuth } from "../api/auth";
 import PokemonModel from "../models/PokemonModel";
 import { toast } from "react-toastify";
@@ -68,4 +73,41 @@ export function useListings(currentPage) {
     }
   }, [rawData]);
   return { listings, isLoading, error, refresh, listingsMetadata };
+}
+
+// ---- Fetches a specific listing ----
+export function getByListingId(listingId) {
+  return getSpecificListingAPI(listingId)
+    .then((res) => {
+      if (res.status === 200) {
+        const listing = ListingModel.fromJSON(res.data.data);
+        const metadata = res.data.metadata;
+        return { listing, metadata };
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when fetching a listing: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
+}
+
+// ---- Fetches a eligible pokemon by id ----
+export function getEligiblePokemonById(speciesId) {
+  return specificEligiblePokemonAPI(speciesId)
+    .then((res) => {
+      if (res.status === 200) {
+        const data = res.data;
+        const isEmpty = data.isEmpty;
+        const pokemon = data.data.map((poke) => PokemonModel.fromJSON(poke));
+        return { pokemon, isEmpty };
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when fetching eligible pokemon: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
 }

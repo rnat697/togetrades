@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { formatRelativeTime } from "../../utils/utils";
 import ListingTradeIcons from "../trade-transfer-icons/ListingTradeIcons";
 import styles from "./ListingCards.module.css";
 
 export default function ListingCards({ listing, isInMyListings = false }) {
+  const navigate = useNavigate();
   const handleOnClick = () => {
     console.log("i clicked");
+    navigate(`/tradehub/listing/${listing.id}`);
   };
   return (
     <div className={styles["listing-card-container"]}>

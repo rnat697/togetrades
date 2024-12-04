@@ -225,10 +225,10 @@ describe("Fetching all eligible pokemons for trade offering GET /api/v1/pokemons
   });
 });
 
-describe("Fetching specific species of eligible pokemons for trade offering GET /api/v1/pokemons/elegible-pokemon/:id", () => {
-  test("Successful fetch of specific species (elegible pokemons) for trade offering", (done) => {
+describe("Fetching specific species of eligible pokemons for trade offering GET /api/v1/pokemons/eligible-pokemon/:id", () => {
+  test("Successful fetch of specific species (eligible pokemons) for trade offering", (done) => {
     request(app)
-      .get(`/api/v1/pokemons/elegible-pokemon/${speciesLunala._id}`)
+      .get(`/api/v1/pokemons/eligible-pokemon/${speciesLunala._id}`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(200)
@@ -247,7 +247,7 @@ describe("Fetching specific species of eligible pokemons for trade offering GET 
   });
   test("Invalid species", (done) => {
     request(app)
-      .get(`/api/v1/pokemons/elegible-pokemon/000000000000000000000592`)
+      .get(`/api/v1/pokemons/eligible-pokemon/000000000000000000000592`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(404)

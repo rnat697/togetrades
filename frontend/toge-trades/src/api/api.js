@@ -2,10 +2,7 @@ import axios from "axios";
 import {
   REGISTER_ACCOUNT_URL,
   LOGIN_URL,
-  USERS_URL,
-  USER_BY_ID_URL,
   ALL_USERS,
-  USER_POKEMON_URL,
   TOGGLE_LOCKED_URL,
   CREATE_INCUBATOR_URL,
   DELETE_INCUBATOR_URL,
@@ -15,6 +12,8 @@ import {
   ALL_WISHLIST_URL,
   ALL_ELIGIBLE_POKEMON,
   CREATE_LISTING_URL,
+  LISTING_DETAIL_URL,
+  SPECIFIC_ELIGIBLE_POKEMON_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -58,6 +57,11 @@ export const allEligiblePokemon = (page) =>
     withCredentials: true,
   });
 
+export const specificEligiblePokemonAPI = (speciesId) =>
+  axios.get(SPECIFIC_ELIGIBLE_POKEMON_URL(speciesId), {
+    withCredentials: true,
+  }); 
+ 
 // ------ INCUBATOR API ------
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
@@ -78,3 +82,6 @@ export const createListing = (
     { offeredPokeId, seekSpeciesId, isSeekingShiny },
     { withCredentials: true }
   );
+
+export const getSpecificListingAPI = (listingId) =>
+  axios.get(LISTING_DETAIL_URL(listingId), { withCredentials: true });

@@ -114,7 +114,7 @@ router.get("/all-eligible-pokemon", auth, async (req, res) => {
  * - Pokemon available must not be in an active trade, hasn't been traded away before and isn't locked.
  * @param {id} - The species id
  */
-router.get("/elegible-pokemon/:id", auth, async (req, res) => {
+router.get("/eligible-pokemon/:id", auth, async (req, res) => {
   try {
     const speciesId = req.params.id;
     const userId = req.user._id;
@@ -129,7 +129,10 @@ router.get("/elegible-pokemon/:id", auth, async (req, res) => {
       isTrading: false,
       hasBeenTraded: false,
     };
-    const pokemon = await Pokemon.find(query);
+    const pokemon = await Pokemon.find(query)
+      .populate("species")
+      .populate("originalOwner", "username _id")
+      .populate("currentOwner", "username _id");
     return res
       .status(200)
       .json({ success: true, data: pokemon, isEmpty: pokemon.length === 0 });

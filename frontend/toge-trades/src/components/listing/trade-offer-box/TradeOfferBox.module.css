@@ -1,0 +1,70 @@
+.offer-box-container{
+  display:flex;
+  flex-direction: column;
+  justify-self:center ;
+  justify-content: flex-start;
+  padding: 2em;
+  background-color: #fff;
+  border-radius: 1em;
+  width: 77%;
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2);
+}
+.offer-box-container h2,p{
+  text-align: left;
+}
+.offer-box-container h2{
+  line-height: 0;
+}
+.pokemon-to-offer-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: auto;
+  gap: 0.5em;
+  padding-bottom: 1em;
+}
+.poke-offer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 2em;
+  border-width: 0.2em;
+  border-radius: 0.5em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.pokemon-to-offer-container :hover{
+  background-color: #E1EBF8;
+}
+.poke-offer.selected {
+  border: 0.2em solid #78A7E2; 
+  border-radius: 0.5em;
+  box-shadow: 0 0 10px rgba(120, 167, 226, 0.5); 
+}
+.poke-offer img{
+  width: 5em;
+  height: 5em;
+}
+.send-offer-button{
+  display: flex;
+  width: 80%;
+  justify-self: center;
+  align-self: center;
+}
+.send-offer-button button{
+  margin-top: 1em;
+  width: 100%;
+}
+
+/* Mobile format */
+@media screen and (max-width: 830px) {
+  .offer-box-container{
+    width: 95%;
+  }
+  .offer-box-container h2{
+    font-size: 1.4em;
+    line-height: 1;
+    margin-bottom: 0;
+  }
+}

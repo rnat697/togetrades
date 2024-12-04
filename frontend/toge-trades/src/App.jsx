@@ -11,6 +11,7 @@ import EggPickerPage from "./Pages/EggPicker/EggPickerPage.jsx";
 import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
 import PokedexSpeciesPage from "./Pages/Pokedex-species/PokedexSpeciesPage.jsx";
 import TradeHubPage from "./Pages/Trade-hub/TradeHubPage.jsx";
+import ListingPage from "./Pages/listing/ListingPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -103,7 +104,7 @@ function App() {
             </RequiresAuth>
           }
         />
-        <Route index element={<Navigate to="/pokedex/entry/1" replace />} />
+        <Route element={<Navigate to="/pokedex/entry/1" replace />} />
         <Route
           path="tradehub/:page?"
           element={
@@ -112,6 +113,15 @@ function App() {
             </RequiresAuth>
           }
         />
+        <Route
+          path="tradehub/listing/:id"
+          element={
+            <RequiresAuth>
+              <ListingPage />
+            </RequiresAuth>
+          }
+        />
+
         <Route
           path="tradehub"
           element={<Navigate to="/tradehub/1" replace />}

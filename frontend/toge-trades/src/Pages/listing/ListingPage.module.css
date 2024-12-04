@@ -1,0 +1,43 @@
+.listing-page-container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:5em;
+}
+
+.listing-loader{
+  justify-self: center;
+  margin-top: 40%;
+}
+.listing-page-all{
+  width: 80%;
+}
+
+.listing-page-contents{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+}
+.my-offers-container{
+  background-color: pink;
+  width: 80%;
+  padding-inline: 1em;
+  justify-content: center;
+  align-items: center;
+}
+.my-offers-container h2{
+  text-align: left;
+  justify-self: flex-start;
+}
+
+/* Mobile format */
+@media screen and (max-width: 830px) {
+  .listing-page-contents{
+    width: 100%;
+  }
+  .listing-page-all{
+    width: 90%;
+  }
+}

@@ -18,7 +18,8 @@ export const POKEMON_URL = `${API_BASE_URL}/pokemons`;
 export const TOGGLE_LOCKED_URL = (pokeId) =>
   `${POKEMON_URL}/${pokeId}/setLocked`;
 export const ALL_ELIGIBLE_POKEMON = `${POKEMON_URL}/all-eligible-pokemon`;
-// TODO: specific eligible pokemon goes here
+export const SPECIFIC_ELIGIBLE_POKEMON_URL = (speciesId) =>
+  `${POKEMON_URL}/eligible-pokemon/${speciesId}`;
 
 // ------ INCUBATOR ENDPOINTS ------
 export const INCUBATOR_URL = `${API_BASE_URL}/incubators`;
@@ -35,3 +36,4 @@ export const SPECIES_ITEM_URL = (dexNum) => `${SPEICES_URL}/item/${dexNum}`;
 // ----- LISTING ENDPOINTS ------
 export const LISTING_URL = `${API_BASE_URL}/listings`;
 export const CREATE_LISTING_URL = `${LISTING_URL}/create`;
+export const LISTING_DETAIL_URL = (listingId) => `${LISTING_URL}/${listingId}`;
