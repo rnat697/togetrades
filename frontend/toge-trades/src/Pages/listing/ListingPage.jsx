@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "ldrs/infinity";
 import { useAuth } from "../../api/auth";
+import ListingDetail from "../../components/listing/listing-details/ListingDetail";
 
 export default function ListingPage() {
   const { id } = useParams();
@@ -14,11 +15,13 @@ export default function ListingPage() {
 
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [listing, setListing] = useState({});
+  const [metadata, setMetadata] = useState({});
 
   // ---- Get listing ---
   useEffect(() => {
     getByListingId(id).then((data) => {
-      setListing(data);
+      setListing(data.listing);
+      setMetadata(data.metadata);
       setIsCurrentUser(user._id === data.listedBy.id); // only show interested In trading box if its not the same user
     });
   }, [id]);
@@ -47,8 +50,12 @@ export default function ListingPage() {
         </div>
       ) : (
         <div className={styles["listing-page-contents"]}>
-          <Breadcrumb currentPageName={`Listing #${listing.listingNum}`} />
-          {/* Add listing box here */}
+          <Breadcrumb
+            currentPageName={`Listing #${listing.listingNum
+              .toString()
+              .padStart(4, "0")}`}
+          />
+          <ListingDetail listing={listing} metadata={metadata} />
 
           {/* Add intersted in trade */}
         </div>

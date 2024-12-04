@@ -80,8 +80,8 @@ export function getByListingId(listingId) {
     .then((res) => {
       if (res.status === 200) {
         const listing = ListingModel.fromJSON(res.data.data);
-        console.log(listing);
-        return listing;
+        const metadata = res.data.metadata;
+        return { listing, metadata };
       }
     })
     .catch((e) => {
