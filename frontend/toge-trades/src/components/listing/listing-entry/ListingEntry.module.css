@@ -42,3 +42,20 @@
 .listing-table td{
   background-color: #fff;
 }
+
+/* Mobile format */
+@media screen and (max-width: 830px) {
+  .listing-entry-container{
+    flex-direction: column;
+    gap: 1em;
+  }
+  .listing-table{
+    width: 100%;
+  }
+  .listing-table th{
+    font-size: 0.9em;
+  }
+  .listing-table td{
+    font-size: 0.1em;
+  }
+}

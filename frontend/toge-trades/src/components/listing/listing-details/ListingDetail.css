@@ -14,6 +14,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .listing-detail-header h2{
   font-size: 1.8em;
@@ -100,4 +101,38 @@
 
 .react-tabs__tab-panel--selected {
   display: block;
+}
+
+/* Mobile format */
+@media screen and (max-width: 830px) {
+  .listing-detail-container{
+    width: 100%;
+  }
+  .listing-detail-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .listing-detail-header h2 {
+    order: 1; /* Ensure the Listing# comes first */
+    font-size: 1.5em;
+  }
+
+  .listing-detail-header .listing-detail-user {
+    display: flex;
+    flex-direction: row; 
+    gap: 0.5em;
+
+    order: 2; /* Position after Listing # */
+  }
+
+  .listing-detail-header .listing-detail-user img {
+    display: none; /* Hide the image on mobile */
+  }
+
+  .listing-detail-header p {
+    order: 3; /* Position after username */
+    margin-top: 0;
+  }
+
 }
