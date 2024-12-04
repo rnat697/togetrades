@@ -155,7 +155,7 @@ router.get("/", auth, async (req, res) => {
  */
 router.get("/:listingId", auth, async (req,res)=>{
   try{
-    const listingId  = req.params.listingId;
+    const listingId = req.params.listingId;
 
     const listing = await Listing.findById(listingId)
       .populate({
@@ -165,12 +165,37 @@ router.get("/:listingId", auth, async (req,res)=>{
       .populate("seekingSpecies")
       .populate("listedBy", "username image");
 
-    if(!listing) return res.status(404).send("Listing not found.");
+    if (!listing) return res.status(404).send("Listing not found.");
+
+    // check if user has the offered pokemon
+    let userId = req.user._id;
+    const doesOwnOffering =
+      (await Pokemon.countDocuments({
+        currentOwner: userId,
+        originalOwner: userId,
+        speciesId: listing.offeringPokemon.species._id,
+        isLocked: false,
+        isTrading: false,
+        hasBeenTraded: false,
+      })) > 0;
+    const doesOwnSeeking =
+      (await Pokemon.countDocuments({
+        currentOwner: userId,
+        originalOwner: userId,
+        species: listing.seekingSpecies._id,
+        isLocked: false,
+        isTrading: false,
+        hasBeenTraded: false,
+      })) > 0;
 
     return res.status(200).json({
       success: true,
       data: listing,
-    })
+      metadata: {
+        doesOwnOffering,
+        doesOwnSeeking,
+      },
+    });
   }catch(error){
     console.error("Error retrieving listing: ", error);
       return res
