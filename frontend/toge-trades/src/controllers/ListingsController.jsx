@@ -3,6 +3,7 @@ import {
   allEligiblePokemon,
   createListing,
   getSpecificListingAPI,
+  specificEligiblePokemonAPI,
 } from "../api/api";
 import { useAuth } from "../api/auth";
 import PokemonModel from "../models/PokemonModel";
@@ -86,7 +87,26 @@ export function getByListingId(listingId) {
     })
     .catch((e) => {
       toast(
-        "Error when fetching wishlist: " +
+        "Error when fetching a listing: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
+}
+
+// ---- Fetches a eligible pokemon by id ----
+export function getEligiblePokemonById(speciesId) {
+  return specificEligiblePokemonAPI(speciesId)
+    .then((res) => {
+      if (res.status === 200) {
+        const data = res.data;
+        const isEmpty = data.isEmpty;
+        const pokemon = data.data.map((poke) => PokemonModel.fromJSON(poke));
+        return { pokemon, isEmpty };
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when fetching eligible pokemon: " +
           (e.response?.data?.message || "An unexpected error occurred")
       );
     });

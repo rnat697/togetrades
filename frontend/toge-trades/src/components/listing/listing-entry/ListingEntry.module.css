@@ -3,6 +3,8 @@
   flex-direction: row;
   gap: 1em;
   padding: 1em;
+  justify-content: center;
+  align-items: center;
 
 }
 .listing-poke-img{
@@ -21,6 +23,7 @@
 }
 .listing-poke-img p{
   margin-top: 0;
+  text-align: center;
 }
 .listing-table{
   width: 80%;

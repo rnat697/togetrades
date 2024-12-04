@@ -26,4 +26,7 @@
   .listing-page-contents{
     width: 100%;
   }
+  .listing-page-all{
+    width: 90%;
+  }
 }
