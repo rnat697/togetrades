@@ -20,6 +20,17 @@
   align-items: center;
   gap: 1.5em;
 }
+.my-offers-container{
+  background-color: pink;
+  width: 80%;
+  padding-inline: 1em;
+  justify-content: center;
+  align-items: center;
+}
+.my-offers-container h2{
+  text-align: left;
+  justify-self: flex-start;
+}
 
 /* Mobile format */
 @media screen and (max-width: 830px) {

@@ -59,7 +59,14 @@ export default function ListingPage() {
           <div className={styles["listing-page-contents"]}>
             <ListingDetail listing={listing} metadata={metadata} />
 
-            <TradeOfferBox seeking={listing.seekingSpecies} />
+            {isCurrentUser ? (
+              <div className={styles["my-offers-container"]}>
+                <h2>Offers</h2>
+                {/* TODO: add offers here + if no offers have a default msg */}
+              </div>
+            ) : (
+              <TradeOfferBox seeking={listing.seekingSpecies} />
+            )}
           </div>
         </div>
       )}
