@@ -26,22 +26,26 @@ export default function ListingEntry({
       </div>
       <div className={styles["listing-table"]}>
         <table>
-          <tr>
-            <th>Is it a shiny?</th>
-            <th>Is it a legendary?</th>
-            <th>Do I have it already?</th>
-          </tr>
-          <tr>
-            <td>
-              {isShiny ? <FaCheck size={40} /> : <IoIosClose size={70} />}
-            </td>
-            <td>
-              {isLegendary ? <FaCheck size={40} /> : <IoIosClose size={70} />}
-            </td>
-            <td>
-              {isOwned ? <FaCheck size={40} /> : <IoIosClose size={70} />}
-            </td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Is it a shiny?</th>
+              <th>Is it a legendary?</th>
+              <th>Do I have it already?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {isShiny ? <FaCheck size={40} /> : <IoIosClose size={70} />}
+              </td>
+              <td>
+                {isLegendary ? <FaCheck size={40} /> : <IoIosClose size={70} />}
+              </td>
+              <td>
+                {isOwned ? <FaCheck size={40} /> : <IoIosClose size={70} />}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

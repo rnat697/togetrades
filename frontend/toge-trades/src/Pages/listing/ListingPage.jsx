@@ -22,7 +22,7 @@ export default function ListingPage() {
     getByListingId(id).then((data) => {
       setListing(data.listing);
       setMetadata(data.metadata);
-      setIsCurrentUser(user._id === data.listedBy.id); // only show interested In trading box if its not the same user
+      setIsCurrentUser(user._id === data.listing.listedBy.id); // only show interested In trading box if its not the same user
     });
   }, [id]);
 
