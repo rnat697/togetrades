@@ -129,7 +129,10 @@ router.get("/eligible-pokemon/:id", auth, async (req, res) => {
       isTrading: false,
       hasBeenTraded: false,
     };
-    const pokemon = await Pokemon.find(query);
+    const pokemon = await Pokemon.find(query)
+      .populate("species")
+      .populate("originalOwner", "username _id")
+      .populate("currentOwner", "username _id");
     return res
       .status(200)
       .json({ success: true, data: pokemon, isEmpty: pokemon.length === 0 });
