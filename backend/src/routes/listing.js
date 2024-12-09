@@ -163,7 +163,9 @@ router.get("/:listingId", auth, async (req,res)=>{
         populate: { path: "species", model: "Species" },
       })
       .populate("seekingSpecies")
-      .populate("listedBy", "username image");
+      .populate("listedBy", "username image")
+      .populate("offers.offer")
+      .populate("acceptedOffer");
 
     if (!listing) return res.status(404).send("Listing not found.");
 
