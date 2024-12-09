@@ -84,6 +84,11 @@ router.post("/create", auth, async (req, res) => {
     // Update pokemon's isTrading to true because its an active trade
     pokeExist.isTrading = true;
     await pokeExist.save();
+
+    // Update listing to include offer
+    listingExist.offers.push(offer);
+    await listingExist.save();
+
     // TODO: potential socket.io notification here?
     return res
       .status(201)
