@@ -327,10 +327,20 @@ const pokemonVentisIvyasaur = {
 const pokemonVentisLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000843"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
-  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  originalOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
   isShiny: false,
   isTrading: true,
+  isLocked: false,
+  hasBeenTraded: false,
+};
+const pokemonVentisLunalaTradeable = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000845"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  originalOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000003"),
+  isShiny: false,
+  isTrading: false,
   isLocked: false,
   hasBeenTraded: false,
 };
@@ -343,6 +353,17 @@ let pokemonAgathasLunala = {
   isShiny: false,
   isTrading: false,
   isLocked: false,
+  hasBeenTraded: false,
+};
+
+let pokemonAgathasLockedLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000684"),
+  species: new mongoose.Types.ObjectId("000000000000000000000792"),
+  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  isShiny: false,
+  isTrading: false,
+  isLocked: true,
   hasBeenTraded: false,
 };
 
@@ -522,8 +543,10 @@ async function addMockPokemons() {
     pokemonNaviasIvysaurDupe3,
     pokemonVentisIvyasaur,
     pokemonVentisLunala,
+    pokemonVentisLunalaTradeable,
   ]);
   await pokemonsDB.insertMany(agathaList);
+  await pokemonsDB.insertOne(pokemonAgathasLockedLunala);
 }
 
 async function addMockIncubators() {
@@ -594,7 +617,9 @@ export {
   pokemonNaviasIvysaur,
   pokemonVentisIvyasaur,
   pokemonVentisLunala,
+  pokemonVentisLunalaTradeable,
   pokemonAgathasLunala,
+  pokemonAgathasLockedLunala,
   ventisIncubatorGhost,
   ventisIncubatorGrass,
   listingIvyForBulbNavia,
