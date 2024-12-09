@@ -1,5 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import jwt from "jsonwebtoken";
+import Pokemon from "../../db/pokemon-schema";
+import Species from "../../db/species-schema";
 
 // --------- Species ---------
 const speciesShaymin = {
@@ -214,6 +216,25 @@ const userAgatha = {
   ],
 };
 
+// Furina
+const userFurina = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000759"),
+  username: "Furina",
+  email: "furina@email.com",
+  passHash: "$2a$12$GUoBELgxZwgU2MwhZQDVresoxBzaSOTZTat157F0KaHjoBGEI3yKO",
+  image:
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png",
+  wishlist: [],
+};
+
+// Valid token for Furina - for authetication checks
+const tokenFurina = jwt.sign(
+  { _id: userFurina._id, username: userFurina.username },
+  process.env.JWT_KEY,
+  { expiresIn: "7d" }
+);
+const bearerFurina = `Bearer ${tokenFurina}`;
+
 // Valid token for Agatha - for authetication checks
 const tokenAgatha = jwt.sign(
   { _id: "000000000000000000000756", username: "Agatha" },
@@ -344,11 +365,51 @@ const pokemonVentisLunalaTradeable = {
   isLocked: false,
   hasBeenTraded: false,
 };
+const pokemonFurinaBulbasaur1 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000145"),
+  species: speciesBulbasaur._id,
+  originalOwner: userFurina._id,
+  currentOwner: userFurina._id,
+  isShiny: false,
+  isTrading: false,
+  isLocked: false,
+  hasBeenTraded: false,
+};
+const pokemonFurinaBulbasaur2 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000146"),
+  species: new mongoose.Types.ObjectId("000000000000000000000029"),
+  originalOwner: userFurina._id,
+  currentOwner: userFurina._id,
+  isShiny: false,
+  isTrading: true,
+  isLocked: false,
+  hasBeenTraded: false,
+};
+const pokemonFurinaBulbasaur3 = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000147"),
+  species: new mongoose.Types.ObjectId("000000000000000000000029"),
+  originalOwner: userFurina._id,
+  currentOwner: userFurina._id,
+  isShiny: false,
+  isTrading: true,
+  isLocked: false,
+  hasBeenTraded: false,
+};
+const pokemonFurinaLunala = {
+  _id: new mongoose.Types.ObjectId("000000000000000000000148"),
+  species: new mongoose.Types.ObjectId(speciesLunala._id),
+  originalOwner: userFurina._id,
+  currentOwner: userFurina._id,
+  isShiny: false,
+  isTrading: true,
+  isLocked: false,
+  hasBeenTraded: false,
+};
 
 let pokemonAgathasLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000514"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
-  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  originalOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   isShiny: false,
   isTrading: false,
@@ -359,7 +420,7 @@ let pokemonAgathasLunala = {
 let pokemonAgathasLockedLunala = {
   _id: new mongoose.Types.ObjectId("000000000000000000000684"),
   species: new mongoose.Types.ObjectId("000000000000000000000792"),
-  orignialOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
+  originalOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   currentOwner: new mongoose.Types.ObjectId("000000000000000000000756"),
   isShiny: false,
   isTrading: false,
@@ -474,7 +535,7 @@ const listingIvyForBulbVenti = {
   listedBy: userVenti._id,
   dateCreated: new Date(1716069600), // Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
   status: "Active",
-  offers: [],
+  offers: [{ offer: new mongoose.Types.ObjectId("000000000000000000065828") }],
   acceptedOffer: null,
 };
 const listingIvyForBulbNavia = {
@@ -510,15 +571,38 @@ const listingLunaForBulbNavia = {
   listedBy: userNavia._id,
   dateCreated: new Date(1731914354), // Mon Nov 18 2024 20:19:14 GMT+1300 (New Zealand Daylight Time)
   status: "Active",
-  offers: [],
+  offers: [{ offer: new mongoose.Types.ObjectId("000000000000000000065827") }],
   acceptedOffer: null,
 };
+
+// --------- Offers ---------
+const offerBulbForNaviaLunaListing = {
+  _id: new mongoose.Types.ObjectId("000000000000000000065827"),
+  offerNum: 2,
+  offeredPokemon: pokemonFurinaBulbasaur1._id,
+  listing: listingLunaForBulbNavia._id,
+  offeredBy: userFurina._id,
+  status: "Pending",
+  dateCreated: new Date(),
+  dateAccepted: null,
+};
+const offerBulbForVentiIvyListing = {
+  _id: new mongoose.Types.ObjectId("000000000000000000065828"),
+  offerNum: 3,
+  offeredPokemon: pokemonFurinaBulbasaur2._id,
+  listing: listingIvyForBulbVenti._id,
+  offeredBy: userFurina._id,
+  status: "Pending",
+  dateCreated: new Date(),
+  dateAccepted: null,
+};
+
 // --------- Functions ---------
 async function addMockSpecies() {
   const speciesDB = mongoose.connection.db.collection("species");
   await speciesDB.insertMany([
-    speciesBulbasaur,
     speciesIvysaur,
+    speciesBulbasaur,
     speciesVenusaur,
     speciesShaymin,
     speciesLunala,
@@ -527,8 +611,15 @@ async function addMockSpecies() {
 }
 async function addMockUsers() {
   const usersDB = mongoose.connection.db.collection("users");
-  await usersDB.insertMany([userLynney, userNavia, userVenti, userAgatha]);
+  await usersDB.insertMany([
+    userLynney,
+    userNavia,
+    userVenti,
+    userFurina,
+    userAgatha,
+  ]);
 }
+
 async function addMockPokemons() {
   const pokemonsDB = mongoose.connection.db.collection("pokemons");
   let agathaList = makeAgathasPokemons();
@@ -544,6 +635,10 @@ async function addMockPokemons() {
     pokemonVentisIvyasaur,
     pokemonVentisLunala,
     pokemonVentisLunalaTradeable,
+    pokemonFurinaBulbasaur1,
+    pokemonFurinaBulbasaur2,
+    pokemonFurinaBulbasaur3,
+    pokemonFurinaLunala,
   ]);
   await pokemonsDB.insertMany(agathaList);
   await pokemonsDB.insertOne(pokemonAgathasLockedLunala);
@@ -581,6 +676,14 @@ async function addMockListings() {
   ]);
 }
 
+async function addMockOffers() {
+  const offerDB = mongoose.connection.db.collection("offers");
+  await offerDB.insertMany([
+    offerBulbForNaviaLunaListing,
+    offerBulbForVentiIvyListing,
+  ]);
+}
+
 async function dropData() {
   const collections = await mongoose.connection.db.collections();
   for (const collection of collections) {
@@ -595,6 +698,7 @@ async function addAllMockData() {
   await addMockPokemons();
   await addMockIncubators();
   await addMockListings();
+  await addMockOffers();
 }
 
 export {
@@ -607,10 +711,12 @@ export {
   userLynney,
   userNavia,
   userVenti,
+  userFurina,
   userAgatha,
   bearerLynney,
   bearerNavia,
   bearerVenti,
+  bearerFurina,
   bearerAgatha,
   pokemonLynneysIvyasaur,
   pokemonNaviasLunala,
@@ -620,11 +726,17 @@ export {
   pokemonVentisLunalaTradeable,
   pokemonAgathasLunala,
   pokemonAgathasLockedLunala,
+  pokemonFurinaBulbasaur1,
+  pokemonFurinaBulbasaur2,
+  pokemonFurinaBulbasaur3,
+  pokemonFurinaLunala,
   ventisIncubatorGhost,
   ventisIncubatorGrass,
   listingIvyForBulbNavia,
   listingIvyForLunaLynney,
   listingIvyForBulbVenti,
   listingLunaForBulbNavia,
+  offerBulbForNaviaLunaListing,
+  offerBulbForVentiIvyListing,
   addAllMockData,
 };

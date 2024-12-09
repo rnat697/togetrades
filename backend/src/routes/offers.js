@@ -86,7 +86,7 @@ router.post("/create", auth, async (req, res) => {
     await pokeExist.save();
 
     // Update listing to include offer
-    listingExist.offers.push(offer);
+    listingExist.offers.push({offer:offer._id});
     await listingExist.save();
 
     // TODO: potential socket.io notification here?
@@ -94,10 +94,8 @@ router.post("/create", auth, async (req, res) => {
       .status(201)
       .send({ success: true, message: "Offer created successfully." });
   } catch (error) {
-    console.error("Error retrieving Pokemon: ", error);
-    return res
-      .status(500)
-      .send("Internal Server Error when retrieving Pokemon.");
+    console.error("Error when creating offer: ", error);
+    return res.status(500).send("Internal Server Error when creating offer.");
   }
 });
 
@@ -106,7 +104,158 @@ router.post("/create", auth, async (req, res) => {
  * GET /outgoing-offers/:userId
  * returns a list of outgoing offers that the user has made
  * @param {userId} - user id so we can retrieve their outgoing offers
+ * @param {page} - page number, default is 1
+ * @param {limit} - maximum number of offers per page, default is 10
  *
  */
+
+router.get("/outgoing-offers", auth, async (req, res) => {
+  try {
+    let userId = req.user._id;
+    // Get pagination params from query string
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Define the custom order for the 'status' enum
+    const statusOrder = {
+      Pending: 1,
+      Accepted: 2,
+      Declined: 3,
+    };
+
+    // Pipeline to fetch and sort the offers
+    const offersPipeline = [
+      {
+        $match: { offeredBy: userId },
+      },
+      {
+        $addFields: {
+          statusOrder: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$status", "Pending"] }, then: 1 },
+                { case: { $eq: ["$status", "Accepted"] }, then: 2 },
+                { case: { $eq: ["$status", "Declined"] }, then: 3 },
+              ],
+              default: 0, // Default for invalid statuses
+            },
+          },
+        },
+      },
+      {
+        $sort: { statusOrder: 1 }, // Sort by custom status order
+      },
+      {
+        $skip: skip, // Pagination: skip documents for the current page
+      },
+      {
+        $limit: limit, // Pagination: limit the number of documents
+      },
+      {
+        $lookup: {
+          from: "pokemons",
+          localField: "offeredPokemon",
+          foreignField: "_id",
+          as: "offeredPokemon",
+          pipeline: [
+            {
+              $lookup: {
+                from: "species",
+                localField: "species",
+                foreignField: "_id",
+                as: "species",
+                pipeline: [{ $project: { image: 1, name: 1, isLegendary: 1 } }],
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "listings",
+          localField: "listing",
+          foreignField: "_id",
+          as: "listing",
+          pipeline: [
+            {
+              $lookup: {
+                from: "pokemons",
+                localField: "offeringPokemon",
+                foreignField: "_id",
+                as: "offeringPokemon",
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: "species",
+                      localField: "species",
+                      foreignField: "_id",
+                      as: "species",
+                      pipeline: [
+                        { $project: { image: 1, name: 1, isLegendary: 1 } },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "users",
+                localField: "listedBy",
+                foreignField: "_id",
+                as: "listedBy",
+                pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "offeredBy",
+          foreignField: "_id",
+          as: "offeredBy",
+          pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
+        },
+      },
+    ];
+
+    // Get total count for pagination metadata
+    const totalCount = await Offer.countDocuments({ offeredBy: userId });
+
+    // Fetch the offers with the aggregation pipeline
+    const offers = await Offer.aggregate(offersPipeline);
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Check if the requested page exceeds total pages
+    if (page > totalPages && totalPages > 0) {
+      return res
+        .status(400)
+        .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: offers,
+      isEmpty: offers.length === 0,
+      metadata: {
+        totalCount,
+        page,
+        totalPages,
+        limit,
+      },
+    });
+  } catch (error) {
+    console.error("Error when retrieving outgoing offers: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving outgoing offers.");
+  }
+});
+
 
 export default router;

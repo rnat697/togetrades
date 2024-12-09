@@ -7,6 +7,7 @@ import routes from "../offers.js";
 import {
   addAllMockData,
   bearerAgatha,
+  bearerFurina,
   bearerNavia,
   bearerVenti,
   listingIvyForLunaLynney,
@@ -137,6 +138,48 @@ describe("Offer creation POST /api/v1/offers/create", () => {
         offeredPokeId: pokemonNaviasIvysaur._id,
         listingId: listingIvyForLunaLynney._id,
       })
+      .expect(400)
+      .end(done);
+  });
+});
+
+// ---------------- Fetching Outgoing Offers ----------------
+describe("Fetching outgoing offers GET /api/v1/offers/outgoing-offers", () => {
+  test("Successful fetching of outgoing offers - no outgoing offers", (done) => {
+    request(app)
+      .get("/api/v1/offers/outgoing-offers")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.isEmpty).toBe(true);
+        return done();
+      });
+  });
+  test("Successful fetching of outgoing offers", (done) => {
+    request(app)
+      .get("/api/v1/offers/outgoing-offers")
+      .set("Cookie", [`authorization=${bearerFurina}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.data.length).toBe(2);
+        expect(data.isEmpty).toBe(false);
+        return done();
+      });
+  });
+
+  test("Fetching offers outside of max page limit, 400 status", (done) => {
+    request(app)
+      .get("/api/v1/offers/outgoing-offers?page=2")
+      .set("Cookie", [`authorization=${bearerFurina}`])
+      .send()
       .expect(400)
       .end(done);
   });
