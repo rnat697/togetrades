@@ -34,9 +34,8 @@ class ListingModel {
       OffersModel.fromJSON(data.acceptedOffer);
     }
     if (data.offers.length > 0) {
-      offers = data.offers.map((offer) => OffersModel.fromJSON(offer));
+      offers = data.offers.map((item) => OffersModel.fromJSON(item.offer));
     }
-
     return new ListingModel(
       data._id,
       data.listingNum,
