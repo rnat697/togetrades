@@ -169,8 +169,15 @@ describe("Fetching outgoing offers GET /api/v1/offers/outgoing-offers", () => {
         if (err) return done(err);
         let data = res.body;
         expect(data.success).toBe(true);
-        expect(data.data.length).toBe(2);
+        expect(data.data.length).toBe(4);
         expect(data.isEmpty).toBe(false);
+
+        // check if its in order (Pending, Accepted, Declined)
+        const offers = data.data;
+        expect(offers[0].status).toBe("Pending");
+        expect(offers[1].status).toBe("Pending");
+        expect(offers[2].status).toBe("Accepted");
+        expect(offers[3].status).toBe("Declined");
         return done();
       });
   });

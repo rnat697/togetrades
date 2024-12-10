@@ -596,6 +596,26 @@ const offerBulbForVentiIvyListing = {
   dateCreated: new Date(),
   dateAccepted: null,
 };
+const offerBulbForVentiIvyListingDeclined = {
+  _id: new mongoose.Types.ObjectId("000000000000000000065829"),
+  offerNum: 4,
+  offeredPokemon: pokemonFurinaBulbasaur2._id,
+  listing: listingIvyForBulbVenti._id,
+  offeredBy: userFurina._id,
+  status: "Declined",
+  dateCreated: new Date(),
+  dateAccepted: null,
+};
+const offerBulbForVentiIvyListingAccepted = {
+  _id: new mongoose.Types.ObjectId("000000000000000000065830"),
+  offerNum: 5,
+  offeredPokemon: pokemonFurinaBulbasaur2._id,
+  listing: listingIvyForBulbVenti._id,
+  offeredBy: userFurina._id,
+  status: "Accepted",
+  dateCreated: new Date(),
+  dateAccepted: null,
+};
 
 // --------- Functions ---------
 async function addMockSpecies() {
@@ -681,6 +701,8 @@ async function addMockOffers() {
   await offerDB.insertMany([
     offerBulbForNaviaLunaListing,
     offerBulbForVentiIvyListing,
+    offerBulbForVentiIvyListingDeclined,
+    offerBulbForVentiIvyListingAccepted,
   ]);
 }
 
@@ -738,5 +760,7 @@ export {
   listingLunaForBulbNavia,
   offerBulbForNaviaLunaListing,
   offerBulbForVentiIvyListing,
+  offerBulbForVentiIvyListingAccepted,
+  offerBulbForVentiIvyListingDeclined,
   addAllMockData,
 };
