@@ -17,7 +17,7 @@ class OffersModel {
     this.id = id;
     this.offerNum = offerNum || null;
     this.offeredPokemon = offeredPokemon || null;
-    this.listing = listing || null;
+    this.listing = listing || null; // Listing Id
     this.offeredBy = offeredBy || null;
     this.status = status || null;
     this.dateCreated = new Date(dateCreated);
@@ -29,10 +29,10 @@ class OffersModel {
         data._id,
         data.offerNum,
         PokemonModel.fromJSON(data.offeredPokemon),
-        ListingModel.fromJSON(data.listing),
+        data.listing,
         UserModel.fromJSON(data.offeredBy),
-        data.dateCreated,
         data.status,
+        data.dateCreated,
         data.dateAccepted
       );
     } else {
