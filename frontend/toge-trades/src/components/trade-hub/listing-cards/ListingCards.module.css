@@ -45,6 +45,7 @@
 }
 .user p{
   line-height: 0;
+  text-align: center;
 }
 .trades{
   display:flex;
