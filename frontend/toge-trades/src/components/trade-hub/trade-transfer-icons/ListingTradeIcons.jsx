@@ -7,7 +7,17 @@ export default function ListingTradeIcons({
   offered,
   seeking,
   isSeekingShiny,
+  isOnOfferCard = false,
+  offerCardOfferMsg = "",
+  offerCardSeekMsg = "",
 }) {
+  const offerMsg = isOnOfferCard
+    ? offerCardOfferMsg
+    : `Offers ${capitalizeFirstLetter(offered.species.name)}`;
+  const seekMsg = isOnOfferCard
+    ? offerCardSeekMsg
+    : `Seeks ${capitalizeFirstLetter(seeking.name)}`;
+
   return (
     <div className={styles["trade-transfer-icon-container"]}>
       <div className={styles["offered"]}>
@@ -28,7 +38,7 @@ export default function ListingTradeIcons({
             }
           />
         </div>
-        <p>{`Offers ${capitalizeFirstLetter(offered.species.name)}`}</p>
+        <p>{offerMsg}</p>
       </div>
       <img
         src="../../../src/assets/trade-icon.png"
@@ -49,7 +59,7 @@ export default function ListingTradeIcons({
           />
         </div>
 
-        <p>{`Seeks ${capitalizeFirstLetter(seeking.name)}`}</p>
+        <p>{seekMsg}</p>
       </div>
       <Tooltip id="listing-trade-tooltips" />
     </div>

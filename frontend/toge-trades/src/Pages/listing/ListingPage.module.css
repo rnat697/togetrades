@@ -22,14 +22,16 @@
 }
 .my-offers-container{
   background-color: pink;
-  width: 80%;
-  padding-inline: 1em;
+  width:83%;
   justify-content: center;
   align-items: center;
 }
 .my-offers-container h2{
   text-align: left;
   justify-self: flex-start;
+}
+.no-offers{
+  background-color: white;
 }
 
 /* Mobile format */

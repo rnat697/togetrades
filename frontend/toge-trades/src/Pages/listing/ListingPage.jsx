@@ -8,6 +8,7 @@ import "ldrs/infinity";
 import { useAuth } from "../../api/auth";
 import ListingDetail from "../../components/listing/listing-details/ListingDetail";
 import TradeOfferBox from "../../components/listing/trade-offer-box/TradeOfferBox";
+import OfferCard from "../../components/offer/offer-card/OfferCard";
 
 export default function ListingPage() {
   const { id } = useParams();
@@ -62,7 +63,23 @@ export default function ListingPage() {
             {isCurrentUser ? (
               <div className={styles["my-offers-container"]}>
                 <h2>Offers</h2>
-                {/* TODO: add offers here + if no offers have a default msg */}
+                {listing.offers.length === 0 ? (
+                  <div className={styles["no-offers"]}>
+                    <p>No offers yet</p>
+                  </div>
+                ) : (
+                  listing.offers.map((offer) => (
+                    <OfferCard
+                      key={offer.id}
+                      offerData={offer}
+                      listingOffering={{
+                        pokemon: listing.offeringPokemon,
+                        isShiny: listing.isSeekingShiny,
+                      }}
+                      isIncomingOffer={isCurrentUser}
+                    />
+                  ))
+                )}
               </div>
             ) : (
               <TradeOfferBox seeking={listing.seekingSpecies} />
