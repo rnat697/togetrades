@@ -182,6 +182,10 @@ router.get("/:listingId", auth, async (req,res)=>{
               path: "offeredBy", // Populate offeredBy inside the Offer
               select: "username image",
             },
+            {
+              path: "listing", // Populate listing inside the Offer
+              select: "listingNum",
+            },
           ],
         },
       })
