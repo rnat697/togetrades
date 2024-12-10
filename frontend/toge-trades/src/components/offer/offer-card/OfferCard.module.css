@@ -61,10 +61,10 @@
   border-radius: 1em;
   width: 100%;
 }
-.decline-outline{
+.outline-butto{
   width: 100%;
 }
-.decline-outline button{
+.outline-butto button{
   border-color: #5988D8;
   border-width: 0.15em;
   background-color: #ffffff;
@@ -72,6 +72,29 @@
 
 }
 
-.decline-outline button:hover{
+.outline-butto button:hover{
   background-color: #F2F6FC;
+}
+
+/* Mobile format */
+@media screen and (max-width: 830px) {
+  .offer-card-container{
+    width: 100%;
+    height: auto;
+    padding: 0.2em;
+    flex-direction: column;
+  }
+  .offer-buttons{
+    width: 100%;
+    background-color: palegoldenrod;
+  }
+  .accept-decline {
+    width: 80%;
+    justify-self: center;
+  }
+  .header{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
 }

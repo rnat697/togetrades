@@ -69,15 +69,16 @@ export default function ListingPage() {
                   </div>
                 ) : (
                   listing.offers.map((offer) => (
-                    <OfferCard
-                      key={offer.id}
-                      offerData={offer}
-                      listingOffering={{
-                        pokemon: listing.offeringPokemon,
-                        isShiny: listing.isSeekingShiny,
-                      }}
-                      isIncomingOffer={isCurrentUser}
-                    />
+                    <div className={styles["offers-card-rows"]} key={offer.id}>
+                      <OfferCard
+                        offerData={offer}
+                        listingOffering={{
+                          pokemon: listing.offeringPokemon,
+                          isShiny: listing.isSeekingShiny,
+                        }}
+                        isIncomingOffer={isCurrentUser}
+                      />
+                    </div>
                   ))
                 )}
               </div>

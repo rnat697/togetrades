@@ -58,12 +58,14 @@ export default function OfferCard({
         {isIncomingOffer ? (
           <div className={styles["accept-decline"]}>
             <button>Accept</button>
-            <div className={styles["decline-outline"]}>
+            <div className={styles["outline-butto"]}>
               <button>Decline</button>
             </div>
           </div>
         ) : (
-          <button>Withdraw</button>
+          <div className={styles["outline-button"]}>
+            <button>Withdraw</button>
+          </div>
         )}
         <p>{`Offered ${formatRelativeTime(offerData.dateCreated)}`}</p>
       </div>
