@@ -65,7 +65,7 @@ export default function ListingPage() {
                 <h2>Offers</h2>
                 {listing.offers.length === 0 ? (
                   <div className={styles["no-offers"]}>
-                    <p>No offers yet</p>
+                    <h3>No offers yet.</h3>
                   </div>
                 ) : (
                   listing.offers.map((offer) => (
