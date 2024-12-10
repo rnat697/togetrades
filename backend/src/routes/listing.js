@@ -163,7 +163,29 @@ router.get("/:listingId", auth, async (req,res)=>{
         populate: { path: "species", model: "Species" },
       })
       .populate("seekingSpecies")
-      .populate("listedBy", "username image");
+      .populate("listedBy", "username image")
+      .populate({
+        path: "offers", // Populate the offers array
+        populate: {
+          path: "offer", // Populate the `offer` field inside each object in the offers array
+          model: "Offer", // Reference the Offer model
+          populate: [
+            {
+              path: "offeredPokemon", // Populate offeredPokemon inside the Offer
+              populate: {
+                path: "species",
+                select: "image name isLegendary",
+                model: "Species",
+              },
+            },
+            {
+              path: "offeredBy", // Populate offeredBy inside the Offer
+              select: "username image",
+            },
+          ],
+        },
+      })
+      .populate("acceptedOffer");
 
     if (!listing) return res.status(404).send("Listing not found.");
 
