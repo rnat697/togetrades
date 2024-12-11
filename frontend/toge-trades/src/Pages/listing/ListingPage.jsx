@@ -67,6 +67,17 @@ export default function ListingPage() {
                   <div className={styles["no-offers"]}>
                     <h3>No offers yet.</h3>
                   </div>
+                ) : listing.acceptedOffer != null ? (
+                  <div>
+                    <OfferCard
+                      offerData={listing.acceptedOffer}
+                      listingOffering={{
+                        pokemon: listing.offeringPokemon,
+                        isShiny: listing.isSeekingShiny,
+                      }}
+                      isAcceptedOffer={true}
+                    />
+                  </div>
                 ) : (
                   listing.offers.map((offer) => (
                     <div className={styles["offers-card-rows"]} key={offer.id}>

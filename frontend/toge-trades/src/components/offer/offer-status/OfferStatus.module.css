@@ -1,0 +1,25 @@
+.offer-status-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5em;
+  width: 80%;
+  align-items: center;
+  padding: 0.1em 1em;
+  border-radius: 1.5em;
+  font-size: 1em;
+  background-color: #616980;
+  line-height: 0;
+  white-space: nowrap;
+  color: white;
+}
+.Pending{
+  background-color: #FCD0A1;
+  color: #000;
+}
+.Declined{
+  background-color: #CA6449;
+}
+.Accepted{
+  background-color: #6EBB6E;
+}

@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./OfferCard.module.css";
 import ListingTradeIcons from "../../trade-hub/trade-transfer-icons/ListingTradeIcons";
 import { capitalizeFirstLetter, formatRelativeTime } from "../../utils/utils";
+import OfferStatus from "../offer-status/OfferStatus";
 
 export default function OfferCard({
   offerData,
   listingOffering,
   isIncomingOffer = false,
   showStatus = false,
+  isAcceptedOffer = false,
 }) {
   const offeredMessage = isIncomingOffer
     ? `They offered ${capitalizeFirstLetter(
@@ -38,7 +40,9 @@ export default function OfferCard({
           </p>
         )}
         {showStatus ? (
-          <div className={styles["offer-status"]}>{/**TODO: add status */}</div>
+          <div className={styles["offer-status"]}>
+            {<OfferStatus status={offerData.status} />}
+          </div>
         ) : (
           <div className={styles["offer-user"]}>
             <img src={offerData.offeredBy.image} />
@@ -55,7 +59,9 @@ export default function OfferCard({
         offerCardSeekMsg={seekMessage}
       />
       <div className={styles["offer-buttons"]}>
-        {isIncomingOffer ? (
+        {isAcceptedOffer ? (
+          <OfferStatus status={offerData.status} />
+        ) : isIncomingOffer ? (
           <div className={styles["accept-decline"]}>
             <button>Accept</button>
             <div className={styles["outline-butto"]}>
