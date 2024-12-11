@@ -14,6 +14,7 @@ import {
   CREATE_LISTING_URL,
   LISTING_DETAIL_URL,
   SPECIFIC_ELIGIBLE_POKEMON_URL,
+  CREATE_OFFER_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -60,8 +61,8 @@ export const allEligiblePokemon = (page) =>
 export const specificEligiblePokemonAPI = (speciesId) =>
   axios.get(SPECIFIC_ELIGIBLE_POKEMON_URL(speciesId), {
     withCredentials: true,
-  }); 
- 
+  });
+
 // ------ INCUBATOR API ------
 export const createIncubator = (type) =>
   axios.post(CREATE_INCUBATOR_URL(type), {}, { withCredentials: true });
@@ -85,3 +86,11 @@ export const createListing = (
 
 export const getSpecificListingAPI = (listingId) =>
   axios.get(LISTING_DETAIL_URL(listingId), { withCredentials: true });
+
+// ------ OFFERS API ------
+export const createOffer = (offeredPokeId, listingId) =>
+  axios.post(
+    CREATE_OFFER_URL,
+    { offeredPokeId, listingId },
+    { withCredentials: true }
+  );

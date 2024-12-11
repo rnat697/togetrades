@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import styles from "./TradeOfferBox.module.css";
 import { getEligiblePokemonById } from "../../../controllers/ListingsController";
 import { capitalizeFirstLetter } from "../../utils/utils";
+import { createNewOffer } from "../../../controllers/OfferController";
 
-export default function TradeOfferBox({ seeking }) {
+export default function TradeOfferBox({ seeking, listingId }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [isEmpty, setIsEmpty] = useState(true);
   const [selectedPoke, setSelectedPoke] = useState({});
@@ -27,7 +28,20 @@ export default function TradeOfferBox({ seeking }) {
 
   // handle selecting a pokemon
   const handleSendTradeOffer = () => {
-    console.log("woo sending");
+    createNewOffer(selectedPoke.id, listingId).then((success) => {
+      if (success) {
+        setPokemonList(
+          pokemonList.filter((pokemon) => pokemon.id !== selectedPoke.id)
+        );
+        setSelectedPoke({});
+        if (
+          pokemonList.filter((pokemon) => pokemon.id !== selectedPoke.id)
+            .length < 1
+        ) {
+          setIsEmpty(true);
+        }
+      }
+    });
   };
 
   return (
