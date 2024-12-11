@@ -3,6 +3,7 @@ import styles from "./TradeOfferBox.module.css";
 import { getEligiblePokemonById } from "../../../controllers/ListingsController";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { createNewOffer } from "../../../controllers/OfferController";
+import { ToastContainer } from "react-toastify";
 
 export default function TradeOfferBox({ seeking, listingId }) {
   const [pokemonList, setPokemonList] = useState([]);
@@ -82,6 +83,7 @@ export default function TradeOfferBox({ seeking, listingId }) {
           Send Trade Offer
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 }
