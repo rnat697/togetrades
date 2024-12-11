@@ -9,6 +9,12 @@
   justify-content: center;
   align-items: center;
 }
+.incubator-heading{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .incubator-heading p{
   font-size: 1.2em;
   margin-bottom: 0;
