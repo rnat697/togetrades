@@ -4,6 +4,13 @@
   margin-top:5em;
 
 }
+.trade-hub-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .trade-hub-content{
   justify-content: center;
   align-items: center;

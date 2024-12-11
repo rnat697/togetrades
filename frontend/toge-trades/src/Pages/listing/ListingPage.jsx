@@ -94,7 +94,10 @@ export default function ListingPage() {
                 )}
               </div>
             ) : (
-              <TradeOfferBox seeking={listing.seekingSpecies} />
+              <TradeOfferBox
+                seeking={listing.seekingSpecies}
+                listingId={listing.id}
+              />
             )}
           </div>
         </div>
