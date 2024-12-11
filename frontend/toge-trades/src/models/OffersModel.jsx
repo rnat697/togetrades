@@ -15,25 +15,30 @@ class OffersModel {
     dateAccepted
   ) {
     this.id = id;
-    this.offerNum = offerNum;
-    this.offeredPokemon = offeredPokemon;
-    this.listing = listing;
-    this.offeredBy = offeredBy;
-    this.status = status;
+    this.offerNum = offerNum || null;
+    this.offeredPokemon = offeredPokemon || null;
+    this.listing = listing || null; // Listing Id
+    this.offeredBy = offeredBy || null;
+    this.status = status || null;
     this.dateCreated = new Date(dateCreated);
     this.dateAccepted = new Date(dateAccepted) || null;
   }
   static fromJSON(data) {
-    return new OffersModel(
-      data._id,
-      data.offerNum,
-      PokemonModel.fromJSON(data.offeredPokemon),
-      ListingModel.fromJSON(data.listing),
-      UserModel.fromJSON(data.offeredBy),
-      data.dateCreated,
-      data.status,
-      data.dateAccepted
-    );
+    if (typeof data === "object") {
+      return new OffersModel(
+        data._id,
+        data.offerNum,
+        PokemonModel.fromJSON(data.offeredPokemon),
+        data.listing,
+        UserModel.fromJSON(data.offeredBy),
+        data.status,
+        data.dateCreated,
+        data.dateAccepted
+      );
+    } else {
+      const id = data;
+      return new OffersModel(id);
+    }
   }
 }
 
