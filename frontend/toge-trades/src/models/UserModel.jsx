@@ -11,13 +11,18 @@ class UserModel {
       : [];
   }
   static fromJSON(data) {
-    return new UserModel(
-      data._id,
-      data.username,
-      data.email,
-      data.image,
-      data.wishlist
-    );
+    if (typeof data === "object") {
+      return new UserModel(
+        data._id,
+        data.username,
+        data.email,
+        data.image,
+        data.wishlist
+      );
+    } else {
+      const id = data;
+      return new UserModel(id);
+    }
   }
 }
 export default UserModel;

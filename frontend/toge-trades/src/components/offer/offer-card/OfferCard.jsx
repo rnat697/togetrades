@@ -64,7 +64,7 @@ export default function OfferCard({
         ) : isIncomingOffer ? (
           <div className={styles["accept-decline"]}>
             <button>Accept</button>
-            <div className={styles["outline-butto"]}>
+            <div className={styles["outline-button"]}>
               <button>Decline</button>
             </div>
           </div>

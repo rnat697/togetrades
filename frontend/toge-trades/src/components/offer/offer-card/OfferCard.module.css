@@ -63,10 +63,10 @@
   border-radius: 1em;
   width: 100%;
 }
-.outline-butto{
+.outline-button{
   width: 100%;
 }
-.outline-butto button{
+.outline-button button{
   border-color: #5988D8;
   border-width: 0.15em;
   background-color: #ffffff;
@@ -74,7 +74,7 @@
 
 }
 
-.outline-butto button:hover{
+.outline-button button:hover{
   background-color: #F2F6FC;
 }
 
@@ -88,7 +88,12 @@
   }
   .offer-buttons{
     width: 100%;
-    background-color: palegoldenrod;
+  }
+  .outline-button{
+    width: 80%;
+  }
+  .outline-button button{
+    width: 100%;
   }
   .accept-decline {
     width: 80%;
