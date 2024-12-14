@@ -6,6 +6,7 @@ import { useOutgoingOffers } from "../../controllers/OfferController";
 import "ldrs/infinity";
 import OfferCard from "../../components/offer/offer-card/OfferCard";
 import ReactPaginate from "react-paginate";
+import Select from "react-select";
 
 export default function OutgoingOffersPage({}) {
   const { page } = useParams();
@@ -15,11 +16,16 @@ export default function OutgoingOffersPage({}) {
   const { offers, isLoading, error, refresh, offersMetadata } =
     useOutgoingOffers(currentPage);
   if (error) toast.error(error);
+  const [filteredOffers, setFilteredOffers] = useState(offers);
 
   // ---- Update document title based on the current page ----
   useEffect(() => {
     document.title = `Outgoing Offers - Page ${currentPage} | Toge Trades`;
   }, [currentPage, offers]);
+
+  useEffect(() => {
+    setFilteredOffers(offers);
+  }, [offers]);
 
   // --- Handle page change ---
   const handlePageChange = ({ selected }) => {
@@ -28,13 +34,37 @@ export default function OutgoingOffersPage({}) {
     window.scrollTo(0, 0);
   };
 
+  const options = [
+    { value: "Pending", label: "Pending" },
+    { value: "Accepted", label: "Accepted" },
+    { value: "Declined", label: "Declined" },
+  ];
+
+  const handleFilterChange = (selectedOption) => {
+    if (selectedOption) {
+      // Filter offers based on the selected status
+      const filtered = offers.filter(
+        (offer) => offer.status === selectedOption.value
+      );
+      setFilteredOffers(filtered);
+    } else {
+      setFilteredOffers(offers);
+    }
+  };
+
   return (
     <div className={styles["outgoing-offers-container"]}>
       <div className={styles["breadcrumb"]}>
         <Breadcrumb currentPageName={"Outgoing Trade Offers"} />
       </div>
-      <div className={styles["header"]}>
-        <h1>Outgoing Trade Offers</h1>
+      <h1>Outgoing Trade Offers</h1>
+      <div className={styles["filter"]}>
+        <Select
+          options={options}
+          onChange={handleFilterChange}
+          placeholder={"Filter by..."}
+          isClearable
+        />
       </div>
 
       <div className={styles["outgoing-offers-items"]}>
@@ -47,8 +77,10 @@ export default function OutgoingOffersPage({}) {
             speed="1.3"
             color="#78A7E2"
           />
+        ) : offersMetadata.isEmpty ? (
+          <p>You haven't made any offers yet. </p>
         ) : (
-          offers.map((offer) => (
+          filteredOffers.map((offer) => (
             <OfferCard
               key={offer.id}
               offerData={offer}

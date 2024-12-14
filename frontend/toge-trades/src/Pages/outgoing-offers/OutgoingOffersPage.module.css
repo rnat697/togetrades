@@ -9,6 +9,13 @@
 .breadcrumb{
   justify-self: flex-start;
 }
+
+.filter{
+  justify-self: flex-start;
+  width: 20%;
+  padding: 1em;
+}
+
 .outgoing-offers-items{
   display:flex;
   flex-direction: column;
