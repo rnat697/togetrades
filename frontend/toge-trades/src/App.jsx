@@ -123,7 +123,7 @@ function App() {
           }
         />
         <Route
-          path="tradehub/outgoing-offers"
+          path="tradehub/outgoing-offers/:page?"
           element={
             <RequiresAuth>
               <OutgoingOffersPage />

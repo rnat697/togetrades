@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { createOffer } from "../api/api";
+import { OUTGOING_OFFERS_URL } from "../api/urls";
+import useGet from "../hooks/useGet";
+import OffersModel from "../models/OffersModel";
 
 export function createNewOffer(offeredPokeId, listingId) {
   return createOffer(offeredPokeId, listingId)
@@ -18,4 +21,27 @@ export function createNewOffer(offeredPokeId, listingId) {
           (e.response?.data?.message || "An unexpected error occurred")
       );
     });
+}
+
+// ---- Fetches all outgoing offers ----
+export function useOutgoingOffers(currentPage) {
+  const {
+    data: rawData,
+    isLoading,
+    error,
+    refresh,
+  } = useGet(OUTGOING_OFFERS_URL, [], true, true, currentPage);
+  const [offers, setOffers] = useState([]);
+  const [offersMetadata, setOffersMetadata] = useState({});
+
+  useEffect(() => {
+    if (rawData.success) {
+      let offersData = rawData.data;
+      setOffersMetadata(rawData.metadata);
+
+      const offersModels = offersData.map((data) => OffersModel.fromJSON(data));
+      setOffers(offersModels);
+    }
+  }, [rawData]);
+  return { offers, isLoading, error, refresh, offersMetadata };
 }

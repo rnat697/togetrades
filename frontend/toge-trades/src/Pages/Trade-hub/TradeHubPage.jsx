@@ -85,7 +85,7 @@ export default function TradeHubPage() {
             <Link className={styles["hub-link"]}>Incoming Offers</Link>
             <Link
               className={styles["hub-link"]}
-              to={"/tradehub/outgoing-offers"}
+              to={"/tradehub/outgoing-offers/1"}
             >
               Outgoing Offers
             </Link>

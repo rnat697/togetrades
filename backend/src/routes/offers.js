@@ -168,9 +168,18 @@ router.get("/outgoing-offers", auth, async (req, res) => {
                 pipeline: [{ $project: { image: 1, name: 1, isLegendary: 1 } }],
               },
             },
+            {
+              $unwind: {
+                path: "$species",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
           ],
         },
       },
+      {
+        $unwind: { path: "$offeredPokemon", preserveNullAndEmptyArrays: true },
+      }, // Flatten offeredPokemon
       {
         $lookup: {
           from: "listings",
@@ -196,9 +205,21 @@ router.get("/outgoing-offers", auth, async (req, res) => {
                       ],
                     },
                   },
+                  {
+                    $unwind: {
+                      path: "$species",
+                      preserveNullAndEmptyArrays: true,
+                    },
+                  },
                 ],
               },
             },
+            {
+              $unwind: {
+                path: "$offeringPokemon",
+                preserveNullAndEmptyArrays: true,
+              },
+            }, // Flatten offeringPokemon
             {
               $lookup: {
                 from: "users",
@@ -208,9 +229,13 @@ router.get("/outgoing-offers", auth, async (req, res) => {
                 pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
               },
             },
+            {
+              $unwind: { path: "$listedBy", preserveNullAndEmptyArrays: true },
+            }, // Flatten listedBy
           ],
         },
       },
+      { $unwind: { path: "$listing", preserveNullAndEmptyArrays: true } }, // Flatten listing
       {
         $lookup: {
           from: "users",
@@ -220,6 +245,7 @@ router.get("/outgoing-offers", auth, async (req, res) => {
           pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
         },
       },
+      { $unwind: { path: "$offeredBy", preserveNullAndEmptyArrays: true } }, // Flatten offeredBy
     ];
 
     // Get total count for pagination metadata
@@ -241,8 +267,8 @@ router.get("/outgoing-offers", auth, async (req, res) => {
     return res.status(200).json({
       success: true,
       data: offers,
-      isEmpty: offers.length === 0,
       metadata: {
+        isEmpty: offers.length === 0,
         totalCount,
         page,
         totalPages,
