@@ -12,6 +12,7 @@ import PokedexPage from "./Pages/Pokedex/PokedexPage.jsx";
 import PokedexSpeciesPage from "./Pages/Pokedex-species/PokedexSpeciesPage.jsx";
 import TradeHubPage from "./Pages/Trade-hub/TradeHubPage.jsx";
 import ListingPage from "./Pages/listing/ListingPage.jsx";
+import OutgoingOffersPage from "./Pages/outgoing-offers/OutgoingOffersPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -118,6 +119,14 @@ function App() {
           element={
             <RequiresAuth>
               <ListingPage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="tradehub/outgoing-offers"
+          element={
+            <RequiresAuth>
+              <OutgoingOffersPage />
             </RequiresAuth>
           }
         />

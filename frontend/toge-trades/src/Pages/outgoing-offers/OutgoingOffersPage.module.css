@@ -1,0 +1,13 @@
+.outgoing-offers-container{
+  display:flex;
+  flex-direction: column;
+  justify-self: center;
+  justify-content: center;
+  margin-top:5em;
+  width: 80%;
+  background-color: pink;
+}
+.breadcrumb{
+  justify-self: flex-start;
+  background-color: red;
+}

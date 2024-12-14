@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "./TradeHubPage.module.css";
 import NewListing from "../../components/trade-hub/new-listing/NewListing";
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import "ldrs/infinity";
 import ReactPaginate from "react-paginate";
 import { toast, ToastContainer } from "react-toastify";
 import ListingCards from "../../components/trade-hub/listing-cards/ListingCards";
+import Divider from "../../components/divider/Divider";
 
 export default function TradeHubPage() {
   const [showOfferModal, setShowOffer] = useState(false);
@@ -79,8 +80,18 @@ export default function TradeHubPage() {
           <h1>Trade Hub</h1>
           <p>Trade Pokémon to complete your Pokedex!</p>
         </div>
-        <div className={styles["hub-nav"]}>
-          <p>!!! Hub navs to be implemented !!!</p>
+        <div className={styles["hub-nav-container"]}>
+          <div className={styles["hub-nav"]}>
+            <Link className={styles["hub-link"]}>Incoming Offers</Link>
+            <Link
+              className={styles["hub-link"]}
+              to={"/tradehub/outgoing-offers"}
+            >
+              Outgoing Offers
+            </Link>
+            <Link className={styles["hub-link"]}>My Listings</Link>
+          </div>
+          <Divider />
         </div>
         <div className={styles["create-listing-container"]}>
           <NewListing
