@@ -57,12 +57,24 @@
   color: #212A4A;
   font-size: 1em;
   width: 10em;
+  transition: background-color 0.3s, ease-in-out;
+}
+.btn-cancel:hover{
+  background-color: #F2F6FC;
+}
+.btn-normal{
+  font-size: 1em;
 }
 .btn-delete{
   font-size: 1em;
   background-color: red;
+  opacity: 1;
+  transition: opacity 0.3s, ease-in-out;
 }
-
+.btn-delete:hover{
+  opacity: 0.8;
+  background-color: red;
+}
 /* MOBILE FORMAT */
 @media screen and (max-width: 768px) {
   .modal{
