@@ -211,4 +211,12 @@ describe("Accepting an offer POST /api/v1/offers/:offerId/accept", () => {
         return done();
       });
   });
+  test("Offer doesn't existm, status 404", (done) => {
+    request(app)
+      .post(`/api/v1/offers/000000000000000000003555/accept`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
 });
