@@ -18,11 +18,14 @@ export default function ListingPage() {
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [listing, setListing] = useState({});
   const [metadata, setMetadata] = useState({});
-
+  const [acceptedOffer, setAcceptedOffer] = useState({});
+  const [offersLength, setOffersLength] = useState(0);
   // ---- Get listing ---
   useEffect(() => {
     getByListingId(id).then((data) => {
       setListing(data.listing);
+      setAcceptedOffer(data.listing.acceptedOffer);
+      setOffersLength(data.listing.offers.length);
       setMetadata(data.metadata);
       setIsCurrentUser(user._id === data.listing.listedBy.id); // only show interested In trading box if its not the same user
     });
@@ -36,6 +39,12 @@ export default function ListingPage() {
         .padStart(4, "0")} | Toge Trades`;
     }
   }, [listing]);
+
+  // ---- update offers list with the accepted offer FE ---
+  const handleOfferAccept = (offer) => {
+    setOffersLength(0);
+    setAcceptedOffer(offer);
+  };
 
   return (
     <div className={styles["listing-page-container"]}>
@@ -63,21 +72,24 @@ export default function ListingPage() {
             {isCurrentUser ? (
               <div className={styles["my-offers-container"]}>
                 <h2>Offers</h2>
-                {listing.offers.length === 0 ? (
-                  <div className={styles["no-offers"]}>
-                    <h3>No offers yet.</h3>
-                  </div>
-                ) : listing.acceptedOffer != null ? (
-                  <div>
-                    <OfferCard
-                      offerData={listing.acceptedOffer}
-                      listingOffering={{
-                        pokemon: listing.offeringPokemon,
-                        isShiny: listing.isSeekingShiny,
-                      }}
-                      isAcceptedOffer={true}
-                    />
-                  </div>
+                {offersLength === 0 ? (
+                  acceptedOffer != null ? (
+                    <div>
+                      <OfferCard
+                        offerData={acceptedOffer}
+                        listingOffering={{
+                          pokemon: listing.offeringPokemon,
+                          isShiny: listing.isSeekingShiny,
+                        }}
+                        isAcceptedOffer={true}
+                        isIncomingOffer={true}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles["no-offers"]}>
+                      <h3>No offers yet.</h3>
+                    </div>
+                  )
                 ) : (
                   listing.offers.map((offer) => (
                     <div className={styles["offers-card-rows"]} key={offer.id}>
@@ -88,6 +100,7 @@ export default function ListingPage() {
                           isShiny: listing.isSeekingShiny,
                         }}
                         isIncomingOffer={isCurrentUser}
+                        onOfferAccepted={handleOfferAccept}
                       />
                     </div>
                   ))

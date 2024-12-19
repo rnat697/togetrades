@@ -5,6 +5,7 @@ import { capitalizeFirstLetter, formatRelativeTime } from "../../utils/utils";
 import OfferStatus from "../offer-status/OfferStatus";
 import { useState } from "react";
 import ConfirmationModal from "../../confirmation_modal/ConfirmationModal";
+import { acceptOffer } from "../../../controllers/OfferController";
 
 export default function OfferCard({
   offerData,
@@ -12,6 +13,7 @@ export default function OfferCard({
   isIncomingOffer = false,
   showStatus = false,
   isAcceptedOffer = false,
+  onOfferAccepted,
 }) {
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -59,7 +61,12 @@ export default function OfferCard({
     setShowAcceptModal(false);
   };
   const handleAcceptedConfirm = () => {
-    // TODO: add endpoint here
+    acceptOffer(offerData.id).then((success) => {
+      if (success) {
+        offerData.setStatus("Accepted"); // upate it locally
+        onOfferAccepted(offerData);
+      }
+    });
   };
 
   return (

@@ -31,7 +31,7 @@ class ListingModel {
     let acceptedOffer = null;
     let offers = [];
     if (data.acceptedOffer) {
-      OffersModel.fromJSON(data.acceptedOffer);
+      acceptedOffer = OffersModel.fromJSON(data.acceptedOffer);
     }
     if (data.offers.length > 0) {
       offers = data.offers.map((item) => OffersModel.fromJSON(item.offer));
