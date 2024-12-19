@@ -571,7 +571,10 @@ const listingLunaForBulbNavia = {
   listedBy: userNavia._id,
   dateCreated: new Date(1731914354), // Mon Nov 18 2024 20:19:14 GMT+1300 (New Zealand Daylight Time)
   status: "Active",
-  offers: [{ offer: new mongoose.Types.ObjectId("000000000000000000065827") }],
+  offers: [
+    { offer: new mongoose.Types.ObjectId("000000000000000000065827") },
+    { offer: new mongoose.Types.ObjectId("000000000000000000065899") },
+  ],
   acceptedOffer: null,
 };
 
@@ -580,6 +583,16 @@ const offerBulbForNaviaLunaListing = {
   _id: new mongoose.Types.ObjectId("000000000000000000065827"),
   offerNum: 2,
   offeredPokemon: pokemonFurinaBulbasaur1._id,
+  listing: listingLunaForBulbNavia._id,
+  offeredBy: userFurina._id,
+  status: "Pending",
+  dateCreated: new Date(),
+  dateAccepted: null,
+};
+const randomBulbForNaviaLunaListing = {
+  _id: new mongoose.Types.ObjectId("000000000000000000065899"),
+  offerNum: 6,
+  offeredPokemon: pokemonFurinaBulbasaur3._id,
   listing: listingLunaForBulbNavia._id,
   offeredBy: userFurina._id,
   status: "Pending",
@@ -700,6 +713,7 @@ async function addMockOffers() {
   const offerDB = mongoose.connection.db.collection("offers");
   await offerDB.insertMany([
     offerBulbForNaviaLunaListing,
+    randomBulbForNaviaLunaListing,
     offerBulbForVentiIvyListing,
     offerBulbForVentiIvyListingDeclined,
     offerBulbForVentiIvyListingAccepted,

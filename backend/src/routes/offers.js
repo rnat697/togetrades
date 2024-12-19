@@ -284,4 +284,92 @@ router.get("/outgoing-offers", auth, async (req, res) => {
 });
 
 
+// ----- ACCEPT OFFER -----
+/**
+ * POST /:offerId/accept
+ *  Accepts an offer, updates related resources, and triggers socket.io notification (if implemented)
+ * @param {offerId} - id of the offer that is going to be accepted
+ * 
+ */
+router.post("/:offerId/accept", auth, async (req,res)=>{
+  const offerId = req.params.offerId;
+
+  const offer = await Offer.findById(offerId);
+  if(!offer) return res.status(404).send("Offer not found");
+
+  // Update the ownership of the Pokémon involved by swapping 
+  // current owner IDs
+  const listingUserId = req.user._id;
+  const offerUserId = offer.offeredBy;
+  const offerPokemon = await Pokemon.updateOne(
+    {
+      _id: offer.offeredPokemon
+    },
+    {
+      $set:{
+        currentOwner: listingUserId,
+        hasBeenTraded: true,
+        isTrading: false,
+      }
+    }
+  );
+
+  const listing = await Listing.findById(offer.listing);
+  const listingPokemon = await Pokemon.updateOne(
+    {
+      _id: listing.offeringPokemon
+    },
+    {
+      $set:{
+        currentOwner: offerUserId,
+        hasBeenTraded: true,
+        isTrading: false,
+      }
+    }
+  );
+
+  // Update offer to "Accepted" status and dateAccepted
+  offer.status = "Accepted";
+  offer.dateAccepted = new Date();
+  await offer.save();
+
+  // Update listing status to "Inactive" and set acceptedOffer
+  listing.status = "Inactive";
+  listing.acceptedOffer = offer._id;
+  await listing.save();
+
+  // Update all other offers to "Declined"
+  await Offer.updateMany(
+    {
+      listing: listing._id,
+      _id: { $ne: offerId }, 
+      status: "Pending",
+    },
+    { $set: { status: "Declined" } }
+  );
+
+  // Remove all offers
+  await Listing.updateOne(
+    { _id: listing._id },
+    { $set: { offers: [] } }
+  );
+  
+  // TODO: Socket.io notification
+  const transferedPoke = await Pokemon.findOne(
+    {
+      _id:offer.offeredPokemon, 
+      currentOwner: listingUserId
+    }
+  )
+  .populate("species");
+
+  return res
+  .status(201)
+  .send({ success: true, message: `Offer accepted successfully. You now own ${transferedPoke.species.name}.` });
+
+});
+
+
+
+
 export default router;
