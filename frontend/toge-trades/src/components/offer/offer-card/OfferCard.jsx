@@ -3,6 +3,9 @@ import styles from "./OfferCard.module.css";
 import ListingTradeIcons from "../../trade-hub/trade-transfer-icons/ListingTradeIcons";
 import { capitalizeFirstLetter, formatRelativeTime } from "../../utils/utils";
 import OfferStatus from "../offer-status/OfferStatus";
+import { useState } from "react";
+import ConfirmationModal from "../../confirmation_modal/ConfirmationModal";
+import { acceptOffer } from "../../../controllers/OfferController";
 
 export default function OfferCard({
   offerData,
@@ -10,20 +13,61 @@ export default function OfferCard({
   isIncomingOffer = false,
   showStatus = false,
   isAcceptedOffer = false,
+  onOfferAccepted,
 }) {
+  const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalActionMsg, setModalActionMsg] = useState();
+  const [modalButtonLabel, setModalButtonLabel] = useState("");
+  const [isModalRed, setIsModalRed] = useState(false);
+
+  // ----- offer card titles -----
+  const offeredPokeName = capitalizeFirstLetter(
+    offerData.offeredPokemon.species.name
+  );
   const offeredMessage = isIncomingOffer
-    ? `They offered ${capitalizeFirstLetter(
-        offerData.offeredPokemon.species.name
-      )}`
-    : `You offered ${capitalizeFirstLetter(
-        offerData.offeredPokemon.species.name
-      )} `;
+    ? `They offered ${offeredPokeName}`
+    : `You offered ${offeredPokeName} `;
+
+  const listingPokeName = capitalizeFirstLetter(
+    listingOffering.pokemon.species.name
+  );
 
   const seekMessage = isIncomingOffer
-    ? `For your ${capitalizeFirstLetter(listingOffering.pokemon.species.name)}`
-    : `For their ${capitalizeFirstLetter(
-        listingOffering.pokemon.species.name
-      )} `;
+    ? `For your ${listingPokeName}`
+    : `For their ${listingPokeName} `;
+
+  // ----- ACCEPTED MODAL -----
+  const handleAcceptedClick = () => {
+    setModalTitle("Accept Trade Offer");
+    setModalMessage(
+      `You're about to accept ${offerData.offeredBy.username}'s ${offeredPokeName} in exchange for your ${listingPokeName}.`
+    );
+    const actionMsg = (
+      <>
+        Once accepted, this trade{" "}
+        <span style={{ color: "red" }}>can not be reversed</span> and this
+        listing will be <span style={{ color: "red" }}>inactive</span>.
+      </>
+    );
+    setModalActionMsg(actionMsg);
+    setModalButtonLabel("Accept");
+    setIsModalRed(false);
+    setShowAcceptModal(true);
+  };
+
+  const handleAcceptedOnClose = () => {
+    setShowAcceptModal(false);
+  };
+  const handleAcceptedConfirm = () => {
+    acceptOffer(offerData.id).then((success) => {
+      if (success) {
+        offerData.setStatus("Accepted"); // upate it locally
+        onOfferAccepted(offerData);
+      }
+    });
+  };
 
   return (
     <div className={styles["offer-card-container"]}>
@@ -63,7 +107,7 @@ export default function OfferCard({
           <OfferStatus status={offerData.status} />
         ) : isIncomingOffer ? (
           <div className={styles["accept-decline"]}>
-            <button>Accept</button>
+            <button onClick={handleAcceptedClick}>Accept</button>
             <div className={styles["outline-button"]}>
               <button>Decline</button>
             </div>
@@ -75,6 +119,16 @@ export default function OfferCard({
         )}
         <p>{`Offered ${formatRelativeTime(offerData.dateCreated)}`}</p>
       </div>
+      <ConfirmationModal
+        title={modalTitle}
+        message={modalMessage}
+        actionMessage={modalActionMsg}
+        primaryButtonLabel={modalButtonLabel}
+        isButtonRed={isModalRed}
+        showModal={showAcceptModal}
+        onClose={handleAcceptedOnClose}
+        onConfirm={handleAcceptedConfirm}
+      />
     </div>
   );
 }

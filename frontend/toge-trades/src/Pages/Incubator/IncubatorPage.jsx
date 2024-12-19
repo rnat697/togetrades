@@ -9,7 +9,7 @@ import {
 } from "../../controllers/IncubatorController";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import CancelModal from "../../components/incubator/cancel_modal/CancelModal";
+import ConfirmationModal from "../../components/confirmation_modal/ConfirmationModal";
 import PokemonModel from "../../models/PokemonModel";
 import PokemonDetails from "../../components/pokemon-details/PokemonDetails";
 
@@ -62,6 +62,16 @@ export default function IncubatorPage() {
         console.error("Error handling delete confirmation:", err)
       );
   };
+  const cancelTitle = "Delete Incubator?";
+  const cancelMessage =
+    "Deleting this incubator will permanently remove it from your collection. This action cannot be undone.";
+  const cancelActionMsg = (
+    <>
+      Are you sure you want to{" "}
+      <span style={{ color: "red" }}>permanently delete</span> the incubation?
+    </>
+  );
+  const cancelButtonLabel = "Delete Incubator";
 
   return (
     <div className="incubator-page-container">
@@ -70,7 +80,12 @@ export default function IncubatorPage() {
           <h1>Incubator</h1>
           <p>Hatch eggs from different types and discover new Pokemon!</p>
         </div>
-        <CancelModal
+        <ConfirmationModal
+          title={cancelTitle}
+          message={cancelMessage}
+          actionMessage={cancelActionMsg}
+          primaryButtonLabel={cancelButtonLabel}
+          isButtonRed={true}
           showModal={showCancelModal}
           onClose={handleCancelModalClose}
           onConfirm={() => handleDeleteConfirmation(incubatorToDelete)}

@@ -6,6 +6,7 @@ import Species from "../db/species-schema.js";
 import User from "../db/user-schema.js";
 import Listing from "../db/listing-schema.js";
 import Counter from "../db/counter-schema.js";
+import { populate } from "dotenv";
 
 const router = express.Router();
 
@@ -153,8 +154,8 @@ router.get("/", auth, async (req, res) => {
  * Fetches a specified listing
  * @param {id} - Listing Id
  */
-router.get("/:listingId", auth, async (req,res)=>{
-  try{
+router.get("/:listingId", auth, async (req, res) => {
+  try {
     const listingId = req.params.listingId;
 
     const listing = await Listing.findById(listingId)
@@ -189,7 +190,29 @@ router.get("/:listingId", auth, async (req,res)=>{
           ],
         },
       })
-      .populate("acceptedOffer");
+      .populate({
+        path: "acceptedOffer",
+        model: "Offer",
+        populate: [
+          {
+            path: "offeredPokemon",
+            model: "Pokemon",
+            populate: {
+              path: "species",
+              select: "image name isLegendary",
+              model: "Species",
+            },
+          },
+          {
+            path: "offeredBy",
+            select: "username image",
+          },
+          {
+            path: "listing",
+            select: "listingNum",
+          },
+        ],
+      });
 
     if (!listing) return res.status(404).send("Listing not found.");
 
@@ -222,11 +245,11 @@ router.get("/:listingId", auth, async (req,res)=>{
         doesOwnSeeking,
       },
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error retrieving listing: ", error);
-      return res
-        .status(500)
-        .send("Internal Server Error when retrieving listing.");
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving listing.");
   }
 });
 

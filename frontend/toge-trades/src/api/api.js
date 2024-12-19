@@ -15,6 +15,7 @@ import {
   LISTING_DETAIL_URL,
   SPECIFIC_ELIGIBLE_POKEMON_URL,
   CREATE_OFFER_URL,
+  OFFER_ACCEPT_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -94,3 +95,6 @@ export const createOffer = (offeredPokeId, listingId) =>
     { offeredPokeId, listingId },
     { withCredentials: true }
   );
+
+export const acceptOfferAPI = (offerId) =>
+  axios.post(OFFER_ACCEPT_URL(offerId), {}, { withCredentials: true });

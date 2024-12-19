@@ -23,6 +23,9 @@ class OffersModel {
     this.dateCreated = new Date(dateCreated);
     this.dateAccepted = new Date(dateAccepted) || null;
   }
+  setStatus(status) {
+    this.status = status;
+  }
   static fromJSON(data) {
     if (typeof data === "object") {
       return new OffersModel(

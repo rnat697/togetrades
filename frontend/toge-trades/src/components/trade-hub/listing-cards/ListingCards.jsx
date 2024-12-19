@@ -6,7 +6,6 @@ import styles from "./ListingCards.module.css";
 export default function ListingCards({ listing, isInMyListings = false }) {
   const navigate = useNavigate();
   const handleOnClick = () => {
-    console.log("i clicked");
     navigate(`/tradehub/listing/${listing.id}`);
   };
   return (
