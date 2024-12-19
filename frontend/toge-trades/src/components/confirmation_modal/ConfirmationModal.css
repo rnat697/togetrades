@@ -64,8 +64,10 @@
 }
 .btn-normal{
   font-size: 1em;
+  width: 10em;
 }
 .btn-delete{
+  width: 10em;
   font-size: 1em;
   background-color: red;
   opacity: 1;
