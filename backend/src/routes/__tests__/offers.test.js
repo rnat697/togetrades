@@ -11,6 +11,7 @@ import {
   bearerNavia,
   bearerVenti,
   listingIvyForLunaLynney,
+  offerBulbForNaviaLunaListing,
   pokemonAgathasLockedLunala,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
@@ -188,6 +189,34 @@ describe("Fetching outgoing offers GET /api/v1/offers/outgoing-offers", () => {
       .set("Cookie", [`authorization=${bearerFurina}`])
       .send()
       .expect(400)
+      .end(done);
+  });
+});
+
+// ---------------- Accepting an offer ----------------
+describe("Accepting an offer POST /api/v1/offers/:offerId/accept", () => {
+  test("Successful accepting of an offer", (done) => {
+    request(app)
+      .post(`/api/v1/offers/${offerBulbForNaviaLunaListing._id}/accept`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(201)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.message).toBe(
+          "Offer accepted successfully. You now own bulbasaur."
+        );
+        return done();
+      });
+  });
+  test("Offer doesn't existm, status 404", (done) => {
+    request(app)
+      .post(`/api/v1/offers/000000000000000000003555/accept`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
       .end(done);
   });
 });
