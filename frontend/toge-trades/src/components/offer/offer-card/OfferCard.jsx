@@ -101,7 +101,7 @@ export default function OfferCard({
         <h3>{`Offer #${offerData.offerNum.toString().padStart(4, "0")}`}</h3>
         {isIncomingOffer ? null : (
           <p>
-            {`Made an offer on your `}
+            {`Made an offer on `}
             <Link
               to={`/tradehub/listing/${offerData.listing._id}`}
             >{`Listing #${offerData.listing.listingNum
