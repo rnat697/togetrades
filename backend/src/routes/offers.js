@@ -421,5 +421,159 @@ router.post("/:offerId/decline", auth, async (req, res) => {
 });
 
 
+router.get("/incoming-offers", auth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Fetch relevant listing IDs where listedBy matches the userId
+    const listings = await Listing.find(
+      { listedBy: userId },
+      { _id: 1 }
+    ).lean();
+    const listingIds = listings.map((listing) => listing._id);
+
+    const offersPipeline = [
+      {
+        $match: { listing: { $in: listingIds }, status: "Pending" },
+      },
+      { $sort: { dateCreated: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "pokemons",
+          localField: "offeredPokemon",
+          foreignField: "_id",
+          as: "offeredPokemon",
+          pipeline: [
+            {
+              $lookup: {
+                from: "species",
+                localField: "species",
+                foreignField: "_id",
+                as: "species",
+                pipeline: [{ $project: { image: 1, name: 1, isLegendary: 1 } }],
+              },
+            },
+            {
+              $unwind: { path: "$species", preserveNullAndEmptyArrays: true },
+            },
+          ],
+        },
+      },
+      {
+        $unwind: { path: "$offeredPokemon", preserveNullAndEmptyArrays: true }, // Flatten offeredPokemon
+      },
+      {
+        $lookup: {
+          from: "listings",
+          localField: "listing",
+          foreignField: "_id",
+          as: "listing",
+          pipeline: [
+            {
+              $lookup: {
+                from: "pokemons",
+                localField: "offeringPokemon",
+                foreignField: "_id",
+                as: "offeringPokemon",
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: "species",
+                      localField: "species",
+                      foreignField: "_id",
+                      as: "species",
+                      pipeline: [
+                        { $project: { image: 1, name: 1, isLegendary: 1 } },
+                      ],
+                    },
+                  },
+                  {
+                    $unwind: {
+                      path: "$species",
+                      preserveNullAndEmptyArrays: true,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $unwind: {
+                path: "$offeringPokemon",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            {
+              $lookup: {
+                from: "users",
+                localField: "listedBy",
+                foreignField: "_id",
+                as: "listedBy",
+                pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
+              },
+            },
+            {
+              $unwind: { path: "$listedBy", preserveNullAndEmptyArrays: true }, // Flatten listedBy
+            },
+          ],
+        },
+      },
+      {
+        $unwind: { path: "$listing", preserveNullAndEmptyArrays: true }, // Flatten listing
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "offeredBy",
+          foreignField: "_id",
+          as: "offeredBy",
+          pipeline: [{ $project: { id: 1, username: 1, image: 1 } }],
+        },
+      },
+      {
+        $unwind: { path: "$offeredBy", preserveNullAndEmptyArrays: true }, // Flatten offeredBy
+      },
+    ];
+
+    // Step 3: Fetch offers using the aggregation pipeline
+    const offers = await Offer.aggregate(offersPipeline);
+
+    // Step 4: Get total count for pagination
+    const totalCount = await Offer.countDocuments({
+      listing: { $in: listingIds },
+    });
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Check if the requested page exceeds total pages
+    if (page > totalPages && totalPages > 0) {
+      return res
+        .status(400)
+        .send(`Page ${page} exceeds the maximum of ${totalPages}.`);
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: offers,
+      metadata: {
+        isEmpty: offers.length === 0,
+        totalCount,
+        page,
+        totalPages,
+        limit,
+      },
+    });
+  } catch (error) {
+    console.error("Error when retrieving incoming offers: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when retrieving incoming offers.");
+  }
+});
+
+
 
 export default router;

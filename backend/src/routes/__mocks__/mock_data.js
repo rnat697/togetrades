@@ -489,7 +489,7 @@ const ventisIncubatorGhost = {
   _id: new mongoose.Types.ObjectId("000000000000000000003562"),
   hatcher: new mongoose.Types.ObjectId("000000000000000000000003"),
   // 1716069600 = Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
-  hatchTime: new Date(1716069600),
+  hatchTime: new Date(1716069600 * 1000),
   hatched: false,
   isLegendary: true,
   pokemonType: "ghost",
@@ -533,7 +533,7 @@ const listingIvyForBulbVenti = {
   seekingSpecies: speciesBulbasaur._id,
   isSeekingShiny: true,
   listedBy: userVenti._id,
-  dateCreated: new Date(1716069600), // Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
+  dateCreated: new Date(1716069600 * 1000), // Sun May 19 2024 10:00:00 GMT+1200 (New Zealand Standard Time)
   status: "Active",
   offers: [{ offer: new mongoose.Types.ObjectId("000000000000000000065828") }],
   acceptedOffer: null,
@@ -545,7 +545,7 @@ const listingIvyForBulbNavia = {
   seekingSpecies: speciesBulbasaur._id,
   isSeekingShiny: false,
   listedBy: userNavia._id,
-  dateCreated: new Date(1729265961), // Sat Oct 19 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
+  dateCreated: new Date(1729265961 * 1000), // Sat Oct 19 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
   status: "Active",
   offers: [],
   acceptedOffer: null,
@@ -557,7 +557,7 @@ const listingIvyForLunaLynney = {
   seekingSpecies: speciesLunala._id,
   isSeekingShiny: false,
   listedBy: userLynney._id,
-  dateCreated: new Date(1731857961), //Mon Nov 18 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
+  dateCreated: new Date(1731857961 * 1000), //Mon Nov 18 2024 04:39:21 GMT+1300 (New Zealand Daylight Time)
   status: "Active",
   offers: [],
   acceptedOffer: null,
@@ -569,7 +569,7 @@ const listingLunaForBulbNavia = {
   seekingSpecies: speciesBulbasaur._id,
   isSeekingShiny: false,
   listedBy: userNavia._id,
-  dateCreated: new Date(1731914354), // Mon Nov 18 2024 20:19:14 GMT+1300 (New Zealand Daylight Time)
+  dateCreated: new Date(1731914354 * 1000), // Mon Nov 18 2024 20:19:14 GMT+1300 (New Zealand Daylight Time)
   status: "Active",
   offers: [
     { offer: new mongoose.Types.ObjectId("000000000000000000065827") },
@@ -586,7 +586,7 @@ const offerBulbForNaviaLunaListing = {
   listing: listingLunaForBulbNavia._id,
   offeredBy: userFurina._id,
   status: "Pending",
-  dateCreated: new Date(),
+  dateCreated: new Date(1609459200 * 1000), //	Fri Jan 01 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)
   dateAccepted: null,
 };
 const randomBulbForNaviaLunaListing = {
@@ -596,7 +596,7 @@ const randomBulbForNaviaLunaListing = {
   listing: listingLunaForBulbNavia._id,
   offeredBy: userFurina._id,
   status: "Pending",
-  dateCreated: new Date(),
+  dateCreated: new Date(1733668828 * 1000), ///Mon Dec 09 2024 03:40:28 GMT+1300 (New Zealand Daylight Time)
   dateAccepted: null,
 };
 const offerBulbForVentiIvyListing = {
@@ -608,7 +608,9 @@ const offerBulbForVentiIvyListing = {
   status: "Pending",
   dateCreated: new Date(),
   dateAccepted: null,
-};
+};              
+
+
 const offerBulbForVentiIvyListingDeclined = {
   _id: new mongoose.Types.ObjectId("000000000000000000065829"),
   offerNum: 4,
