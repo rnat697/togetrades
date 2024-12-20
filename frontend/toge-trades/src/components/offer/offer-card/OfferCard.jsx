@@ -5,7 +5,10 @@ import { capitalizeFirstLetter, formatRelativeTime } from "../../utils/utils";
 import OfferStatus from "../offer-status/OfferStatus";
 import { useState } from "react";
 import ConfirmationModal from "../../confirmation_modal/ConfirmationModal";
-import { acceptOffer } from "../../../controllers/OfferController";
+import {
+  acceptOffer,
+  declineOffer,
+} from "../../../controllers/OfferController";
 
 export default function OfferCard({
   offerData,
@@ -14,8 +17,9 @@ export default function OfferCard({
   showStatus = false,
   isAcceptedOffer = false,
   onOfferAccepted,
+  onOfferDeclined,
 }) {
-  const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
   const [modalActionMsg, setModalActionMsg] = useState();
@@ -38,7 +42,7 @@ export default function OfferCard({
     ? `For your ${listingPokeName}`
     : `For their ${listingPokeName} `;
 
-  // ----- ACCEPTED MODAL -----
+  // ----- ACCEPTED MODAL MSG -----
   const handleAcceptedClick = () => {
     setModalTitle("Accept Trade Offer");
     setModalMessage(
@@ -54,19 +58,41 @@ export default function OfferCard({
     setModalActionMsg(actionMsg);
     setModalButtonLabel("Accept");
     setIsModalRed(false);
-    setShowAcceptModal(true);
+    setShowConfirmModal(true);
   };
 
-  const handleAcceptedOnClose = () => {
-    setShowAcceptModal(false);
+  // ----- DECLINE MODAL MSG -----
+  const handleDeclineClick = () => {
+    setModalTitle("Decline Trade Offer");
+    setModalMessage(
+      `Are you sure you want to decline ${offerData.offeredBy.username}'s offer to trade their ${offeredPokeName} for your ${listingPokeName}?`
+    );
+    setModalActionMsg("");
+    setModalButtonLabel("Decline");
+    setIsModalRed(true);
+    setShowConfirmModal(true);
   };
-  const handleAcceptedConfirm = () => {
-    acceptOffer(offerData.id).then((success) => {
-      if (success) {
-        offerData.setStatus("Accepted"); // upate it locally
-        onOfferAccepted(offerData);
-      }
-    });
+
+  // ----- MODAL CLOSE AND CONFIRMATION -----
+  const handleModalOnClose = () => {
+    setShowConfirmModal(false);
+  };
+  const handleConfirmation = () => {
+    if (modalButtonLabel === "Accept") {
+      acceptOffer(offerData.id).then((success) => {
+        if (success) {
+          offerData.setStatus("Accepted"); // upate it locally
+          onOfferAccepted(offerData);
+        }
+      });
+    } else if (modalButtonLabel === "Decline") {
+      declineOffer(offerData.id).then((success) => {
+        if (success) {
+          offerData.setStatus("Declined");
+          onOfferDeclined(offerData);
+        }
+      });
+    }
   };
 
   return (
@@ -109,7 +135,7 @@ export default function OfferCard({
           <div className={styles["accept-decline"]}>
             <button onClick={handleAcceptedClick}>Accept</button>
             <div className={styles["outline-button"]}>
-              <button>Decline</button>
+              <button onClick={handleDeclineClick}>Decline</button>
             </div>
           </div>
         ) : (
@@ -125,9 +151,9 @@ export default function OfferCard({
         actionMessage={modalActionMsg}
         primaryButtonLabel={modalButtonLabel}
         isButtonRed={isModalRed}
-        showModal={showAcceptModal}
-        onClose={handleAcceptedOnClose}
-        onConfirm={handleAcceptedConfirm}
+        showModal={showConfirmModal}
+        onClose={handleModalOnClose}
+        onConfirm={handleConfirmation}
       />
     </div>
   );
