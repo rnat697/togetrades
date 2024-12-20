@@ -156,7 +156,7 @@ describe("Fetching outgoing offers GET /api/v1/offers/outgoing-offers", () => {
         if (err) return done(err);
         let data = res.body;
         expect(data.success).toBe(true);
-        expect(data.isEmpty).toBe(true);
+        expect(data.metadata.isEmpty).toBe(true);
         return done();
       });
   });
@@ -170,8 +170,8 @@ describe("Fetching outgoing offers GET /api/v1/offers/outgoing-offers", () => {
         if (err) return done(err);
         let data = res.body;
         expect(data.success).toBe(true);
-        expect(data.data.length).toBe(4);
-        expect(data.isEmpty).toBe(false);
+        expect(data.data.length).toBe(5);
+        expect(data.metadata.isEmpty).toBe(false);
 
         // check if its in order (Pending, Accepted, Declined)
         const offers = data.data;
@@ -243,6 +243,70 @@ describe("Decline an offer POST /api/v1/offers/:offerId/decline", () => {
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(404)
+      .end(done);
+  });
+});
+
+// ---------------- Fetching Incoming Offers ----------------
+describe("Fetching Incoming offers GET /api/v1/offers/incoming-offers", () => {
+  test("Successful fetching of Incoming offers - no Incoming offers", (done) => {
+    request(app)
+      .get("/api/v1/offers/incoming-offers")
+      .set("Cookie", [`authorization=${bearerFurina}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.metadata.isEmpty).toBe(true);
+        return done();
+      });
+  });
+  test("Successful fetching of incoming offers -sorted by recency", (done) => {
+    request(app)
+      .get("/api/v1/offers/incoming-offers")
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.data.length).toBe(2);
+        expect(data.metadata.isEmpty).toBe(false);
+
+        // check if first offer is more recent than 2nd offer
+        let offers = data.data;
+        expect(offers[0].dateCreated > offers[1].dateCreated).toBe(true);
+        return done();
+      });
+  });
+
+  test("Successful fetching of incoming offers - only pending", (done) => {
+    request(app)
+      .get("/api/v1/offers/incoming-offers")
+      .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.data.length).toBe(1);
+        expect(data.metadata.isEmpty).toBe(false);
+        expect(data.data[0].status).toBe("Pending");
+
+        return done();
+      });
+  });
+
+  test("Fetching offers outside of max page limit, 400 status", (done) => {
+    request(app)
+      .get("/api/v1/offers/incoming-offers?page=2")
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(400)
       .end(done);
   });
 });
