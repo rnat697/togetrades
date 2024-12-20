@@ -46,6 +46,15 @@ export default function ListingPage() {
     setAcceptedOffer(offer);
   };
 
+  // ---- update offers list when offer is declined ---
+  const handleOfferDecline = (offer) => {
+    const updatedOffers = listing.offers.filter((item) => item.id !== offer.id);
+    setOffersLength(updatedOffers.length);
+    const updatedListing = listing;
+    updatedListing.offers = updatedOffers;
+    setListing(updatedListing);
+  };
+
   return (
     <div className={styles["listing-page-container"]}>
       {Object.keys(listing).length === 0 ? (
@@ -101,6 +110,7 @@ export default function ListingPage() {
                         }}
                         isIncomingOffer={isCurrentUser}
                         onOfferAccepted={handleOfferAccept}
+                        onOfferDeclined={handleOfferDecline}
                       />
                     </div>
                   ))
