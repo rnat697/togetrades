@@ -4,6 +4,7 @@ import Counter from "../db/counter-schema.js";
 import Pokemon from "../db/pokemon-schema.js";
 import Listing from "../db/listing-schema.js";
 import Offer from "../db/offer-schema.js";
+import User from "../db/user-schema.js";
 
 const router = express.Router();
 // ----- CREATE NEW OFFER -----
@@ -86,7 +87,7 @@ router.post("/create", auth, async (req, res) => {
     await pokeExist.save();
 
     // Update listing to include offer
-    listingExist.offers.push({offer:offer._id});
+    listingExist.offers.push({ offer: offer._id });
     await listingExist.save();
 
     // TODO: potential socket.io notification here?
@@ -283,13 +284,12 @@ router.get("/outgoing-offers", auth, async (req, res) => {
   }
 });
 
-
 // ----- ACCEPT OFFER -----
 /**
  * POST /:offerId/accept
  *  Accepts an offer, updates related resources, and triggers socket.io notification (if implemented)
  * @param {offerId} - id of the offer that is going to be accepted
- * 
+ *
  */
 router.post("/:offerId/accept", auth, async (req, res) => {
   const offerId = req.params.offerId;
@@ -337,6 +337,16 @@ router.post("/:offerId/accept", auth, async (req, res) => {
   listing.status = "Inactive";
   listing.acceptedOffer = offer._id;
   await listing.save();
+
+  // Remove species from wishlist
+  await User.updateOne(
+    {
+      _id: listingUserId,
+    },
+    {
+      $pull: { wishlist: { species: listing.seekingSpecies } },
+    }
+  );
 
   // Update all other offers to "Declined"
   await Offer.updateMany(
