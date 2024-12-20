@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { acceptOfferAPI, createOffer } from "../api/api";
+import { acceptOfferAPI, createOffer, declineOfferAPI } from "../api/api";
 import { OUTGOING_OFFERS_URL } from "../api/urls";
 import useGet from "../hooks/useGet";
 import OffersModel from "../models/OffersModel";
@@ -59,6 +59,24 @@ export function acceptOffer(offerId) {
     .catch((e) => {
       toast(
         "Error when accepting a trade offer: " +
+          (e.response?.data?.message || "An unexpected error occurred")
+      );
+    });
+}
+
+export function declineOffer(offerId) {
+  return declineOfferAPI(offerId)
+    .then((res) => {
+      if (res.status === 201) {
+        const message = res.data.message;
+        toast(message);
+        // TODO: potential socket.io notification here?
+        return res.data.success;
+      }
+    })
+    .catch((e) => {
+      toast(
+        "Error when declining a trade offer: " +
           (e.response?.data?.message || "An unexpected error occurred")
       );
     });
