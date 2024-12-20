@@ -61,6 +61,21 @@ export default function IncomingOffersPage({}) {
           ))
         )}
       </div>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        pageRangeDisplayed={5}
+        onPageChange={handlePageChange}
+        pageCount={offersMetadata?.totalPages ?? 1}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+        containerClassName={styles["pagination"]}
+        activeClassName={styles["pagination-active"]}
+        pageClassName={styles["page-item"]}
+        previousClassName={styles["page-item"]}
+        nextClassName={styles["page-item"]}
+        breakClassName={styles["page-item"]}
+      />
     </div>
   );
 }
