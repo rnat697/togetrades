@@ -1,4 +1,4 @@
-import "./ConfirmationModal.css";
+import styles from "./ConfirmationModal.module.css";
 import { IoIosClose } from "react-icons/io";
 
 export default function ConfirmationModal({
@@ -12,24 +12,34 @@ export default function ConfirmationModal({
   onConfirm,
 }) {
   return (
-    <div className={`cancel-modal-container ${showModal ? "show-modal" : ""}`}>
-      <div className={`modal ${showModal ? "show-modal" : ""}`}>
-        <div className="modal-close">
+    <div
+      className={`${styles["cancel-modal-container"]} ${
+        showModal ? styles["show-modal"] : styles[""]
+      }`}
+    >
+      <div
+        className={`${styles["modal"]} ${
+          showModal ? styles["show-modal"] : ""
+        }`}
+      >
+        <div className={styles["modal-close"]}>
           <IoIosClose color="#212A4A" size={"3em"} onClick={onClose} />
         </div>
-        <div className="modal-header">
+        <div className={styles["modal-header"]}>
           <h2>{title}</h2>
         </div>
-        <div className="modal-content">
+        <div className={styles["modal-content"]}>
           <p>{message}</p>
           <p>{actionMessage}</p>
         </div>
-        <div className="modal-footer">
-          <button className="btn-cancel" onClick={onClose}>
+        <div className={styles["modal-footer"]}>
+          <button className={styles["btn-cancel"]} onClick={onClose}>
             Cancel
           </button>
           <button
-            className={isButtonRed ? "btn-delete" : "btn-normal"}
+            className={
+              isButtonRed ? styles["btn-delete"] : styles["btn-normal"]
+            }
             onClick={onConfirm}
           >
             {primaryButtonLabel}
