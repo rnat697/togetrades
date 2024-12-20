@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { acceptOfferAPI, createOffer, declineOfferAPI } from "../api/api";
-import { OUTGOING_OFFERS_URL } from "../api/urls";
+import { INCOMING_OFFERS_URL, OUTGOING_OFFERS_URL } from "../api/urls";
 import useGet from "../hooks/useGet";
 import OffersModel from "../models/OffersModel";
 
@@ -80,4 +80,27 @@ export function declineOffer(offerId) {
           (e.response?.data?.message || "An unexpected error occurred")
       );
     });
+}
+
+// ---- Fetches incoming offers ----
+export function useIncomingOffers(currentPage) {
+  const {
+    data: rawData,
+    isLoading,
+    error,
+    refresh,
+  } = useGet(INCOMING_OFFERS_URL, [], true, true, currentPage);
+  const [offers, setOffers] = useState([]);
+  const [offersMetadata, setOffersMetadata] = useState({});
+
+  useEffect(() => {
+    if (rawData.success) {
+      let offersData = rawData.data;
+      setOffersMetadata(rawData.metadata);
+
+      const offersModels = offersData.map((data) => OffersModel.fromJSON(data));
+      setOffers(offersModels);
+    }
+  }, [rawData]);
+  return { offers, isLoading, error, refresh, offersMetadata };
 }
