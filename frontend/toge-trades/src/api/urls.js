@@ -44,5 +44,6 @@ export const CREATE_OFFER_URL = `${OFFER_URL}/create`;
 export const OUTGOING_OFFERS_URL = `${OFFER_URL}/outgoing-offers`;
 export const OFFER_ACCEPT_URL = (offerId) => `${OFFER_URL}/${offerId}/accept`;
 export const OFFER_DECLINE_URL = (offerId) => `${OFFER_URL}/${offerId}/decline`;
+export const INCOMING_OFFERS_URL = `${OFFER_URL}/incoming-offers`;
 
 
