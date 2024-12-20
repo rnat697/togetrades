@@ -206,7 +206,7 @@ describe("Accepting an offer POST /api/v1/offers/:offerId/accept", () => {
         let data = res.body;
         expect(data.success).toBe(true);
         expect(data.message).toBe(
-          "Offer accepted successfully. You now own bulbasaur."
+          "Offer #0002 accepted successfully. You now own bulbasaur."
         );
         return done();
       });
@@ -214,6 +214,32 @@ describe("Accepting an offer POST /api/v1/offers/:offerId/accept", () => {
   test("Offer doesn't existm, status 404", (done) => {
     request(app)
       .post(`/api/v1/offers/000000000000000000003555/accept`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
+      .end(done);
+  });
+});
+
+// ---------------- DECLINE an offer ----------------
+describe("Decline an offer POST /api/v1/offers/:offerId/decline", () => {
+  test("Successful Decline of an offer", (done) => {
+    request(app)
+      .post(`/api/v1/offers/${offerBulbForNaviaLunaListing._id}/decline`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(201)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.message).toBe("Offer #0002 declined successfully.");
+        return done();
+      });
+  });
+  test("Offer doesn't exist, status 404", (done) => {
+    request(app)
+      .post(`/api/v1/offers/000000000000000000003555/decline`)
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(404)

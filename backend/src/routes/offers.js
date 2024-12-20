@@ -291,40 +291,40 @@ router.get("/outgoing-offers", auth, async (req, res) => {
  * @param {offerId} - id of the offer that is going to be accepted
  * 
  */
-router.post("/:offerId/accept", auth, async (req,res)=>{
+router.post("/:offerId/accept", auth, async (req, res) => {
   const offerId = req.params.offerId;
 
   const offer = await Offer.findById(offerId);
-  if(!offer) return res.status(404).send("Offer not found");
+  if (!offer) return res.status(404).send("Offer not found");
 
-  // Update the ownership of the Pokémon involved by swapping 
+  // Update the ownership of the Pokémon involved by swapping
   // current owner IDs
   const listingUserId = req.user._id;
   const offerUserId = offer.offeredBy;
   const offerPokemon = await Pokemon.updateOne(
     {
-      _id: offer.offeredPokemon
+      _id: offer.offeredPokemon,
     },
     {
-      $set:{
+      $set: {
         currentOwner: listingUserId,
         hasBeenTraded: true,
         isTrading: false,
-      }
+      },
     }
   );
 
   const listing = await Listing.findById(offer.listing);
   const listingPokemon = await Pokemon.updateOne(
     {
-      _id: listing.offeringPokemon
+      _id: listing.offeringPokemon,
     },
     {
-      $set:{
+      $set: {
         currentOwner: offerUserId,
         hasBeenTraded: true,
         isTrading: false,
-      }
+      },
     }
   );
 
@@ -342,33 +342,83 @@ router.post("/:offerId/accept", auth, async (req,res)=>{
   await Offer.updateMany(
     {
       listing: listing._id,
-      _id: { $ne: offerId }, 
+      _id: { $ne: offerId },
       status: "Pending",
     },
     { $set: { status: "Declined" } }
   );
 
   // Remove all offers
-  await Listing.updateOne(
-    { _id: listing._id },
-    { $set: { offers: [] } }
-  );
-  
+  await Listing.updateOne({ _id: listing._id }, { $set: { offers: [] } });
+
   // TODO: Socket.io notification
-  const transferedPoke = await Pokemon.findOne(
-    {
-      _id:offer.offeredPokemon, 
-      currentOwner: listingUserId
-    }
-  )
-  .populate("species");
+  const transferedPoke = await Pokemon.findOne({
+    _id: offer.offeredPokemon,
+    currentOwner: listingUserId,
+  }).populate("species");
 
-  return res
-  .status(201)
-  .send({ success: true, message: `Offer accepted successfully. You now own ${transferedPoke.species.name}.` });
-
+  return res.status(201).send({
+    success: true,
+    message: `Offer #${offer.offerNum
+      .toString()
+      .padStart(4, "0")} accepted successfully. You now own ${
+      transferedPoke.species.name
+    }.`,
+  });
 });
 
+// ----- DECLINE OFFER -----
+/**
+ * POST /:offerId/decline
+ *  Changes offer's status to "Declined", changes offered pokemon's
+ *  isTrading to false, remove offer from listing,
+ *  and triggers socket.io notification (if implemented).
+ * @param {offerId} - id of the offer that is going to be accepted
+ *
+ */
+router.post("/:offerId/decline", auth, async (req, res) => {
+  const offerId = req.params.offerId;
+
+  const offer = await Offer.findById(offerId);
+  if (!offer) return res.status(404).send("Offer not found");
+
+  // Change offer status to declined
+  offer.status = "Declined";
+  await offer.save();
+
+  // find the offered pokemon and update isTrading to false
+  await Pokemon.updateOne(
+    {
+      _id: offer.offeredPokemon,
+    },
+    {
+      $set: {
+        isTrading: false,
+      },
+    }
+  );
+
+  // remove offer from listing
+  await Listing.updateOne(
+    {
+      _id: offer.listing,
+    },
+    {
+      $pull: {
+        offers: { offer: offer._id },
+      },
+    }
+  );
+
+  // TODO: Socket.io notification
+
+  return res.status(201).send({
+    success: true,
+    message: `Offer #${offer.offerNum
+      .toString()
+      .padStart(4, "0")} declined successfully.`,
+  });
+});
 
 
 
