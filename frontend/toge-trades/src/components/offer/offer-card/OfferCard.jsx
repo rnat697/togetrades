@@ -18,6 +18,7 @@ export default function OfferCard({
   isAcceptedOffer = false,
   onOfferAccepted,
   onOfferDeclined,
+  showListingOrigin = false,
 }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -99,7 +100,7 @@ export default function OfferCard({
     <div className={styles["offer-card-container"]}>
       <div className={styles["header"]}>
         <h3>{`Offer #${offerData.offerNum.toString().padStart(4, "0")}`}</h3>
-        {isIncomingOffer ? null : (
+        {showListingOrigin ? (
           <p>
             {`Made an offer on `}
             <Link
@@ -108,7 +109,7 @@ export default function OfferCard({
               .toString()
               .padStart(4, "0")}`}</Link>
           </p>
-        )}
+        ) : null}
         {showStatus ? (
           <div className={styles["offer-status"]}>
             {<OfferStatus status={offerData.status} />}

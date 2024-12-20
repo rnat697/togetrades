@@ -82,7 +82,12 @@ export default function TradeHubPage() {
         </div>
         <div className={styles["hub-nav-container"]}>
           <div className={styles["hub-nav"]}>
-            <Link className={styles["hub-link"]}>Incoming Offers</Link>
+            <Link
+              className={styles["hub-link"]}
+              to={"/tradehub/incoming-offers/1"}
+            >
+              Incoming Offers
+            </Link>
             <Link
               className={styles["hub-link"]}
               to={"/tradehub/outgoing-offers/1"}
