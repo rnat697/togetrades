@@ -4,6 +4,7 @@ import Counter from "../db/counter-schema.js";
 import Pokemon from "../db/pokemon-schema.js";
 import Listing from "../db/listing-schema.js";
 import Offer from "../db/offer-schema.js";
+import User from "../db/user-schema.js";
 
 const router = express.Router();
 // ----- CREATE NEW OFFER -----
@@ -86,7 +87,7 @@ router.post("/create", auth, async (req, res) => {
     await pokeExist.save();
 
     // Update listing to include offer
-    listingExist.offers.push({offer:offer._id});
+    listingExist.offers.push({ offer: offer._id });
     await listingExist.save();
 
     // TODO: potential socket.io notification here?
@@ -283,13 +284,13 @@ router.get("/outgoing-offers", auth, async (req, res) => {
   }
 });
 
-
 // ----- ACCEPT OFFER -----
 /**
+ * KB-41
  * POST /:offerId/accept
  *  Accepts an offer, updates related resources, and triggers socket.io notification (if implemented)
  * @param {offerId} - id of the offer that is going to be accepted
- * 
+ *
  */
 router.post("/:offerId/accept", auth, async (req, res) => {
   const offerId = req.params.offerId;
@@ -338,6 +339,16 @@ router.post("/:offerId/accept", auth, async (req, res) => {
   listing.acceptedOffer = offer._id;
   await listing.save();
 
+  // Remove species from wishlist
+  await User.updateOne(
+    {
+      _id: listingUserId,
+    },
+    {
+      $pull: { wishlist: { species: listing.seekingSpecies } },
+    }
+  );
+
   // Update all other offers to "Declined"
   await Offer.updateMany(
     {
@@ -347,6 +358,22 @@ router.post("/:offerId/accept", auth, async (req, res) => {
     },
     { $set: { status: "Declined" } }
   );
+  
+  // Find declined offers to update the pokemon's isTrading to false
+  const declinedOffers = await Offer.find(
+    {
+      listing: listing._id,
+      _id: { $ne: offerId },
+      status: "Declined" 
+    });
+
+  const offeredPokemonIds = declinedOffers.map((offer) => offer.offeredPokemon);
+  // Update the isTrading field of those Pokemon to false
+  await Pokemon.updateMany(
+    { _id: { $in: offeredPokemonIds } },
+    { $set: { isTrading: false } }
+  );
+        
 
   // Remove all offers
   await Listing.updateOne({ _id: listing._id }, { $set: { offers: [] } });
@@ -420,7 +447,15 @@ router.post("/:offerId/decline", auth, async (req, res) => {
   });
 });
 
-
+// ----- GETS USER'S INCOMING OFFERS -----
+/**
+ * GET /incoming-offers/:userId
+ * returns a list of incoming offers that the user has made
+ * @param {userId} - user id so we can retrieve their incoming offers
+ * @param {page} - page number, default is 1
+ * @param {limit} - maximum number of offers per page, default is 10
+ *
+ */
 router.get("/incoming-offers", auth, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -539,10 +574,10 @@ router.get("/incoming-offers", auth, async (req, res) => {
       },
     ];
 
-    // Step 3: Fetch offers using the aggregation pipeline
+    // Fetch offers using the aggregation pipeline
     const offers = await Offer.aggregate(offersPipeline);
 
-    // Step 4: Get total count for pagination
+    //  Get total count for pagination
     const totalCount = await Offer.countDocuments({
       listing: { $in: listingIds },
     });
@@ -574,6 +609,65 @@ router.get("/incoming-offers", auth, async (req, res) => {
   }
 });
 
+// ----- DECLINE OFFER -----
+/**
+ * DELETE /:offerId/withdraw
+ *  Deletes offer, changes offered pokemon's
+ *  isTrading to false, remove offer from listing,
+ *  and triggers socket.io notification (if implemented).
+ * @param {offerId} - id of the offer that is going to be accepted
+ *
+ */
+router.delete("/:offerId/withdraw", auth, async (req, res) => {
+  try {
+    const offerId = req.params.offerId;
+    const offer = await Offer.findById(offerId);
+    if (!offer) return res.status(404).send("Offer not found");
 
+    // update offered pokemon's isTrading to false
+    await Pokemon.updateOne(
+      {
+        _id: offer.offeredPokemon,
+      },
+      {
+        $set: {
+          isTrading: false,
+        },
+      }
+    );
+
+    // remove offer from listing
+    await Listing.updateOne(
+      {
+        _id: offer.listing,
+      },
+      {
+        $pull: {
+          offers: { offer: offer._id },
+        },
+      }
+    );
+
+    // delete offer
+    const result = await Offer.deleteOne({ _id: offerId });
+    if (result.deletedCount === 1) {
+      return res.status(200).json({
+        success: true,
+        message: `Offer #${offer.offerNum
+          .toString()
+          .padStart(4, "0")} withdrawn successfully.`,
+      });
+    } else {
+      throw "No documents matched query. Deleted 0 documents.";
+    }
+
+    // TODO: Socket.io notification
+  } catch (error) {
+    console.error("Error when withdrawing an offer: ", error);
+    return res
+      .status(500)
+      .send("Internal Server Error when withdrawing an offer.");
+  }
+});
 
 export default router;

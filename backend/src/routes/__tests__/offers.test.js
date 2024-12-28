@@ -12,6 +12,7 @@ import {
   bearerVenti,
   listingIvyForLunaLynney,
   offerBulbForNaviaLunaListing,
+  offerBulbForVentiIvyListing,
   pokemonAgathasLockedLunala,
   pokemonNaviasIvysaur,
   pokemonNaviasLunala,
@@ -307,6 +308,32 @@ describe("Fetching Incoming offers GET /api/v1/offers/incoming-offers", () => {
       .set("Cookie", [`authorization=${bearerNavia}`])
       .send()
       .expect(400)
+      .end(done);
+  });
+});
+
+// ---------------- Withdrawing Offers ----------------
+describe("Withdrawing offers DELETE /api/v1/offers/:offerId/withdraw", () => {
+  test("Successful withdraw of offer (deletes it)", (done) => {
+    request(app)
+      .delete(`/api/v1/offers/${offerBulbForVentiIvyListing._id}/withdraw`)
+      .set("Cookie", [`authorization=${bearerFurina}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let data = res.body;
+        expect(data.success).toBe(true);
+        expect(data.message).toBe("Offer #0003 withdrawn successfully.");
+        return done();
+      });
+  });
+  test("Offer doesn't exist, status 404", (done) => {
+    request(app)
+      .delete(`/api/v1/offers/000000000000000000003555/withdraw`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(404)
       .end(done);
   });
 });
