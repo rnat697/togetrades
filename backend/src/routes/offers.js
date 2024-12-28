@@ -286,6 +286,7 @@ router.get("/outgoing-offers", auth, async (req, res) => {
 
 // ----- ACCEPT OFFER -----
 /**
+ * KB-41
  * POST /:offerId/accept
  *  Accepts an offer, updates related resources, and triggers socket.io notification (if implemented)
  * @param {offerId} - id of the offer that is going to be accepted
@@ -357,7 +358,22 @@ router.post("/:offerId/accept", auth, async (req, res) => {
     },
     { $set: { status: "Declined" } }
   );
-  // FIXME: FORGOT TO CHANGE DECLINED OFFER'S POKEMONS ISTRADING TO FALSE
+  
+  // Find declined offers to update the pokemon's isTrading to false
+  const declinedOffers = await Offer.find(
+    {
+      listing: listing._id,
+      _id: { $ne: offerId },
+      status: "Declined" 
+    });
+
+  const offeredPokemonIds = declinedOffers.map((offer) => offer.offeredPokemon);
+  // Update the isTrading field of those Pokemon to false
+  await Pokemon.updateMany(
+    { _id: { $in: offeredPokemonIds } },
+    { $set: { isTrading: false } }
+  );
+        
 
   // Remove all offers
   await Listing.updateOne({ _id: listing._id }, { $set: { offers: [] } });
