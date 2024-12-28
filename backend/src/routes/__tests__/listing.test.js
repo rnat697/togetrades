@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import routes from "../listing.js";
 import {
   addAllMockData,
+  bearerAgatha,
   bearerLynney,
   bearerNavia,
   bearerVenti,
@@ -16,6 +17,7 @@ import {
   pokemonVentisLunala,
   speciesLunala,
   speciesOddish,
+  userAgatha,
   userNavia,
   userVenti,
   ventisIncubatorGhost,
@@ -171,21 +173,21 @@ describe("Fetch recent listings GET /api/v1/listing/", () => {
         let metadata = response.metadata;
         expect(metadata.totalCount).toBe(34);
         expect(metadata.page).toBe(1);
-        expect(metadata.totalPages).toBe(2);
-        expect(metadata.limit).toBe(20);
+        expect(metadata.totalPages).toBe(4);
+        expect(metadata.limit).toBe(10);
 
         // Check if its in descending order
         let listings = response.data;
-        expect(listings.length).toBe(20);
-        for (let i = 34; i > 34 - 20; i--) {
+        expect(listings.length).toBe(10);
+        for (let i = 34; i > 34 - 10; i--) {
           expect(listings[34 - i].listingNum).toBe(i);
         }
         return done();
       });
   });
-  test("Successful fetching of recent listings, Page 2", (done) => {
+  test("Successful fetching of recent listings, Page 4", (done) => {
     request(app)
-      .get("/api/v1/listings/?page=2")
+      .get("/api/v1/listings/?page=4")
       .set("Cookie", [`authorization=${bearerVenti}`])
       .send()
       .expect(200)
@@ -196,23 +198,108 @@ describe("Fetch recent listings GET /api/v1/listing/", () => {
 
         let metadata = response.metadata;
         expect(metadata.totalCount).toBe(34);
-        expect(metadata.page).toBe(2);
-        expect(metadata.totalPages).toBe(2);
-        expect(metadata.limit).toBe(20);
+        expect(metadata.page).toBe(4);
+        expect(metadata.totalPages).toBe(4);
+        expect(metadata.limit).toBe(10);
 
         // Check if its in descending order
         let listings = response.data;
-        expect(listings.length).toBe(14);
-        for (let i = 14; i > 0; i--) {
-          expect(listings[14 - i].listingNum).toBe(i);
+        expect(listings.length).toBe(4);
+        for (let i = 4; i > 0; i--) {
+          expect(listings[4 - i].listingNum).toBe(i);
         }
         return done();
       });
   });
-  test("fetching recent listing out of scope, Page 3", (done) => {
+  test("fetching recent listing out of scope, Page 5", (done) => {
     request(app)
-      .get("/api/v1/listings/?page=3")
+      .get("/api/v1/listings/?page=5")
       .set("Cookie", [`authorization=${bearerVenti}`])
+      .send()
+      .expect(400)
+      .end(done);
+  });
+
+  test("Successful fetching of user's listings - two listings", (done) => {
+    request(app)
+      .get(`/api/v1/listings/?userId=${userNavia._id}`)
+      .set("Cookie", [`authorization=${bearerNavia}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(2);
+        expect(metadata.page).toBe(1);
+        expect(metadata.totalPages).toBe(1);
+        expect(metadata.limit).toBe(10);
+
+        let listings = response.data;
+        expect(listings[0].listingNum).toBe(4);
+        expect(listings[1].listingNum).toBe(2);
+
+        return done();
+      });
+  });
+  test("Successful fetching of user's listings - 30 listings", (done) => {
+    request(app)
+      .get(`/api/v1/listings/?userId=${userAgatha._id}`)
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(30);
+        expect(metadata.page).toBe(1);
+        expect(metadata.totalPages).toBe(3);
+        expect(metadata.limit).toBe(10);
+
+        let listings = response.data;
+        for (let i = 34; i > 34 - 10; i--) {
+          expect(listings[34 - i].listingNum).toBe(i);
+        }
+
+        return done();
+      });
+  });
+
+  test("Successful fetching of user's 30 listings - page 2", (done) => {
+    request(app)
+      .get(`/api/v1/listings/?userId=${userAgatha._id}&page=2`)
+      .set("Cookie", [`authorization=${bearerAgatha}`])
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        let response = res.body;
+        expect(response.success).toBe(true);
+
+        let metadata = response.metadata;
+        expect(metadata.totalCount).toBe(30);
+        expect(metadata.page).toBe(2);
+        expect(metadata.totalPages).toBe(3);
+        expect(metadata.limit).toBe(10);
+
+        let listings = response.data;
+        for (let i = 24; i > 24 - 10; i--) {
+          expect(listings[24 - i].listingNum).toBe(i);
+        }
+
+        return done();
+      });
+  });
+
+  test("fetching user's listings out of scope, Page 4", (done) => {
+    request(app)
+      .get(`/api/v1/listings/?userId=${userAgatha._id}&page=4`)
+      .set("Cookie", [`authorization=${bearerAgatha}`])
       .send()
       .expect(400)
       .end(done);

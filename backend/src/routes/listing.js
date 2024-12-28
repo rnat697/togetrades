@@ -99,9 +99,11 @@ router.post("/create", auth, async (req, res) => {
 
 // ----- GETS ALL LISTINGS -----
 /**
- * fetches all listings, sorted by recents and pagination, only finds "Active" listings
+ * 1. fetches all listings, sorted by recents and pagination, only finds "Active" listings 
+ * 2. Fetches all of the user's listing if the param for userId is specified. (includes inactive listings)
  * @param {page} - page number
  * @param {limit} - the limit of the number of listings, default 10
+ * @param {userId} - optional, the id of the user. Used to fetch the user's listings only.
  */
 router.get("/", auth, async (req, res) => {
   try {
@@ -110,8 +112,12 @@ router.get("/", auth, async (req, res) => {
     if (page <= 0) page = 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
+    const userId = req.query.userId || null;
+
+    const filter = userId ? { listedBy: userId } : { status: "Active" };
+
     // fetch all listings (active)
-    const listings = await Listing.find({ status: "Active" })
+    const listings = await Listing.find(filter)
       .sort({ dateCreated: -1 }) // Sort by recency
       .skip(skip) // Pagination
       .limit(limit)
@@ -122,7 +128,7 @@ router.get("/", auth, async (req, res) => {
       .populate("seekingSpecies")
       .populate("listedBy", "username image");
 
-    const totalCount = await Listing.countDocuments({ status: "Active" });
+    const totalCount = await Listing.countDocuments(filter);
     const totalPages = Math.ceil(totalCount / limit);
 
     // Check if the requested page exceeds total pages
