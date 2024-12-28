@@ -94,7 +94,9 @@ export default function TradeHubPage() {
             >
               Outgoing Offers
             </Link>
-            <Link className={styles["hub-link"]}>My Listings</Link>
+            <Link className={styles["hub-link"]} to={"/tradehub/my-listings/1"}>
+              My Listings
+            </Link>
           </div>
           <Divider />
         </div>
