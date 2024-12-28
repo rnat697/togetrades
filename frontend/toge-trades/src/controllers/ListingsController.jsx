@@ -9,7 +9,7 @@ import { useAuth } from "../api/auth";
 import PokemonModel from "../models/PokemonModel";
 import { toast } from "react-toastify";
 import useGet from "../hooks/useGet";
-import { LISTING_URL } from "../api/urls";
+import { ALL_LISTING_URL, USERS_LISTINGS_URL } from "../api/urls";
 import ListingModel from "../models/ListingModel";
 
 // ---- Fetches all elgible pokemon that user has ----
@@ -57,7 +57,7 @@ export function useListings(currentPage) {
     isLoading,
     error,
     refresh,
-  } = useGet(LISTING_URL, [], true, true, currentPage);
+  } = useGet(ALL_LISTING_URL, [], true, true, currentPage);
   const [listings, setListings] = useState([]);
   const [listingsMetadata, setListingsMetadata] = useState({});
 
@@ -110,4 +110,30 @@ export function getEligiblePokemonById(speciesId) {
           (e.response?.data?.message || "An unexpected error occurred")
       );
     });
+}
+
+// ---- FETCHES USER'S LISTINGS ----
+export function useUserListings(currentPage) {
+  const { user } = useAuth();
+  const {
+    data: rawData,
+    isLoading,
+    error,
+    refresh,
+  } = useGet(USERS_LISTINGS_URL(user._id, currentPage), [], true);
+  const [listings, setListings] = useState([]);
+  const [listingsMetadata, setListingsMetadata] = useState({});
+
+  useEffect(() => {
+    if (rawData.success) {
+      let listingsData = rawData.data;
+      setListingsMetadata(rawData.metadata);
+
+      const listingModels = listingsData.map((data) =>
+        ListingModel.fromJSON(data)
+      );
+      setListings(listingModels);
+    }
+  }, [rawData]);
+  return { listings, isLoading, error, refresh, listingsMetadata };
 }

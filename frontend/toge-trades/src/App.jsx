@@ -14,6 +14,7 @@ import TradeHubPage from "./Pages/Trade-hub/TradeHubPage.jsx";
 import ListingPage from "./Pages/listing/ListingPage.jsx";
 import OutgoingOffersPage from "./Pages/outgoing-offers/OutgoingOffersPage.jsx";
 import IncomingOffersPage from "./Pages/incoming-offers/IncomingOffersPage.jsx";
+import MyListingsPage from "./Pages/my-listings/MyListingsPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -136,6 +137,14 @@ function App() {
           element={
             <RequiresAuth>
               <IncomingOffersPage />
+            </RequiresAuth>
+          }
+        />
+        <Route
+          path="tradehub/my-listings/:page?"
+          element={
+            <RequiresAuth>
+              <MyListingsPage />
             </RequiresAuth>
           }
         />

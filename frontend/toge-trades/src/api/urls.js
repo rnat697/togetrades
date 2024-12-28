@@ -35,6 +35,9 @@ export const SPECIES_ITEM_URL = (dexNum) => `${SPEICES_URL}/item/${dexNum}`;
 
 // ----- LISTING ENDPOINTS ------
 export const LISTING_URL = `${API_BASE_URL}/listings`;
+export const ALL_LISTING_URL = `${LISTING_URL}/`;
+export const USERS_LISTINGS_URL = (userId, page) =>
+  `${LISTING_URL}/?userId=${userId}&page=${page}`;
 export const CREATE_LISTING_URL = `${LISTING_URL}/create`;
 export const LISTING_DETAIL_URL = (listingId) => `${LISTING_URL}/${listingId}`;
 
