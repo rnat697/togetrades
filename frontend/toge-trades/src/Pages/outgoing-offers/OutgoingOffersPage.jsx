@@ -52,6 +52,10 @@ export default function OutgoingOffersPage({}) {
     }
   };
 
+  const handleOfferWithdraw = () => {
+    refresh();
+  };
+
   return (
     <div className={styles["outgoing-offers-container"]}>
       <div className={styles["breadcrumb"]}>
@@ -89,6 +93,7 @@ export default function OutgoingOffersPage({}) {
                 isShiny: offer.listing.offeringPokemon.isShiny,
               }}
               showStatus={true}
+              onOfferWithdraw={handleOfferWithdraw}
             />
           ))
         )}
