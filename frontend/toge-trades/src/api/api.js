@@ -17,6 +17,7 @@ import {
   CREATE_OFFER_URL,
   OFFER_ACCEPT_URL,
   OFFER_DECLINE_URL,
+  OFFER_WITHDRAW_URL,
 } from "./urls";
 
 // ------ USERS API ------
@@ -102,3 +103,6 @@ export const acceptOfferAPI = (offerId) =>
 
 export const declineOfferAPI = (offerId) =>
   axios.post(OFFER_DECLINE_URL(offerId), {}, { withCredentials: true });
+
+export const withdrawOfferAPI = (offerId) =>
+  axios.delete(OFFER_WITHDRAW_URL(offerId), { withCredentials: true });

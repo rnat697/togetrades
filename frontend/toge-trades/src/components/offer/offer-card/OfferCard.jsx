@@ -8,6 +8,7 @@ import ConfirmationModal from "../../confirmation_modal/ConfirmationModal";
 import {
   acceptOffer,
   declineOffer,
+  withdrawOffer,
 } from "../../../controllers/OfferController";
 
 export default function OfferCard({
@@ -73,7 +74,23 @@ export default function OfferCard({
     setIsModalRed(true);
     setShowConfirmModal(true);
   };
-
+  // ----- WITHDRAW MODAL MSG -----
+  const handleWithdrawClick = () => {
+    setModalTitle("Withdraw Trade Offer");
+    setModalMessage(
+      `Are you sure you want to withdraw your offer to trade your ${offeredPokeName} for ${offerData.offeredBy.username}'s ${listingPokeName}?`
+    );
+    const actionMsg = (
+      <>
+        Once withdrawn, this offer will be{" "}
+        <span style={{ color: "red" }}>permanently deleted</span>.
+      </>
+    );
+    setModalActionMsg(actionMsg);
+    setModalButtonLabel("Withdraw");
+    setIsModalRed(true);
+    setShowConfirmModal(true);
+  };
   // ----- MODAL CLOSE AND CONFIRMATION -----
   const handleModalOnClose = () => {
     setShowConfirmModal(false);
@@ -91,6 +108,12 @@ export default function OfferCard({
         if (success) {
           offerData.setStatus("Declined");
           onOfferDeclined(offerData);
+        }
+      });
+    } else if (modalButtonLabel === "Withdraw") {
+      withdrawOffer(offerData.id).then((success) => {
+        if (success) {
+          onOfferWithdraw();
         }
       });
     }
@@ -141,7 +164,7 @@ export default function OfferCard({
           </div>
         ) : (
           <div className={styles["outline-button"]}>
-            <button>Withdraw</button>
+            <button onClick={handleWithdrawClick}>Withdraw</button>
           </div>
         )}
         <p>{`Offered ${formatRelativeTime(offerData.dateCreated)}`}</p>
