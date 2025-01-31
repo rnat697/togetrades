@@ -23,16 +23,13 @@ export default function NotificationCard({ notification, onRemove }) {
   return (
     <div className="notif-card">
       <div className="notif-content">
-        <img
-          className="image-notif"
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"
-        />
+        <img className="image-notif" src={notification.userImg} />
         <div className="message-content">
           <p>
             <span style={{ fontWeight: "bold" }}>{notification.username}</span>
             {notification.message}
           </p>
-          <p>{getTimeDifference(notification.date)}</p>
+          <p>{getTimeDifference(notification.timestamp)}</p>
         </div>
         <div className="notif_close" onClick={() => onRemove(notification.id)}>
           <IoIosClose color="#212A4A" size={"2em"} />

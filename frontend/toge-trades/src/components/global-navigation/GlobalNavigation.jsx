@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { FaRegBell } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
-
 import Logo from "../logo/Logo";
 import UserDropDown from "./user-dropdown/UserDropDown";
 import NotificationDropDown from "../notifications/notification-dropdown/NotificationDropDown";
@@ -12,7 +11,6 @@ import LogoutButton from "./logout-button/LogoutButton";
 
 export default function GlobalNavigation() {
   const [showMenu, setShowMenu] = useState(false);
-
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -22,7 +20,6 @@ export default function GlobalNavigation() {
       setShowMenu(false);
     }
   };
-
   return (
     <header className="nav-header">
       <nav className="nav-container">

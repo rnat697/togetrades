@@ -101,6 +101,7 @@ export default function OfferCard({
         if (success) {
           offerData.setStatus("Accepted"); // upate it locally
           onOfferAccepted(offerData);
+          setShowConfirmModal(false);
         }
       });
     } else if (modalButtonLabel === "Decline") {
@@ -108,12 +109,14 @@ export default function OfferCard({
         if (success) {
           offerData.setStatus("Declined");
           onOfferDeclined(offerData);
+          setShowConfirmModal(false);
         }
       });
     } else if (modalButtonLabel === "Withdraw") {
       withdrawOffer(offerData.id).then((success) => {
         if (success) {
           onOfferWithdraw();
+          setShowConfirmModal(false);
         }
       });
     }

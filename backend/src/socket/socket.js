@@ -6,6 +6,7 @@ let io;
 let onlineUsers = [];
 
 const addNewUser = (username, userId, socketId) => {
+  console.log(socketId);
   !onlineUsers.some((user) => user.userId === userId) &&
     onlineUsers.push({ username, userId, socketId });
 };
@@ -15,6 +16,8 @@ const removeUser = (socketId) => {
 };
 
 export const getUser = (userId) => {
+  console.log(userId);
+  console.log(onlineUsers.find((user) => user.userId === userId));
   return onlineUsers.find((user) => user.userId === userId);
 };
 
@@ -40,6 +43,8 @@ export const initSocket = (httpServer) => {
     socket.on("newUser", (username, userId) => {
       addNewUser(username, userId, socket.id);
       console.log(`New online user added: ${username} (ID: ${userId})`);
+      console.log(`online users:`);
+      console.log(onlineUsers);
     });
 
     socket.on("connect_error", (err) =>
@@ -48,6 +53,7 @@ export const initSocket = (httpServer) => {
 
     socket.on("disconnect", () => {
       console.log("A user has disconnected");
+      removeUser(socket.id);
     });
   });
 
