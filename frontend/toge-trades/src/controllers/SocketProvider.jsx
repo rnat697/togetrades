@@ -7,7 +7,7 @@ const SocketContext = createContext(null);
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-  const { token } = useAuth(); // Get authentication token
+  const { token, user } = useAuth(); // Get authentication token
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -16,8 +16,8 @@ export const SocketProvider = ({ children }) => {
         auth: { token },
         withCredentials: true,
       });
-
       setSocket(newSocket);
+      newSocket.emit("newUser", user.username, user._id);
 
       return () => {
         newSocket.disconnect();

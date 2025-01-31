@@ -3,6 +3,21 @@ import { Server } from "socket.io";
 
 let io;
 
+let onlineUsers = [];
+
+const addNewUser = (username, userId, socketId) => {
+  !onlineUsers.some((user) => user.userId === userId) &&
+    onlineUsers.push({ username, userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+
+export const getUser = (userId) => {
+  return onlineUsers.find((user) => user.userId === userId);
+};
+
 export const initSocket = (httpServer) => {
   io = new Server(httpServer, {
     cors: {
@@ -21,6 +36,11 @@ export const initSocket = (httpServer) => {
       return;
     }
     console.log("A user has connected");
+    // listens to event to add new users
+    socket.on("newUser", (username, userId) => {
+      addNewUser(username, userId, socket.id);
+      console.log(`New online user added: ${username} (ID: ${userId})`);
+    });
 
     socket.on("connect_error", (err) =>
       console.error("Connection error:", err)
