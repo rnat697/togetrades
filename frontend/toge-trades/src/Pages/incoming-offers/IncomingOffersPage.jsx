@@ -28,6 +28,11 @@ export default function IncomingOffersPage({}) {
     window.scrollTo(0, 0);
   };
 
+  // ---- update offers list with the accepted offer FE ---
+  const handleOfferStatusChange = (offer) => {
+    refresh();
+  };
+
   return (
     <div className={styles["incoming-offers-container"]}>
       <div className={styles["breadcrumb"]}>
@@ -57,6 +62,8 @@ export default function IncomingOffersPage({}) {
               }}
               isIncomingOffer={true}
               showListingOrigin={true}
+              onOfferAccepted={handleOfferStatusChange}
+              onOfferDeclined={handleOfferStatusChange}
             />
           ))
         )}

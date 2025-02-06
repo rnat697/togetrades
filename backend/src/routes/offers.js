@@ -5,6 +5,7 @@ import Pokemon from "../db/pokemon-schema.js";
 import Listing from "../db/listing-schema.js";
 import Offer from "../db/offer-schema.js";
 import User from "../db/user-schema.js";
+import { getSocket, getUser, sendTradeNotification } from "../socket/socket.js";
 
 const router = express.Router();
 // ----- CREATE NEW OFFER -----
@@ -90,10 +91,36 @@ router.post("/create", auth, async (req, res) => {
     listingExist.offers.push({ offer: offer._id });
     await listingExist.save();
 
-    // TODO: potential socket.io notification here?
-    return res
+    res
       .status(201)
       .send({ success: true, message: "Offer created successfully." });
+
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
+
+    //Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const receiverId = listing.listedBy;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has made an offer on your listing #${listing.listingNum
+      .toString()
+      .padStart(
+        4,
+        "0"
+      )}. They are offering ${offerPokeName} for your ${listingPokeName} in their offer #${offerNum
+      .toString()
+      .padStart(4, "0")}. Please check your incoming trades page.`;
+    const type = "new-offer";
+
+    sendTradeNotification(senderUsername, senderImg, receiverId, message, type);
   } catch (error) {
     console.error("Error when creating offer: ", error);
     return res.status(500).send("Internal Server Error when creating offer.");
@@ -293,105 +320,161 @@ router.get("/outgoing-offers", auth, async (req, res) => {
  *
  */
 router.post("/:offerId/accept", auth, async (req, res) => {
-  const offerId = req.params.offerId;
+  try {
+    const offerId = req.params.offerId;
 
-  const offer = await Offer.findById(offerId);
-  if (!offer) return res.status(404).send("Offer not found");
+    const offer = await Offer.findById(offerId);
+    if (!offer) return res.status(404).send("Offer not found");
 
-  // Update the ownership of the Pokémon involved by swapping
-  // current owner IDs
-  const listingUserId = req.user._id;
-  const offerUserId = offer.offeredBy;
-  const offerPokemon = await Pokemon.updateOne(
-    {
-      _id: offer.offeredPokemon,
-    },
-    {
-      $set: {
-        currentOwner: listingUserId,
-        hasBeenTraded: true,
-        isTrading: false,
+    // // Update the ownership of the Pokémon involved by swapping
+    // // current owner IDs
+    const listingUserId = req.user._id;
+    const offerUserId = offer.offeredBy;
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+
+    const offerPokemon = await Pokemon.updateOne(
+      {
+        _id: offer.offeredPokemon,
       },
-    }
-  );
+      {
+        $set: {
+          currentOwner: listingUserId,
+          hasBeenTraded: true,
+          isTrading: false,
+        },
+      }
+    );
 
-  const listing = await Listing.findById(offer.listing);
-  const listingPokemon = await Pokemon.updateOne(
-    {
-      _id: listing.offeringPokemon,
-    },
-    {
-      $set: {
-        currentOwner: offerUserId,
-        hasBeenTraded: true,
-        isTrading: false,
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
+    const listingPokemon = await Pokemon.updateOne(
+      {
+        _id: listing.offeringPokemon,
       },
-    }
-  );
+      {
+        $set: {
+          currentOwner: offerUserId,
+          hasBeenTraded: true,
+          isTrading: false,
+        },
+      }
+    );
 
-  // Update offer to "Accepted" status and dateAccepted
-  offer.status = "Accepted";
-  offer.dateAccepted = new Date();
-  await offer.save();
+    // Update offer to "Accepted" status and dateAccepted
+    offer.status = "Accepted";
+    offer.dateAccepted = new Date();
+    await offer.save();
 
-  // Update listing status to "Inactive" and set acceptedOffer
-  listing.status = "Inactive";
-  listing.acceptedOffer = offer._id;
-  await listing.save();
+    // Update listing status to "Inactive" and set acceptedOffer
+    listing.status = "Inactive";
+    listing.acceptedOffer = offer._id;
+    await listing.save();
 
-  // Remove species from wishlist
-  await User.updateOne(
-    {
-      _id: listingUserId,
-    },
-    {
-      $pull: { wishlist: { species: listing.seekingSpecies } },
-    }
-  );
+    // Remove species from wishlist
+    await User.updateOne(
+      {
+        _id: listingUserId,
+      },
+      {
+        $pull: { wishlist: { species: listing.seekingSpecies } },
+      }
+    );
 
-  // Update all other offers to "Declined"
-  await Offer.updateMany(
-    {
+    // Update all other offers to "Declined"
+    await Offer.updateMany(
+      {
+        listing: listing._id,
+        _id: { $ne: offerId },
+        status: "Pending",
+      },
+      { $set: { status: "Declined" } }
+    );
+
+    // Find declined offers to update the pokemon's isTrading to false
+    const declinedOffers = await Offer.find({
       listing: listing._id,
       _id: { $ne: offerId },
-      status: "Pending",
-    },
-    { $set: { status: "Declined" } }
-  );
-  
-  // Find declined offers to update the pokemon's isTrading to false
-  const declinedOffers = await Offer.find(
-    {
-      listing: listing._id,
-      _id: { $ne: offerId },
-      status: "Declined" 
+      status: "Declined",
     });
 
-  const offeredPokemonIds = declinedOffers.map((offer) => offer.offeredPokemon);
-  // Update the isTrading field of those Pokemon to false
-  await Pokemon.updateMany(
-    { _id: { $in: offeredPokemonIds } },
-    { $set: { isTrading: false } }
-  );
-        
+    const offeredPokemonIds = declinedOffers.map(
+      (offer) => offer.offeredPokemon
+    );
+    // Update the isTrading field of those Pokemon to false
+    await Pokemon.updateMany(
+      { _id: { $in: offeredPokemonIds } },
+      { $set: { isTrading: false } }
+    );
 
-  // Remove all offers
-  await Listing.updateOne({ _id: listing._id }, { $set: { offers: [] } });
+    // Remove all offers
+    await Listing.updateOne({ _id: listing._id }, { $set: { offers: [] } });
 
-  // TODO: Socket.io notification
-  const transferedPoke = await Pokemon.findOne({
-    _id: offer.offeredPokemon,
-    currentOwner: listingUserId,
-  }).populate("species");
+    const transferedPoke = await Pokemon.findOne({
+      _id: offer.offeredPokemon,
+      currentOwner: listingUserId,
+    }).populate("species");
 
-  return res.status(201).send({
-    success: true,
-    message: `Offer #${offer.offerNum
+    // send response immediatelyu
+    res.status(201).send({
+      success: true,
+      message: `Offer #${offer.offerNum
+        .toString()
+        .padStart(4, "0")} accepted successfully. You now own ${
+        transferedPoke.species.name
+      }.`,
+    });
+
+    // // [username] has accepted your offer #{}! They’re sending their Scyther${listing} for your Eevee ${offer}.
+    // // Socket.io notification for acceptance
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const offerNum = offer.offerNum;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    let message = ` has accepted your offer #${offerNum
       .toString()
-      .padStart(4, "0")} accepted successfully. You now own ${
-      transferedPoke.species.name
-    }.`,
-  });
+      .padStart(
+        4,
+        "0"
+      )}! They're sending their ${listingPokeName} for your ${offerPokeName}.`;
+    let type = "accept";
+
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      offerUserId,
+      message,
+      type
+    );
+
+    // socket.io notification for declines
+    declinedOffers.map((offer) => {
+      message = ` has declined your offer #${offer.offerNum
+        .toString()
+        .padStart(
+          4,
+          "0"
+        )} to trade your ${offerPokeName} for their ${listingPokeName}.`;
+      type = "decline";
+      sendTradeNotification(
+        senderUsername,
+        senderImg,
+        offer.offeredBy,
+        message,
+        type
+      );
+    });
+  } catch (e) {
+    console.error("Error when accepting an offer: ", e);
+    return res
+      .status(500)
+      .send("Internal Server Error when accepting an offer.");
+  }
 });
 
 // ----- DECLINE OFFER -----
@@ -404,47 +487,83 @@ router.post("/:offerId/accept", auth, async (req, res) => {
  *
  */
 router.post("/:offerId/decline", auth, async (req, res) => {
-  const offerId = req.params.offerId;
+  try {
+    const offerId = req.params.offerId;
 
-  const offer = await Offer.findById(offerId);
-  if (!offer) return res.status(404).send("Offer not found");
+    const offer = await Offer.findById(offerId);
+    if (!offer) return res.status(404).send("Offer not found");
 
-  // Change offer status to declined
-  offer.status = "Declined";
-  await offer.save();
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
 
-  // find the offered pokemon and update isTrading to false
-  await Pokemon.updateOne(
-    {
-      _id: offer.offeredPokemon,
-    },
-    {
-      $set: {
-        isTrading: false,
+    // Change offer status to declined
+    offer.status = "Declined";
+    await offer.save();
+
+    // find the offered pokemon and update isTrading to false
+    await Pokemon.updateOne(
+      {
+        _id: offer.offeredPokemon,
       },
-    }
-  );
+      {
+        $set: {
+          isTrading: false,
+        },
+      }
+    );
 
-  // remove offer from listing
-  await Listing.updateOne(
-    {
-      _id: offer.listing,
-    },
-    {
-      $pull: {
-        offers: { offer: offer._id },
+    // remove offer from listing
+    await Listing.updateOne(
+      {
+        _id: offer.listing,
       },
-    }
-  );
+      {
+        $pull: {
+          offers: { offer: offer._id },
+        },
+      }
+    );
+    res.status(201).send({
+      success: true,
+      message: `Offer #${offer.offerNum
+        .toString()
+        .padStart(4, "0")} declined successfully.`,
+    });
 
-  // TODO: Socket.io notification
-
-  return res.status(201).send({
-    success: true,
-    message: `Offer #${offer.offerNum
+    // Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const offerUserId = offer.offeredBy;
+    const offerNum = offer.offerNum;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has declined your offer #${offerNum
       .toString()
-      .padStart(4, "0")} declined successfully.`,
-  });
+      .padStart(
+        4,
+        "0"
+      )} to trade your ${offerPokeName} for their ${listingPokeName}.`;
+    const type = "decline";
+
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      offerUserId,
+      message,
+      type
+    );
+  } catch (e) {
+    console.error("Error when declining an offer: ", e);
+    return res
+      .status(500)
+      .send("Internal Server Error when declining an offer.");
+  }
 });
 
 // ----- GETS USER'S INCOMING OFFERS -----
@@ -609,7 +728,7 @@ router.get("/incoming-offers", auth, async (req, res) => {
   }
 });
 
-// ----- DECLINE OFFER -----
+// ----- WITHDRAW OFFER -----
 /**
  * DELETE /:offerId/withdraw
  *  Deletes offer, changes offered pokemon's
@@ -623,6 +742,14 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
     const offerId = req.params.offerId;
     const offer = await Offer.findById(offerId);
     if (!offer) return res.status(404).send("Offer not found");
+
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
 
     // update offered pokemon's isTrading to false
     await Pokemon.updateOne(
@@ -651,7 +778,7 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
     // delete offer
     const result = await Offer.deleteOne({ _id: offerId });
     if (result.deletedCount === 1) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         message: `Offer #${offer.offerNum
           .toString()
@@ -661,7 +788,30 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
       throw "No documents matched query. Deleted 0 documents.";
     }
 
-    // TODO: Socket.io notification
+    //Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const receiverId = listing.listedBy;
+    const offerNum = offer.offerNum;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has withdrawn their offer #${offerNum
+      .toString()
+      .padStart(
+        4,
+        "0"
+      )} to trade your ${listingPokeName} for their ${offerPokeName} on your listing #${listing.listingNum.toString().padStart(4,'0')}.`;
+    const type = "withdraw";
+
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      receiverId,
+      message,
+      type
+    );
+
   } catch (error) {
     console.error("Error when withdrawing an offer: ", error);
     return res

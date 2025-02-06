@@ -7,6 +7,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  position: relative;
+  }
+  
+  .notif-counter {
+    position: absolute;
+    top: -0.3em;
+    right: -0.3em;
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: #3B5BBA;
+    color: white;
+    font-weight: 500;
 }
 .hasNotif {
   transition: opacity 0.3s ease-in-out;
@@ -46,14 +59,16 @@
   background-color:#ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   position: absolute;
-  top:4.5em;
+  top: 6em;
   right:0;
   padding:1.5em;
   border-radius: 1em;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 22em;
+    height: 25em;
+    overflow-y: auto;
 }
 
  /* MOBILE FORMAT */
@@ -62,14 +77,16 @@
     background-color:#ffffff;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     position: absolute;
     top:6em;
-    right: -2.8em;
+    right: -2.3em;
     padding:1.5em;
     border-radius: 1em;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 20em;
+      height: 18em;
+      overflow-y: auto;
   }
   
  }

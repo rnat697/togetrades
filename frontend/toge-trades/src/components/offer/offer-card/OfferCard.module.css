@@ -66,6 +66,9 @@
 .outline-button{
   width: 100%;
 }
+.outline-button :disabled {
+  border-color: #BFC7E0;
+}
 .outline-button button{
   border-color: #5988D8;
   border-width: 0.15em;

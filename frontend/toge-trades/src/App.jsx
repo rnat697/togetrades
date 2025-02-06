@@ -15,6 +15,7 @@ import ListingPage from "./Pages/listing/ListingPage.jsx";
 import OutgoingOffersPage from "./Pages/outgoing-offers/OutgoingOffersPage.jsx";
 import IncomingOffersPage from "./Pages/incoming-offers/IncomingOffersPage.jsx";
 import MyListingsPage from "./Pages/my-listings/MyListingsPage.jsx";
+import { SocketProvider } from "./controllers/SocketProvider.jsx";
 
 function App() {
   const location = useLocation();
@@ -37,124 +38,132 @@ function App() {
   }, [location]);
 
   return (
-    <Routes>
-      <Route path="/" element={<PageLayout />}>
-        <Route path="*" element={<Navigate to="/landing" replace />} />
-        <Route index element={<Navigate to="landing" replace />} />
-        <Route
-          path="landing"
-          element={
-            <RequiresNonAuth>
-              <LandingPage />
-            </RequiresNonAuth>
-          }
-        />
-        <Route
-          path="login"
-          element={
-            <RequiresNonAuth>
-              <AuthorisationPage isLogin={true} />
-            </RequiresNonAuth>
-          }
-        />
-        <Route
-          path="signup"
-          element={
-            <RequiresNonAuth>
-              <AuthorisationPage isLogin={false} />
-            </RequiresNonAuth>
-          }
-        />
-        <Route
-          path="pokebox/:page?"
-          element={
-            <RequiresAuth>
-              <PokeBoxPage />
-            </RequiresAuth>
-          }
-        />
-        <Route path="pokebox" element={<Navigate to="/pokebox/1" replace />} />
-        <Route
-          path="incubator"
-          element={
-            <RequiresAuth>
-              <IncubatorPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="incubator/egg-picker"
-          element={
-            <RequiresAuth>
-              <EggPickerPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="pokedex/:page?"
-          element={
-            <RequiresAuth>
-              <PokedexPage />
-            </RequiresAuth>
-          }
-        />
-        <Route path="pokedex" element={<Navigate to="/pokedex/1" replace />} />
-        <Route
-          path="pokedex/entry/:dexNumber"
-          element={
-            <RequiresAuth>
-              <PokedexSpeciesPage />
-            </RequiresAuth>
-          }
-        />
-        <Route element={<Navigate to="/pokedex/entry/1" replace />} />
-        <Route
-          path="tradehub/:page?"
-          element={
-            <RequiresAuth>
-              <TradeHubPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="tradehub/listing/:id"
-          element={
-            <RequiresAuth>
-              <ListingPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="tradehub/outgoing-offers/:page?"
-          element={
-            <RequiresAuth>
-              <OutgoingOffersPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="tradehub/incoming-offers/:page?"
-          element={
-            <RequiresAuth>
-              <IncomingOffersPage />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="tradehub/my-listings/:page?"
-          element={
-            <RequiresAuth>
-              <MyListingsPage />
-            </RequiresAuth>
-          }
-        />
+    <SocketProvider>
+      <Routes>
+        <Route path="/" element={<PageLayout />}>
+          <Route path="*" element={<Navigate to="/landing" replace />} />
+          <Route index element={<Navigate to="landing" replace />} />
+          <Route
+            path="landing"
+            element={
+              <RequiresNonAuth>
+                <LandingPage />
+              </RequiresNonAuth>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <RequiresNonAuth>
+                <AuthorisationPage isLogin={true} />
+              </RequiresNonAuth>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <RequiresNonAuth>
+                <AuthorisationPage isLogin={false} />
+              </RequiresNonAuth>
+            }
+          />
+          <Route
+            path="pokebox/:page?"
+            element={
+              <RequiresAuth>
+                <PokeBoxPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="pokebox"
+            element={<Navigate to="/pokebox/1" replace />}
+          />
+          <Route
+            path="incubator"
+            element={
+              <RequiresAuth>
+                <IncubatorPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="incubator/egg-picker"
+            element={
+              <RequiresAuth>
+                <EggPickerPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="pokedex/:page?"
+            element={
+              <RequiresAuth>
+                <PokedexPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="pokedex"
+            element={<Navigate to="/pokedex/1" replace />}
+          />
+          <Route
+            path="pokedex/entry/:dexNumber"
+            element={
+              <RequiresAuth>
+                <PokedexSpeciesPage />
+              </RequiresAuth>
+            }
+          />
+          <Route element={<Navigate to="/pokedex/entry/1" replace />} />
+          <Route
+            path="tradehub/:page?"
+            element={
+              <RequiresAuth>
+                <TradeHubPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="tradehub/listing/:id"
+            element={
+              <RequiresAuth>
+                <ListingPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="tradehub/outgoing-offers/:page?"
+            element={
+              <RequiresAuth>
+                <OutgoingOffersPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="tradehub/incoming-offers/:page?"
+            element={
+              <RequiresAuth>
+                <IncomingOffersPage />
+              </RequiresAuth>
+            }
+          />
+          <Route
+            path="tradehub/my-listings/:page?"
+            element={
+              <RequiresAuth>
+                <MyListingsPage />
+              </RequiresAuth>
+            }
+          />
 
-        <Route
-          path="tradehub"
-          element={<Navigate to="/tradehub/1" replace />}
-        />
-      </Route>
-    </Routes>
+          <Route
+            path="tradehub"
+            element={<Navigate to="/tradehub/1" replace />}
+          />
+        </Route>
+      </Routes>
+    </SocketProvider>
   );
 }
 

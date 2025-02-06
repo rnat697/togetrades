@@ -1,39 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotificationCard from "../notification-card/NotificationCard";
 import "./NotificationDropDown.css";
 import { MdNotificationsNone } from "react-icons/md";
 import { MdNotificationsActive } from "react-icons/md";
+import { useSocket } from "../../../controllers/SocketProvider";
 
 export default function NotificationDropDown({ isMobileMenu }) {
-  const [notifications, setNotifs] = useState([
-    {
-      id: 35646,
-      username: "myname",
-      message: " has accepted your request for their Scyther and your Eevee.",
-      date: new Date(Date.now() - 10 * 60 * 1000),
-    },
-    {
-      id: 1223423432,
-      username: "Username",
-      message: " has declined your request for their Pikachu and your Eevee.",
-      date: new Date(Date.now() - 2 * 60000),
-    },
-    {
-      id: 12356776554,
-      username: "Username",
-      message: " has declined your request for their Pikachu and your Eevee.",
-      date: new Date(Date.now() - 2 * 60000),
-    },
-    {
-      id: 12334228,
-      username: "Username",
-      message: " has declined your request for their Pikachu and your Eevee.",
-      date: new Date(Date.now() - 2 * 60000),
-    },
-  ]);
-
+  const [notifications, setNotifs] = useState([]);
+  const [notifCounter, setnotifCounter] = useState(0);
   const [showNotif, setNotifMenu] = useState(false);
   //  TODO: make this scrollable? or limit to 4 at a time
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("getTradeNotification", (data) => {
+      setNotifs((prev) => [...prev, data]);
+    });
+
+    // Clean up the listener on component unmount
+    return () => {
+      if (socket) {
+        socket.off("getTradeNotification");
+      }
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    setnotifCounter(notifications.length);
+  }, [notifications]);
+
   const toggleNotifMenu = () => {
     // If mobile menu is open don't show the notifications
     if (!isMobileMenu) {
@@ -60,6 +57,9 @@ export default function NotificationDropDown({ isMobileMenu }) {
             className={`noNotif ${showNotif ? "selected" : ""}`}
           />
         )}
+        {notifCounter != 0 ? (
+          <div className="notif-counter">{notifCounter}</div>
+        ) : null}
       </div>
       <div className={`notif-dropdown ${showNotif ? "open" : ""}`}>
         {notifications.length === 0 ? (

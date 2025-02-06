@@ -101,6 +101,7 @@ export default function OfferCard({
         if (success) {
           offerData.setStatus("Accepted"); // upate it locally
           onOfferAccepted(offerData);
+          setShowConfirmModal(false);
         }
       });
     } else if (modalButtonLabel === "Decline") {
@@ -108,12 +109,14 @@ export default function OfferCard({
         if (success) {
           offerData.setStatus("Declined");
           onOfferDeclined(offerData);
+          setShowConfirmModal(false);
         }
       });
     } else if (modalButtonLabel === "Withdraw") {
       withdrawOffer(offerData.id).then((success) => {
         if (success) {
           onOfferWithdraw();
+          setShowConfirmModal(false);
         }
       });
     }
@@ -164,7 +167,12 @@ export default function OfferCard({
           </div>
         ) : (
           <div className={styles["outline-button"]}>
-            <button onClick={handleWithdrawClick}>Withdraw</button>
+            <button
+              disabled={offerData.status !== "Pending"}
+              onClick={handleWithdrawClick}
+            >
+              Withdraw
+            </button>
           </div>
         )}
         <p>{`Offered ${formatRelativeTime(offerData.dateCreated)}`}</p>
