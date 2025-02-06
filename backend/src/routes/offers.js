@@ -91,9 +91,36 @@ router.post("/create", auth, async (req, res) => {
     listingExist.offers.push({ offer: offer._id });
     await listingExist.save();
 
-    return res
+    res
       .status(201)
       .send({ success: true, message: "Offer created successfully." });
+
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
+
+    //Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const receiverId = listing.listedBy;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has made an offer on your listing #${listing.listingNum
+      .toString()
+      .padStart(
+        4,
+        "0"
+      )}. They are offering ${offerPokeName} for your ${listingPokeName} in their offer #${offerNum
+      .toString()
+      .padStart(4, "0")}. Please check your incoming trades page.`;
+    const type = "new-offer";
+
+    sendTradeNotification(senderUsername, senderImg, receiverId, message, type);
   } catch (error) {
     console.error("Error when creating offer: ", error);
     return res.status(500).send("Internal Server Error when creating offer.");
