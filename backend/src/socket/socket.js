@@ -6,7 +6,6 @@ let io;
 let onlineUsers = [];
 
 const addNewUser = (username, userId, socketId) => {
-  console.log(socketId);
   !onlineUsers.some((user) => user.userId === userId) &&
     onlineUsers.push({ username, userId, socketId });
 };
@@ -16,7 +15,6 @@ const removeUser = (socketId) => {
 };
 
 export const getUser = (userId) => {
-  console.log(userId);
   console.log(onlineUsers.find((user) => user.userId === userId));
   return onlineUsers.find((user) => user.userId === userId);
 };
@@ -65,4 +63,30 @@ export const getSocket = () => {
     throw new Error("Socket.io not initialized!");
   }
   return io;
+};
+
+export const sendTradeNotification = (
+  senderUsername,
+  senderImg,
+  receiverId,
+  message,
+  type
+) => {
+  const timestamp = new Date();
+  const recieverUserSocket = getUser(receiverId.toString());
+  const id = `${timestamp}-${type}-sent-to-${receiverId.toString()}`;
+  setImmediate(() => {
+    console.log("emitting notification");
+    const io = getSocket();
+    io.to(recieverUserSocket.socketId).emit("getTradeNotification", {
+      id,
+      senderUsername,
+      senderImg,
+      type,
+      message,
+      timestamp,
+    });
+  });
+
+  console.log("notification emitted");
 };

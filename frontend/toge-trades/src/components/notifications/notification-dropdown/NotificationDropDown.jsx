@@ -6,35 +6,7 @@ import { MdNotificationsActive } from "react-icons/md";
 import { useSocket } from "../../../controllers/SocketProvider";
 
 export default function NotificationDropDown({ isMobileMenu }) {
-  const [notifications, setNotifs] = useState([
-    {
-      id: "381290389012830DT-accept-12897412",
-      userImg:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
-      username: "myname",
-      type: "accept",
-      message: " has accepted your request for their Scyther and your Eevee.",
-      timestamp: new Date(Date.now() - 10 * 60 * 1000),
-    },
-    {
-      id: "3812923432830DT-decline-345435534",
-      userImg:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
-      username: "Username",
-      type: "decline",
-      message: " has declined your request for their Pikachu and your Eevee.",
-      timestamp: new Date(Date.now() - 2 * 60000),
-    },
-    {
-      id: "3812930DT-decline-345435534",
-      userImg:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
-      username: "Username",
-      type: "decline",
-      message: " has declined your request for their Pikachu and your Eevee.",
-      timestamp: new Date(Date.now() - 2 * 60000),
-    },
-  ]);
+  const [notifications, setNotifs] = useState([]);
 
   const [showNotif, setNotifMenu] = useState(false);
   //  TODO: make this scrollable? or limit to 4 at a time
@@ -43,9 +15,7 @@ export default function NotificationDropDown({ isMobileMenu }) {
 
   useEffect(() => {
     if (!socket) return;
-    console.log("im polling");
     socket.on("getTradeNotification", (data) => {
-      console.log(data);
       setNotifs((prev) => [...prev, data]);
     });
 

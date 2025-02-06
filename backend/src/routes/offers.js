@@ -5,7 +5,7 @@ import Pokemon from "../db/pokemon-schema.js";
 import Listing from "../db/listing-schema.js";
 import Offer from "../db/offer-schema.js";
 import User from "../db/user-schema.js";
-import { getSocket, getUser } from "../socket/socket.js";
+import { getSocket, getUser, sendTradeNotification } from "../socket/socket.js";
 
 const router = express.Router();
 // ----- CREATE NEW OFFER -----
@@ -299,8 +299,8 @@ router.post("/:offerId/accept", auth, async (req, res) => {
     const offer = await Offer.findById(offerId);
     if (!offer) return res.status(404).send("Offer not found");
 
-    // Update the ownership of the Pokémon involved by swapping
-    // current owner IDs
+    // // Update the ownership of the Pokémon involved by swapping
+    // // current owner IDs
     const listingUserId = req.user._id;
     const offerUserId = offer.offeredBy;
     const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
@@ -401,38 +401,24 @@ router.post("/:offerId/accept", auth, async (req, res) => {
       }.`,
     });
 
-    // [username] has accepted your offer #{}! They’re sending their Scyther${listing} for your Eevee ${offer}.
-    // Socket.io notification
-    const username = req.user.username;
-    const recieveUser = User.findById(req.user._id);
-    const userImg = recieveUser.image;
+    // // [username] has accepted your offer #{}! They’re sending their Scyther${listing} for your Eevee ${offer}.
+    // // Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
     const offerNum = offer.offerNum;
     const offerPokeName = offerPoke.species.name;
     const listingPokeName = listingPoke.species.name;
-    const timestamp = new Date();
     const message = ` has accepted your offer #${offerNum}! They're sending their ${listingPokeName} for your ${offerPokeName}.`;
     const type = "accept";
 
-    console.log("setting up");
-    console.log(listingUserId);
-    const recievingUser = getUser(offerUserId.toString());
-    console.log(recievingUser);
-    console.log("found receiving user");
-    const id = `${timestamp}-${type}-${recieveUser.userId}`;
-    setImmediate(() => {
-      console.log("emitting notification");
-      const io = getSocket();
-      io.to(recievingUser.socketId).emit("getTradeNotification", {
-        id,
-        userImg,
-        username,
-        type,
-        message,
-        timestamp,
-      });
-    });
-
-    console.log("notification emitted");
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      offerUserId,
+      message,
+      type
+    );
   } catch (e) {
     console.error("Error when withdrawing an offer: ", e);
     return res
