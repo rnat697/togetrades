@@ -409,7 +409,12 @@ router.post("/:offerId/accept", auth, async (req, res) => {
     const offerNum = offer.offerNum;
     const offerPokeName = offerPoke.species.name;
     const listingPokeName = listingPoke.species.name;
-    const message = ` has accepted your offer #${offerNum}! They're sending their ${listingPokeName} for your ${offerPokeName}.`;
+    const message = ` has accepted your offer #${offerNum
+      .toString()
+      .padStart(
+        4,
+        "0"
+      )}! They're sending their ${listingPokeName} for your ${offerPokeName}.`;
     const type = "accept";
 
     sendTradeNotification(
@@ -420,10 +425,10 @@ router.post("/:offerId/accept", auth, async (req, res) => {
       type
     );
   } catch (e) {
-    console.error("Error when withdrawing an offer: ", e);
+    console.error("Error when accepting an offer: ", e);
     return res
       .status(500)
-      .send("Internal Server Error when withdrawing an offer.");
+      .send("Internal Server Error when accepting an offer.");
   }
 });
 
@@ -437,47 +442,83 @@ router.post("/:offerId/accept", auth, async (req, res) => {
  *
  */
 router.post("/:offerId/decline", auth, async (req, res) => {
-  const offerId = req.params.offerId;
+  try {
+    const offerId = req.params.offerId;
 
-  const offer = await Offer.findById(offerId);
-  if (!offer) return res.status(404).send("Offer not found");
+    const offer = await Offer.findById(offerId);
+    if (!offer) return res.status(404).send("Offer not found");
 
-  // Change offer status to declined
-  offer.status = "Declined";
-  await offer.save();
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
 
-  // find the offered pokemon and update isTrading to false
-  await Pokemon.updateOne(
-    {
-      _id: offer.offeredPokemon,
-    },
-    {
-      $set: {
-        isTrading: false,
+    // Change offer status to declined
+    offer.status = "Declined";
+    await offer.save();
+
+    // find the offered pokemon and update isTrading to false
+    await Pokemon.updateOne(
+      {
+        _id: offer.offeredPokemon,
       },
-    }
-  );
+      {
+        $set: {
+          isTrading: false,
+        },
+      }
+    );
 
-  // remove offer from listing
-  await Listing.updateOne(
-    {
-      _id: offer.listing,
-    },
-    {
-      $pull: {
-        offers: { offer: offer._id },
+    // remove offer from listing
+    await Listing.updateOne(
+      {
+        _id: offer.listing,
       },
-    }
-  );
+      {
+        $pull: {
+          offers: { offer: offer._id },
+        },
+      }
+    );
+    res.status(201).send({
+      success: true,
+      message: `Offer #${offer.offerNum
+        .toString()
+        .padStart(4, "0")} declined successfully.`,
+    });
 
-  // TODO: Socket.io notification
-
-  return res.status(201).send({
-    success: true,
-    message: `Offer #${offer.offerNum
+    // Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const offerUserId = offer.offeredBy;
+    const offerNum = offer.offerNum;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has declined your offer #${offerNum
       .toString()
-      .padStart(4, "0")} declined successfully.`,
-  });
+      .padStart(
+        4,
+        "0"
+      )} to trade your ${offerPokeName} for their ${listingPokeName}.`;
+    const type = "decline";
+
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      offerUserId,
+      message,
+      type
+    );
+  } catch (e) {
+    console.error("Error when declining an offer: ", e);
+    return res
+      .status(500)
+      .send("Internal Server Error when declining an offer.");
+  }
 });
 
 // ----- GETS USER'S INCOMING OFFERS -----
