@@ -8,5 +8,6 @@ This is still in development.
 - Express
 - Nodejs
 - Reactjs
+- socket.io
 
 ![Landing Page](https://github.com/rnat697/togetrades/assets/79692362/fdedaf44-a0ec-4e56-b3f3-06fa01502d6c)
