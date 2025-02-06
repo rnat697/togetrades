@@ -167,7 +167,12 @@ export default function OfferCard({
           </div>
         ) : (
           <div className={styles["outline-button"]}>
-            <button onClick={handleWithdrawClick}>Withdraw</button>
+            <button
+              disabled={offerData.status !== "Pending"}
+              onClick={handleWithdrawClick}
+            >
+              Withdraw
+            </button>
           </div>
         )}
         <p>{`Offered ${formatRelativeTime(offerData.dateCreated)}`}</p>

@@ -683,7 +683,7 @@ router.get("/incoming-offers", auth, async (req, res) => {
   }
 });
 
-// ----- DECLINE OFFER -----
+// ----- WITHDRAW OFFER -----
 /**
  * DELETE /:offerId/withdraw
  *  Deletes offer, changes offered pokemon's
@@ -697,6 +697,14 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
     const offerId = req.params.offerId;
     const offer = await Offer.findById(offerId);
     if (!offer) return res.status(404).send("Offer not found");
+
+    const offerPoke = await Pokemon.findById(offer.offeredPokemon).populate(
+      "species"
+    ); // for use in notification
+    const listing = await Listing.findById(offer.listing);
+    const listingPoke = await Pokemon.findById(
+      listing.offeringPokemon
+    ).populate("species"); // for use in notification
 
     // update offered pokemon's isTrading to false
     await Pokemon.updateOne(
@@ -725,7 +733,7 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
     // delete offer
     const result = await Offer.deleteOne({ _id: offerId });
     if (result.deletedCount === 1) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         message: `Offer #${offer.offerNum
           .toString()
@@ -735,7 +743,30 @@ router.delete("/:offerId/withdraw", auth, async (req, res) => {
       throw "No documents matched query. Deleted 0 documents.";
     }
 
-    // TODO: Socket.io notification
+    //Socket.io notification
+    const senderUsername = req.user.username;
+    const senderUser = await User.findById(req.user._id);
+    const senderImg = senderUser.image;
+    const receiverId = listing.listedBy;
+    const offerNum = offer.offerNum;
+    const offerPokeName = offerPoke.species.name;
+    const listingPokeName = listingPoke.species.name;
+    const message = ` has withdrawn their offer #${offerNum
+      .toString()
+      .padStart(
+        4,
+        "0"
+      )} to trade your ${listingPokeName} for their ${offerPokeName} on your listing #${listing.listingNum.toString().padStart(4,'0')}.`;
+    const type = "withdraw";
+
+    sendTradeNotification(
+      senderUsername,
+      senderImg,
+      receiverId,
+      message,
+      type
+    );
+
   } catch (error) {
     console.error("Error when withdrawing an offer: ", error);
     return res
