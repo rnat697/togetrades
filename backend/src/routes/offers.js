@@ -429,20 +429,20 @@ router.post("/:offerId/accept", auth, async (req, res) => {
     });
 
     // // [username] has accepted your offer #{}! They’re sending their Scyther${listing} for your Eevee ${offer}.
-    // // Socket.io notification
+    // // Socket.io notification for acceptance
     const senderUsername = req.user.username;
     const senderUser = await User.findById(req.user._id);
     const senderImg = senderUser.image;
     const offerNum = offer.offerNum;
     const offerPokeName = offerPoke.species.name;
     const listingPokeName = listingPoke.species.name;
-    const message = ` has accepted your offer #${offerNum
+    let message = ` has accepted your offer #${offerNum
       .toString()
       .padStart(
         4,
         "0"
       )}! They're sending their ${listingPokeName} for your ${offerPokeName}.`;
-    const type = "accept";
+    let type = "accept";
 
     sendTradeNotification(
       senderUsername,
@@ -451,6 +451,24 @@ router.post("/:offerId/accept", auth, async (req, res) => {
       message,
       type
     );
+
+    // socket.io notification for declines
+    declinedOffers.map((offer) => {
+      message = ` has declined your offer #${offer.offerNum
+        .toString()
+        .padStart(
+          4,
+          "0"
+        )} to trade your ${offerPokeName} for their ${listingPokeName}.`;
+      type = "decline";
+      sendTradeNotification(
+        senderUsername,
+        senderImg,
+        offer.offeredBy,
+        message,
+        type
+      );
+    });
   } catch (e) {
     console.error("Error when accepting an offer: ", e);
     return res
