@@ -7,7 +7,7 @@ import { useSocket } from "../../../controllers/SocketProvider";
 
 export default function NotificationDropDown({ isMobileMenu }) {
   const [notifications, setNotifs] = useState([]);
-
+  const [notifCounter, setnotifCounter] = useState(0);
   const [showNotif, setNotifMenu] = useState(false);
   //  TODO: make this scrollable? or limit to 4 at a time
 
@@ -26,6 +26,10 @@ export default function NotificationDropDown({ isMobileMenu }) {
       }
     };
   }, [socket]);
+
+  useEffect(() => {
+    setnotifCounter(notifications.length);
+  }, [notifications]);
 
   const toggleNotifMenu = () => {
     // If mobile menu is open don't show the notifications
@@ -53,6 +57,9 @@ export default function NotificationDropDown({ isMobileMenu }) {
             className={`noNotif ${showNotif ? "selected" : ""}`}
           />
         )}
+        {notifCounter != 0 ? (
+          <div className="notif-counter">{notifCounter}</div>
+        ) : null}
       </div>
       <div className={`notif-dropdown ${showNotif ? "open" : ""}`}>
         {notifications.length === 0 ? (
